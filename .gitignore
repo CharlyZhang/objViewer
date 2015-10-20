@@ -1,0 +1,8 @@
+win/ipch/
+win/bin/
+win/obj/
+*.user
+*.opensdf
+data/
+*.sdf
+*.suo
