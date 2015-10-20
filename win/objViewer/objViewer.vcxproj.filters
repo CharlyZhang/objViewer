@@ -62,13 +62,13 @@
     <ClInclude Include="..\..\src\CZDefine.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CZScene.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\CZMat4.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\CZBasicStruct.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\CZScene.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

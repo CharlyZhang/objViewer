@@ -109,9 +109,7 @@ void Init()
 	attributes.push_back("vert");
 	attributes.push_back("vertNormal");
 	attributes.push_back("vertTexCoord");
-	uniforms.push_back("mvMat");
-	uniforms.push_back("projection");
-	uniforms.push_back("camera");
+	uniforms.push_back("modelMat");
 	uniforms.push_back("light.position");
 	uniforms.push_back("light.intensities");
 	pShader = new CZShader("vertex-shader","fragment-shader",attributes,uniforms);
@@ -127,24 +125,13 @@ void Display()
 	glLoadIdentity();
 
 	camera.Look();
-	CZMat4 mvMat,cameraMat;
+	CZMat4 mvMat;
 	mvMat.LoadIdentity();
-	CZVector3D<float> p = camera.Position();
-	CZVector3D<float> v = camera.View();
-	CZVector3D<float> u = camera.UpVector();
-	cameraMat.SetLookAt(p.x, p.y, p.z,	
-					v.x, v.y, v.z,	
-					u.x, u.y, u.z);
-
 	CZCheckGLError();
-	
-	GLint test = pShader->getAttributeLocation("vertNormal");
 
 	pShader->begin();
 	CZCheckGLError();
-	glUniformMatrix4fv(pShader->getUniformLocation("model"),1,GL_FALSE,mvMat);
-	glUniformMatrix4fv(pShader->getUniformLocation("projection"),1,GL_FALSE,projMat);
-	glUniformMatrix4fv(pShader->getUniformLocation("camera"),1,GL_FALSE,cameraMat);
+	glUniformMatrix4fv(pShader->getUniformLocation("modelMat"),1,GL_FALSE,mvMat);
 	CZCheckGLError();
 	//glUniform3fv(pShader->getUniformLocation("light.position"),3,&light.position[0]);
 	//CZCheckGLError();

@@ -104,10 +104,10 @@
     <ClInclude Include="..\..\src\CZMat4.h" />
     <ClInclude Include="..\..\src\CZMaterial.h" />
     <ClInclude Include="..\..\src\CZObjModel.h" />
+    <ClInclude Include="..\..\src\CZScene.h" />
     <ClInclude Include="..\..\src\CZShader.h" />
     <ClInclude Include="..\..\src\CZVector.h" />
     <ClInclude Include="..\..\src\CZDefine.h" />
-    <ClInclude Include="CZScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\glsl\fragment-shader.frag" />
