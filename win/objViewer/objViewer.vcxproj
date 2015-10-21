@@ -110,8 +110,8 @@
     <ClInclude Include="..\..\src\CZDefine.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\src\glsl\fragment-shader.frag" />
-    <None Include="..\..\src\glsl\vertex-shader.vert" />
+    <None Include="..\..\src\glsl\shading.frag" />
+    <None Include="..\..\src\glsl\shading.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

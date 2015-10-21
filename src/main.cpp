@@ -112,7 +112,7 @@ void Init()
 	uniforms.push_back("modelMat");
 	uniforms.push_back("light.position");
 	uniforms.push_back("light.intensities");
-	pShader = new CZShader("vertex-shader","fragment-shader",attributes,uniforms);
+	pShader = new CZShader("shading","shading",attributes,uniforms);
 
 	CZCheckGLError();
 }

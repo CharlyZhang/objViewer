@@ -73,10 +73,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\src\glsl\fragment-shader.frag">
+    <None Include="..\..\src\glsl\shading.frag">
       <Filter>glsl</Filter>
     </None>
-    <None Include="..\..\src\glsl\vertex-shader.vert">
+    <None Include="..\..\src\glsl\shading.vert">
       <Filter>glsl</Filter>
     </None>
   </ItemGroup>
