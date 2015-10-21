@@ -1,5 +1,7 @@
 #version 150
 
+uniform mat4 mvpMat;
+
 in vec3 vert;
 in vec3 vertNormal;
 in vec2 vertTexCoord;
@@ -14,5 +16,5 @@ void main() {
     fragNormal = vertNormal;
     fragVert = vert;
 
-	gl_Position = gl_ModelViewProjectionMatrix * vec4(vert, 1);
+	gl_Position = mvpMat * vec4(vert, 1);
 }
