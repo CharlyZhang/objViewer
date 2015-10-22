@@ -126,20 +126,15 @@ void Display()
 	glLoadIdentity();
 
 	camera.Look();
-	CZMat4 modelMat, mvpMat, testMat;
+	CZMat4 modelMat, mvpMat;
 	modelMat.LoadIdentity();
 	CZVector3D<float> p = camera.Position();
 	CZVector3D<float> v = camera.View();
 	CZVector3D<float> u = camera.UpVector();
-	testMat.SetLookAt(p.x, p.y, p.z,
+	mvpMat.SetLookAt(p.x, p.y, p.z,
 		v.x, v.y, v.z,
 		u.x, u.y, u.z);
-	mvpMat = projMat * testMat;
-
-	float mat[16], mat2[16];
-	glGetFloatv(GL_MODELVIEW_MATRIX, mat);
-	glGetFloatv(GL_PROJECTION_MATRIX, mat2);
-	CZCheckGLError();
+	mvpMat = projMat * mvpMat;
 
 	pShader->begin();
 	CZCheckGLError();
