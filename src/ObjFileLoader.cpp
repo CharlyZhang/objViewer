@@ -46,18 +46,18 @@ void CObjFileParser::load(const string& path)
 		if (!(ifs >> ele_id))
 			break;
 		else
-			processLine(ifs, ele_id);
+			parseLine(ifs, ele_id);
 	}
 }
 
-void CObjFileParser::skipLine(istream& is)
+void CObjFileParser::skipLine(ifstream& is)
 {
 	char next;
 	is >> std::noskipws;
 	while ((is >> next) && ('\n' != next));
 }
 
-bool CObjFileParser::skipCommentLine(istream& is)
+bool CObjFileParser::skipCommentLine(ifstream& is)
 {
 	char next;
 	while (is >> std::skipws >> next)

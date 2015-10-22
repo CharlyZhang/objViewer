@@ -17,7 +17,7 @@ public:
 
 private:
 	//TODO 如果没有遇到"newmtl"行，m_pCur为nullptr时怎样处理
-	void processLine(istream& is, string ele_id) override;
+	void parseLine(ifstream& ifs, string ele_id) override;
 	
 	CZMaterial *m_pCur = nullptr;
 

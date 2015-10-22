@@ -20,25 +20,25 @@ public:
 protected:
 	//@param is 文件流，用于提取有效数据（不含行前缀）
 	//@param ele_id 数据行的前缀，据此决定提取哪些数据
-	virtual void processLine(istream& is, string ele_id)
+	virtual void parseLine(ifstream& ifs, string ele_id)
 	{
 		/*在子类中像下列代码一样实现： */
 		//if ("mtllib" == ele_id) {
 		//	string mtlFilePath;
-		//	is >> mtlFilePath;
+		//	ifs >> mtlFilePath;
 		//	cout << "	mtllib " << (m_dir + "/" + mtlFilePath) << endl;
 		//}
 		//else if ("v" == ele_id) {	//vertex data
 		//	float x, y, z;
-		//	is >> x >> y >> z;
+		//	ifs >> x >> y >> z;
 		//	m_pGeometry->addVertex(SVertex3f(x, y, z));
 		//}
 		//else
 		//	skipLine(is);
 	}
 
-	void skipLine(istream& is);
-	bool skipCommentLine(istream& is);
+	void skipLine(ifstream& is);
+	bool skipCommentLine(ifstream& is);
 
 	string m_dir;//相对路径(以程序根目录为根目录）
 };

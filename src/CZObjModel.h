@@ -30,10 +30,6 @@ public:
 	//@required 设置了openGL的二维纹理，如glEnable(GL_TEXTURE_2D);
 	void load(const string& path) override;
 
-	void addVertex(const CZVector3D<float>& v){ m_vertRawVector.push_back(v); };
-	void addTextureCoord(const CZVector3D<float>& vt) { m_texRawVector.push_back(vt); }
-	void addNormal(const CZVector3D<float>& vn) { m_normRawVector.push_back(vn); }
-
 	const bool hasNormals() const { return static_cast<int>(m_normRawVector.size()) > FIRST_INDEX; }
 	const bool hasTextureCoords() const { return static_cast<int>(m_texRawVector.size()) > FIRST_INDEX; }
 
@@ -52,8 +48,15 @@ private:
 	//在文件《ObjModel.cpp》里设置
 	static const int FIRST_INDEX;
 
-	void processLine(istream& is, string ele_id) override;
+	void parseLine(ifstream& ifs, string ele_id) override;
 
+	void parseMaterialLib(std::ifstream &ifs);//mtllib <mtl文件路径>
+	void parseUseMaterial(std::ifstream &ifs);//usemtl <材质名称>
+	void parseVertex(std::ifstream &ifs);//v <x> <y> <z>
+	void parseVertexNormal(std::ifstream &ifs);//vn <x> <y> <z>
+	void parseVertexTexCoord(std::ifstream &ifs);//vt <u> <v>
+	void parseFace(std::ifstream &ifs);//f <v/vn/vt> <v/vn/vt> <v/vn/vt> //除了“v”，任一分量可以省略
+	
 	/*来自obj文件的原始数据*/
 	vector<CZVector3D<float>> m_vertRawVector;
 	vector<CZVector3D<float>> m_texRawVector;

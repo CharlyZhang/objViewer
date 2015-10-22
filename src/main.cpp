@@ -126,8 +126,8 @@ void Init()
 	//model.load("../../data/flute/flute.obj");//含有非纹理材质
 	//model.load("../../data/lady/lady.obj");//含有非纹理材质
 	//model.load("../../data/piano/piano.obj");//含有非纹理材质
-	//model.load("../../data/plane/plane.obj");
-	model.load("../../data/zheng/zheng.obj");//含有非纹理材质；看不到古筝的弦。原因：格式不对。见“shape02”等：形如f 4833//4704 4834//4704 4835//4704 
+	model.load("../../data/plane/plane.obj");
+	//model.load("../../data/zheng/zheng.obj");//含有非纹理材质；看不到古筝的弦。原因：格式不对。见“shape02”等：形如f 4833//4704 4834//4704 4835//4704 
 }
 
 void Display()
