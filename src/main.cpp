@@ -34,7 +34,7 @@ void InitGL()
 	glewInit();
 
 	if (glewIsSupported("GL_VERSION_3_1"))
-		cout << "Ready for OpenGL 3.1\n" ;
+		cout << "Ready for OpenGL 3.1\n";
 	else
 	{
 		cout << "OpenGL 3.1 not supported\n";
@@ -87,10 +87,10 @@ void InitGL()
 	//glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	////glEnable(GL_TEXTURE_2D);
 
-	glViewport(0,0,winWidth,winHeight);
+	glViewport(0, 0, winWidth, winHeight);
 
-	glMatrixMode(GL_MODELVIEW);						
-	glLoadIdentity();	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
 
 void Init()
@@ -98,10 +98,8 @@ void Init()
 	InitGL();
 
 	CZCheckGLError();
-	
-	//model.load("../../data/box/box.obj");
-	model.load("../../data/plane/plane.obj");
-	camera.PositionCamera(0,0,-200, 0,0,0, 0,1,0);
+
+	camera.PositionCamera(0, 0, -200, 0, 0, 0, 0, 1, 0);
 	light.position[0] = 0; light.position[1] = 0; light.position[2] = -120;
 	light.intensity[0] = 1; light.intensity[1] = 1; light.intensity[2] = 1;
 
@@ -113,13 +111,24 @@ void Init()
 	uniforms.push_back("modelMat");
 	uniforms.push_back("light.position");
 	uniforms.push_back("light.intensities");
-	pShader = new CZShader("vertex-shader","fragment-shader",attributes,uniforms);
+	pShader = new CZShader("shading", "shading", attributes, uniforms);
+
+
 
 	CZCheckGLError();
+	
+	/*加载模型*/
+	//确定数据通道
+	CGeometry::ATTRIB_POS_DEFAULT = pShader->getAttributeLocation("vert");
+	CGeometry::ATTRIB_NORM_DEFAULT = pShader->getAttributeLocation("vertNormal");
+	CGeometry::ATTRIB_TEX_COORD_DEFAULT = pShader->getAttributeLocation("vertTexCoord");
+
+	//model.load("../../data/box/box.obj");
+	model.load("../../data/plane/plane.obj");
 }
 
 void Display()
-{	
+{
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// 清理颜色缓冲区 和 深度缓冲区
 
 	glMatrixMode(GL_MODELVIEW);
@@ -136,8 +145,6 @@ void Display()
 		u.x, u.y, u.z);
 	mvpMat = projMat * mvpMat;
 
-	CZCheckGLError();
-
 	pShader->begin();
 	CZCheckGLError();
 	glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
@@ -145,10 +152,10 @@ void Display()
 	CZCheckGLError();
 	//glUniform3fv(pShader->getUniformLocation("light.position"),3,&light.position[0]);
 	//CZCheckGLError();
-	glUniform3f(pShader->getUniformLocation("light.position"),light.position[0],light.position[1],light.position[2]);
+	glUniform3f(pShader->getUniformLocation("light.position"), light.position[0], light.position[1], light.position[2]);
 	CZCheckGLError();
 	//glUniform3fv(pShader->getUniformLocation("light.intensities"),3,light.intensity);
-	glUniform3f(pShader->getUniformLocation("light.intensities"),light.intensity[0],light.intensity[1],light.intensity[2]);
+	glUniform3f(pShader->getUniformLocation("light.intensities"), light.intensity[0], light.intensity[1], light.intensity[2]);
 	CZCheckGLError();
 	//GLuint mVertexBufferObject;
 	//// 装载顶点
@@ -169,7 +176,7 @@ void Display()
 	glDeleteBuffers(1, &mVertexBufferObject);*/
 
 	pShader->end();
-	
+
 	//glutSolidSphere(10,50,50);
 
 	glutSwapBuffers();
@@ -184,41 +191,41 @@ void Reshape(int w, int h)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60.0, (GLfloat)w/(GLfloat)h, 0.5f, 500.0f);
-	projMat.SetPerspective(60.0,(GLfloat)w/(GLfloat)h, 0.5f, 500.0f);
+	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 0.5f, 500.0f);
+	projMat.SetPerspective(60.0, (GLfloat)w / (GLfloat)h, 0.5f, 500.0f);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	 
+
 }
-void key(unsigned char k, int x, int y) 
+void key(unsigned char k, int x, int y)
 {
 	k = (unsigned char)tolower(k);
 
- 	switch(k) {
+	switch (k) {
 	case 27:
 		exit(0);
 		break;
 	}
 	glutPostRedisplay();
 }
-void specialKey(int key,int x,int y)
+void specialKey(int key, int x, int y)
 {
-	switch(key) 
-	{ 
+	switch (key)
+	{
 	case GLUT_KEY_F1:
 		break;
-	} 
+	}
 	glutPostRedisplay();
 }
 
 static bool mouseCtl = false;
-static POINT mousePos;				
-void Mouse(int iButton,int iState,int iXPos, int iYPos)
+static POINT mousePos;
+void Mouse(int iButton, int iState, int iXPos, int iYPos)
 {
-	if(iButton == GLUT_RIGHT_BUTTON && iState == GLUT_DOWN)
+	if (iButton == GLUT_RIGHT_BUTTON && iState == GLUT_DOWN)
 	{
-		if(mouseCtl)
+		if (mouseCtl)
 		{
 			GetCursorPos(&mousePos);
 			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
@@ -226,26 +233,26 @@ void Mouse(int iButton,int iState,int iXPos, int iYPos)
 		}
 		else
 		{
-			SetCursorPos(mousePos.x,mousePos.y);
+			SetCursorPos(mousePos.x, mousePos.y);
 			glutSetCursor(GLUT_CURSOR_NONE);
 		}
-		mouseCtl=!mouseCtl;
+		mouseCtl = !mouseCtl;
 	}
 }
 
-void idle() 
+void idle()
 {
 	if (mouseCtl)
 	{
 		camera.Update();
 		glutPostRedisplay();
 	}
-	
+
 }
 
 void Menu(int value)
 {
-	switch(value)
+	switch (value)
 	{
 	case 1:
 		break;
@@ -255,16 +262,16 @@ void Menu(int value)
 void InitMenu()
 {
 	glutCreateMenu(Menu);
-	glutAddMenuEntry("123",1);
-	glutAddMenuEntry("adb",2);
+	glutAddMenuEntry("123", 1);
+	glutAddMenuEntry("adb", 2);
 	glutAttachMenu(GLUT_MIDDLE_BUTTON);//把当前菜单注册到指定的鼠标键
 }
 
-int main(int argc,char** argv)
+int main(int argc, char** argv)
 {
-	glutInit(&argc,argv);
+	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowSize(winWidth,winHeight);
+	glutInitWindowSize(winWidth, winHeight);
 	glutCreateWindow("objViewer");
 
 	glutSetCursor(GLUT_CURSOR_NONE);
@@ -275,7 +282,7 @@ int main(int argc,char** argv)
 	glutDisplayFunc(Display);
 	glutReshapeFunc(Reshape);
 	glutKeyboardFunc(key);
-	glutSpecialFunc(specialKey); 
+	glutSpecialFunc(specialKey);
 	glutMouseFunc(Mouse);
 	glutIdleFunc(idle);
 	glutMainLoop();

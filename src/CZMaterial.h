@@ -10,10 +10,12 @@ public:
 	CZMaterial();
 
 	bool load(const std::string &filename);
+
+	bool loadTexture(const std::string &filename);
 	void use() const;
 
 private:
-	bool loadTexture(const std::string &filename);
+	
 	void parseLine(std::ifstream &ifs,std::string &elementId);
 	bool skipCommentLine(std::ifstream &ifs);
 	void skipLine(std::ifstream &ifs);

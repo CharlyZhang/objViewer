@@ -39,6 +39,15 @@
     <ClCompile Include="..\..\src\CZUtil.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\MaterialLib.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Geometry.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ObjFileLoader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\CZObjModel.h">
@@ -71,12 +80,21 @@
     <ClInclude Include="..\..\src\CZScene.h">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\MaterialLib.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Geometry.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ObjFileLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\src\glsl\fragment-shader.frag">
+    <None Include="..\..\src\glsl\shading.frag">
       <Filter>glsl</Filter>
     </None>
-    <None Include="..\..\src\glsl\vertex-shader.vert">
+    <None Include="..\..\src\glsl\shading.vert">
       <Filter>glsl</Filter>
     </None>
   </ItemGroup>

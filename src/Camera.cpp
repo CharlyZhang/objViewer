@@ -21,7 +21,7 @@ using namespace std;
 double angle;
 // We increased the speed a bit from the Camera Strafing Tutorial
 // This is how fast our camera moves
-#define kSpeed	25.0f									
+#define kSpeed	250.0f									
 
 // Our global float that stores the elapsed time between the current and last frame
 float g_FrameInterval = 0.0f;

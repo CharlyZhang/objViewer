@@ -1011,7 +1011,7 @@ void CZMat4::SetLookAt(float eyeX, float eyeY, float eyeZ, float centerX, float 
 {
 	VECTOR3D eye(eyeX,eyeY,eyeZ);
 	VECTOR3D f = (VECTOR3D(centerX,centerY,centerZ) - eye).GetNormalized();
-	VECTOR3D s = (f - VECTOR3D(upX,upY,upZ)).GetNormalized();
+	VECTOR3D s = f.CrossProduct(VECTOR3D(upX,upY,upZ)).GetNormalized();
 	VECTOR3D u = s.CrossProduct(f);
 
 	LoadIdentity();
@@ -1024,9 +1024,11 @@ void CZMat4::SetLookAt(float eyeX, float eyeY, float eyeZ, float centerX, float 
 	entries[2] =-f.x;
 	entries[6] =-f.y;
 	entries[10] =-f.z;
-	entries[12] =-s.DotProduct(eye);
-	entries[13] =-u.DotProduct(eye);
-	entries[14] = f.DotProduct(eye);
+
+	CZMat4 transformMat;
+	transformMat.SetTranslation(-eyeX,-eyeY,-eyeZ);
+
+	*this = *this * transformMat;
 }
 
 void CZMat4::SetTranslationPart(const VECTOR3D & translation)

@@ -8,7 +8,7 @@ public:
 	~Application3D(){};
 
 	bool init(int width, int height);
-	bool loadScene((const std::string &filename);
+	bool loadScene(const std::string &filename);
 	void frame();
 	void reset();
 
