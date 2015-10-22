@@ -5,7 +5,6 @@
 #include "CZScene.h"
 #include "CZShader.h"
 #include "CZMat4.h"
-#include "Camera.h"
 
 class Application3D 
 {
@@ -19,16 +18,17 @@ public:
 	void frame();
 	void reset();
 
+	//control
+	//	/note : (deltaX,deltaY) is in the screen coordinate system
+	void rotate(float deltaX, float deltaY);
+	void translate(float deltaX, float deltaY);
+
 	// custom config
 	bool loadObjModel(const std::string &filename);
 	void setBackgroundColor(float r, float g, float b, float a);
 	void setModelColor(float r, float g, float b, float a);
-	// camera
-	void setCamera(float eyeX, float eyeY, float eyeZ,
-					float centerX, float centerY, float centerZ,
-					float upX, float upY, float upZ);
-	// camera
-	void setCamera(CCamera *c);
+	// eye position
+	void setEyePosition(float x, float y, float z);
 	// light
 	void setLightPosition(float x, float y, float z);
 	void setLightDiffuse(float r, float g, float b, float a);
@@ -39,9 +39,8 @@ public:
 private:
 	CZScene *pScene;
 	CZShader *pShader;
-	CZMat4 projMat;
+	CZMat4 projMat,rotateMat;
 	int width, height;
-	CCamera *pCamera;
 };
 
 #endif

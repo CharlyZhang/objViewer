@@ -4,15 +4,12 @@
 #include <iostream>
 #include "glew.h"
 #include "glut.h"
-#include "Camera.h"
 #include "Application3D.h"
 
 #endif
 
 int winWidth = 800;
 int winHeight = 600;
-
-CCamera camera;
 
 Application3D app3d;
 
@@ -39,12 +36,10 @@ void Init()
 	app3d.init();
 	string temp;
 	app3d.loadScene(temp);
-	camera.PositionCamera(0,0,-200, 0,0,0, 0,1,0);
 }
 
 void Display()
 {	
-	app3d.setCamera(&camera);
 	app3d.frame();
 
 	glutSwapBuffers();
@@ -80,34 +75,32 @@ void specialKey(int key,int x,int y)
 	glutPostRedisplay();
 }
 
-static bool mouseCtl = false;
-static POINT mousePos;				
-void Mouse(int iButton,int iState,int iXPos, int iYPos)
+static POINT lastMousePos;				
+void MouseClick(int iButton,int iState,int iXPos, int iYPos)
 {
-	if(iButton == GLUT_RIGHT_BUTTON && iState == GLUT_DOWN)
+	if(iState == GLUT_DOWN && iButton == GLUT_LEFT_BUTTON)
 	{
-		if(mouseCtl)
-		{
-			GetCursorPos(&mousePos);
-			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
-
-		}
-		else
-		{
-			SetCursorPos(mousePos.x,mousePos.y);
-			glutSetCursor(GLUT_CURSOR_NONE);
-		}
-		mouseCtl=!mouseCtl;
+		lastMousePos.x = iXPos;
+		lastMousePos.y = iYPos;
 	}
+
+	glutPostRedisplay();
+}
+
+void MouseMove(int x, int y)
+{
+	GLfloat offsetX = x - lastMousePos.x;
+	GLfloat offsetY = y - lastMousePos.y;
+
+	lastMousePos.x = x;
+	lastMousePos.y = y;
+
+	app3d.rotate((float)offsetX,(float)offsetY);
+	glutPostRedisplay();
 }
 
 void idle() 
 {
-	if (mouseCtl)
-	{
-		camera.Update();
-		glutPostRedisplay();
-	}
 	
 }
 
@@ -135,7 +128,7 @@ int main(int argc,char** argv)
 	glutInitWindowSize(winWidth,winHeight);
 	glutCreateWindow("objViewer");
 
-	glutSetCursor(GLUT_CURSOR_NONE);
+	glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 
 	Init();
 	InitMenu();
@@ -144,7 +137,8 @@ int main(int argc,char** argv)
 	glutReshapeFunc(Reshape);
 	glutKeyboardFunc(key);
 	glutSpecialFunc(specialKey); 
-	glutMouseFunc(Mouse);
+	glutMouseFunc(MouseClick);
+	glutMotionFunc(MouseMove);
 	glutIdleFunc(idle);
 	glutMainLoop();
 

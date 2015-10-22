@@ -90,7 +90,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Application3D.cpp" />
-    <ClCompile Include="..\..\src\Camera.cpp" />
     <ClCompile Include="..\..\src\CZMat4.cpp" />
     <ClCompile Include="..\..\src\CZMaterial.cpp" />
     <ClCompile Include="..\..\src\CZObjModel.cpp" />
@@ -101,7 +100,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Application3D.h" />
-    <ClInclude Include="..\..\src\Camera.h" />
     <ClInclude Include="..\..\src\CZBasic.h" />
     <ClInclude Include="..\..\src\CZLog.h" />
     <ClInclude Include="..\..\src\CZMat4.h" />

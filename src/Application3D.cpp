@@ -82,41 +82,38 @@ bool Application3D::loadScene(const string &filename)
 	
 	pScene = new CZScene;
 
-	pScene->camera.eye = CZPoint3D(0,0,-200);
-	pScene->camera.center = CZPoint3D(0,0,0);
-	pScene->camera.up = CZPoint3D(0,1,0);
+	pScene->eyePosition = CZPoint3D(0,0,-200);
 
 	pScene->light.position = CZPoint3D(0,0,-120);
 	pScene->light.intensity = CZPoint3D(1,1,1);
 
 	pScene->model.load("../../data/plane/plane.obj");
 
+	rotateMat.LoadIdentity();
+
 	return true;
 }
 
 void Application3D::frame()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// 清理颜色缓冲区 和 深度缓冲区
-
 	if(!pScene) 
 	{
 		LOG_WARN("scene has not been set up yet!\n");
 		return;
 	}
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// 清理颜色缓冲区 和 深度缓冲区
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	pCamera->Look();
+
+	gluLookAt(pScene->eyePosition.x,pScene->eyePosition.y,pScene->eyePosition.z, 0,0,0,0,1,0);
 
 	CZMat4 modelMat, mvpMat;
-	modelMat.LoadIdentity();
-	CZVector3D<float> p = pCamera->Position();//pScene->camera.eye;
-	CZVector3D<float> v = pCamera->View();//pScene->camera.center;
-	CZVector3D<float> u = pCamera->UpVector();//pScene->camera.up;
-	mvpMat.SetLookAt(p.x, p.y, p.z,
-		v.x, v.y, v.z,
-		u.x, u.y, u.z);
-	mvpMat = projMat * mvpMat;
+	modelMat = rotateMat;
+	
+	mvpMat.SetLookAt(pScene->eyePosition.x,pScene->eyePosition.y,pScene->eyePosition.z, 0,0,0,0,1,0);
+	mvpMat = projMat * mvpMat * modelMat;
 
 	pShader->begin();
 	CZCheckGLError();
@@ -153,21 +150,35 @@ void Application3D::frame()
 	//glutSolidSphere(10,50,50);
 }
 
-// camera
-void Application3D::setCamera(float eyeX, float eyeY, float eyeZ,	\
-	float centerX, float centerY, float centerZ,	\
-	float upX, float upY, float upZ)
+// control
+void Application3D::rotate(float deltaX, float deltaY)
 {
+	if(!pScene) 
+	{
+		LOG_WARN("scene has not been set up yet!\n");
+		return;
+	}
+	CZMat4 tempMat;
+	tempMat.SetRotationY(deltaX);
+	rotateMat = tempMat * rotateMat;
+	tempMat.SetRotationX(-deltaY);
+	rotateMat = tempMat * rotateMat;
+}
+
+void Application3D::translate(float deltaX, float deltaY)
+{
+
+}
+
+// eye position
+void Application3D::setEyePosition(float x, float y, float z)
+{
+
 	if(!pScene)
 	{
 		LOG_WARN("scene has not been set up yet!\n");
 		return;
 	}
 
-	pScene->camera.set(eyeX,eyeY,eyeZ,centerX,centerY,centerZ,upX,upY,upZ);
-}
-// camera
-void Application3D::setCamera(CCamera *c)
-{
-	pCamera = c;
+	pScene->eyePosition = CZPoint3D(x,y,z);
 }

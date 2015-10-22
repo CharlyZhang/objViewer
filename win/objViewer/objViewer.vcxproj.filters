@@ -24,9 +24,6 @@
     <ClCompile Include="..\..\src\CZMaterial.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Camera.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\CZShader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -52,9 +49,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\CZMaterial.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Camera.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\CZVector.h">
