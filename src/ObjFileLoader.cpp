@@ -25,6 +25,7 @@ void CObjFileParser::load(const string& path)
 	LOG_INFO("Parsing file %s  (size = %d bytes)...\n", path, fileSize);
 
 	// and go.
+	static int lastPercent = 0;
 	int percent = 10;	//	progress indicator
 	while (skipCommentLine(ifs))
 	{
@@ -32,7 +33,13 @@ void CObjFileParser::load(const string& path)
 		if ((fileSize > 1024 * 1024) && (100 * ifs.tellg() / fileSize >= percent)) {
 			percent = 100 * ifs.tellg() / fileSize;
 			percent = (percent / 10) * 10;
-			LOG_INFO("进度：百分之%d", percent);
+
+			if (lastPercent != percent)
+			{
+				LOG_INFO("进度：百分之%d\n", percent);
+				lastPercent = percent;
+			}
+			
 		}
 
 		string ele_id;
