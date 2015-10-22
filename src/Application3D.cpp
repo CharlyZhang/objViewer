@@ -90,6 +90,7 @@ bool Application3D::loadScene(const string &filename)
 	pScene->model.load("../../data/plane/plane.obj");
 
 	rotateMat.LoadIdentity();
+	translateMat.LoadIdentity();
 
 	return true;
 }
@@ -109,9 +110,8 @@ void Application3D::frame()
 
 	gluLookAt(pScene->eyePosition.x,pScene->eyePosition.y,pScene->eyePosition.z, 0,0,0,0,1,0);
 
-	CZMat4 modelMat, mvpMat;
-	modelMat = rotateMat;
-	
+	CZMat4 mvpMat,modelMat;
+	modelMat = translateMat * rotateMat;
 	mvpMat.SetLookAt(pScene->eyePosition.x,pScene->eyePosition.y,pScene->eyePosition.z, 0,0,0,0,1,0);
 	mvpMat = projMat * mvpMat * modelMat;
 
@@ -147,7 +147,11 @@ void Application3D::frame()
 
 	pShader->end();
 	
-	//glutSolidSphere(10,50,50);
+	glColor3f(1.0,0.0,0.0);
+	glPushMatrix();
+	glTranslatef(pScene->light.position.x, pScene->light.position.y, pScene->light.position.z);
+		glutSolidSphere(5,100,100);
+	glPopMatrix();
 }
 
 // control
@@ -167,7 +171,14 @@ void Application3D::rotate(float deltaX, float deltaY)
 
 void Application3D::translate(float deltaX, float deltaY)
 {
-
+	if(!pScene) 
+	{
+		LOG_WARN("scene has not been set up yet!\n");
+		return;
+	}
+	CZMat4 tempMat;
+	tempMat.SetTranslation(-deltaX,-deltaY,0);
+	translateMat = tempMat * translateMat;
 }
 
 // eye position
@@ -181,4 +192,15 @@ void Application3D::setEyePosition(float x, float y, float z)
 	}
 
 	pScene->eyePosition = CZPoint3D(x,y,z);
+}
+
+void Application3D::setLightPosition(float x, float y, float z)
+{
+	if(!pScene) 
+	{
+		LOG_WARN("scene has not been set up yet!\n");
+		return;
+	}
+
+	pScene->light.position = CZPoint3D(x,y,z);
 }

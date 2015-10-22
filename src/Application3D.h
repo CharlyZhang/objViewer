@@ -39,7 +39,7 @@ public:
 private:
 	CZScene *pScene;
 	CZShader *pShader;
-	CZMat4 projMat,rotateMat;
+	CZMat4 projMat,rotateMat,translateMat;
 	int width, height;
 };
 

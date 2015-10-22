@@ -13,6 +13,10 @@ int winHeight = 600;
 
 Application3D app3d;
 
+float lightX = 0;
+float lightY = 0;
+float lightZ = -120;
+
 using namespace std;
 
 //≥ı ºªØ
@@ -41,7 +45,6 @@ void Init()
 void Display()
 {	
 	app3d.frame();
-
 	glutSwapBuffers();
 	glutReportErrors();
 }
@@ -62,6 +65,30 @@ void key(unsigned char k, int x, int y)
 	case 27:
 		exit(0);
 		break;
+	case 'w':
+		lightY += 1.0;
+		app3d.setLightPosition(lightX,lightY,lightZ);
+		break;
+	case 's':
+		lightY -= 1.0;
+		app3d.setLightPosition(lightX,lightY,lightZ);
+		break;
+	case 'a':
+		lightX += 1.0;
+		app3d.setLightPosition(lightX,lightY,lightZ);
+		break;
+	case 'd':
+		lightX -= 1.0;
+		app3d.setLightPosition(lightX,lightY,lightZ);
+		break;
+	case 'q':
+		lightZ += 1.0;
+		app3d.setLightPosition(lightX,lightY,lightZ);
+		break;
+	case 'e':
+		lightZ -= 1.0;
+		app3d.setLightPosition(lightX,lightY,lightZ);
+		break;
 	}
 	glutPostRedisplay();
 }
@@ -75,13 +102,17 @@ void specialKey(int key,int x,int y)
 	glutPostRedisplay();
 }
 
-static POINT lastMousePos;				
+static POINT lastMousePos;	
+static bool isLeftButton = true;
 void MouseClick(int iButton,int iState,int iXPos, int iYPos)
 {
-	if(iState == GLUT_DOWN && iButton == GLUT_LEFT_BUTTON)
+	if(iState == GLUT_DOWN)
 	{
 		lastMousePos.x = iXPos;
 		lastMousePos.y = iYPos;
+
+		if(iButton == GLUT_LEFT_BUTTON)			isLeftButton = true;
+		else if(iButton == GLUT_RIGHT_BUTTON)	isLeftButton = false;
 	}
 
 	glutPostRedisplay();
@@ -95,7 +126,8 @@ void MouseMove(int x, int y)
 	lastMousePos.x = x;
 	lastMousePos.y = y;
 
-	app3d.rotate((float)offsetX,(float)offsetY);
+	if(isLeftButton)	app3d.rotate((float)offsetX,(float)offsetY);
+	else				app3d.translate((float)offsetX,(float)offsetY);
 	glutPostRedisplay();
 }
 
