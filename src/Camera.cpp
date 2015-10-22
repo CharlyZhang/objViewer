@@ -492,7 +492,7 @@ void AirRoam(void)
 		//如果按 S 键，沿着转换角度后的方向后退，speed为每次前进的步长，通过sin和cos函数实现沿着现
 		//有角度方向前进。
 	}
-
+	 
 	// 前进,后退请求，更新观察点位置
 	if(GetKeyState(VK_UP) & 0x80 )
 	{

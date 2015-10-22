@@ -89,17 +89,20 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\Application3D.cpp" />
     <ClCompile Include="..\..\src\Camera.cpp" />
     <ClCompile Include="..\..\src\CZMat4.cpp" />
     <ClCompile Include="..\..\src\CZMaterial.cpp" />
     <ClCompile Include="..\..\src\CZObjModel.cpp" />
+    <ClCompile Include="..\..\src\CZScene.cpp" />
     <ClCompile Include="..\..\src\CZShader.cpp" />
     <ClCompile Include="..\..\src\CZUtil.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\Application3D.h" />
     <ClInclude Include="..\..\src\Camera.h" />
-    <ClInclude Include="..\..\src\CZBasicStruct.h" />
+    <ClInclude Include="..\..\src\CZBasic.h" />
     <ClInclude Include="..\..\src\CZLog.h" />
     <ClInclude Include="..\..\src\CZMat4.h" />
     <ClInclude Include="..\..\src\CZMaterial.h" />
