@@ -11,7 +11,7 @@ CGeometry::CGeometry()
 : m_minVert(numeric_limits<float>::max(), numeric_limits<float>::max(), numeric_limits<float>::max())
 , m_maxVert(-numeric_limits<float>::max(), -numeric_limits<float>::max(), -numeric_limits<float>::max())
 {
-	
+
 }
 
 CGeometry::~CGeometry()
@@ -42,8 +42,15 @@ void CGeometry::unpackTo(vector<CZVector3D<float>> *pPosVector, vector<CZVector3
 			//glVertex3fv(m_vertRawVector[(*itFace).v[i]].getVertex3fv());
 
 			pPosVector->push_back(posRawVector[(*itFace).v[i]]);
-			pNormVector->push_back(normRawVector[(*itFace).vn[i]]);
-			pTexCoordVector->push_back(texCoordRawVector[(*itFace).vt[i]]);
+			if (hasNormals())
+				pNormVector->push_back(normRawVector[(*itFace).vn[i]]);
+			else
+				pNormVector->push_back(CZVector3D<float>(0, 0, 0));//FIXME 应先调用方法generateFlatNormals()
+			
+			if (hasTexCoords())
+				pTexCoordVector->push_back(texCoordRawVector[(*itFace).vt[i]]);
+			else
+				pTexCoordVector->push_back(CZVector3D<float>(0, 0, 0));
 		}
 	}
 }
@@ -72,9 +79,11 @@ void CGeometry::unpack(const vector<CZVector3D<float>> &posRawVector, const vect
 	glBufferData(GL_ARRAY_BUFFER, normVector.size() * 3 * sizeof(GLfloat), normVector.data(), GL_STATIC_DRAW);
 
 	//纹理坐标分量对象（vbo）
-	glGenBuffers(1, &m_vboTexCoord);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vboTexCoord);
-	glBufferData(GL_ARRAY_BUFFER, texCoordVector.size() * 3 * sizeof(GLfloat), texCoordVector.data(), GL_STATIC_DRAW);
+	if (hasTexCoords()){
+		glGenBuffers(1, &m_vboTexCoord);
+		glBindBuffer(GL_ARRAY_BUFFER, m_vboTexCoord);
+		glBufferData(GL_ARRAY_BUFFER, texCoordVector.size() * 3 * sizeof(GLfloat), texCoordVector.data(), GL_STATIC_DRAW);
+	}
 
 	bind(ATTRIB_POS_DEFAULT, ATTRIB_NORM_DEFAULT, ATTRIB_TEX_COORD_DEFAULT);
 }
@@ -97,8 +106,10 @@ void CGeometry::bind(GLuint attribPos, GLuint attribNorm, GLuint attribTexCoord)
 	glVertexAttribPointer(attribNorm, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	m_lastAttribNorm = attribNorm;
 
-	glBindBuffer(GL_ARRAY_BUFFER, m_vboTexCoord);
-	glEnableVertexAttribArray(attribTexCoord);
-	glVertexAttribPointer(attribTexCoord, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	m_lastAttribTexCoord = attribTexCoord;
+	if (hasTexCoords()){
+		glBindBuffer(GL_ARRAY_BUFFER, m_vboTexCoord);
+		glEnableVertexAttribArray(attribTexCoord);
+		glVertexAttribPointer(attribTexCoord, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		m_lastAttribTexCoord = attribTexCoord;
+	}
 }

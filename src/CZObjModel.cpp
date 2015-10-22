@@ -49,7 +49,7 @@ void CZObjModel::draw()
 	}
 }
 
-void CZObjModel::parseLine(ifstream& ifs, string ele_id)
+void CZObjModel::parseLine(ifstream& ifs, const string& ele_id)
 {
 	if ("mtllib" == ele_id)
 		parseMaterialLib(ifs);

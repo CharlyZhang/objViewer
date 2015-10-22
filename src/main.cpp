@@ -99,7 +99,7 @@ void Init()
 
 	CZCheckGLError();
 
-	camera.PositionCamera(0, 0, -200, 0, 0, 0, 0, 1, 0);
+	camera.PositionCamera(0, 0, -50, 0, 0, 0, 0, 1, 0);
 	light.position[0] = 0; light.position[1] = 0; light.position[2] = -120;
 	light.intensity[0] = 1; light.intensity[1] = 1; light.intensity[2] = 1;
 
@@ -126,8 +126,11 @@ void Init()
 	//model.load("../../data/flute/flute.obj");//含有非纹理材质
 	//model.load("../../data/lady/lady.obj");//含有非纹理材质
 	//model.load("../../data/piano/piano.obj");//含有非纹理材质
-	model.load("../../data/plane/plane.obj");
+	//model.load("../../data/plane/plane.obj");
 	//model.load("../../data/zheng/zheng.obj");//含有非纹理材质；看不到古筝的弦。原因：格式不对。见“shape02”等：形如f 4833//4704 4834//4704 4835//4704 
+
+	model.load("../../data/incomplete/complete.obj");
+	//model.load("../../data/zhengPart/zheng.obj");
 }
 
 void Display()

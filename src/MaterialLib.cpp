@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-void CMaterialLib::parseLine(ifstream& ifs, string ele_id)
+void CMaterialLib::parseLine(ifstream& ifs, const string& ele_id)
 {
 	if ("newmtl" == ele_id) {
 		string mtlName;

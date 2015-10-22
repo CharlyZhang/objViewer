@@ -48,14 +48,14 @@ private:
 	//在文件《ObjModel.cpp》里设置
 	static const int FIRST_INDEX;
 
-	void parseLine(ifstream& ifs, string ele_id) override;
+	void parseLine(ifstream& ifs, const string& ele_id) override;
 
 	void parseMaterialLib(std::ifstream &ifs);//mtllib <mtl文件路径>
 	void parseUseMaterial(std::ifstream &ifs);//usemtl <材质名称>
 	void parseVertex(std::ifstream &ifs);//v <x> <y> <z>
 	void parseVertexNormal(std::ifstream &ifs);//vn <x> <y> <z>
 	void parseVertexTexCoord(std::ifstream &ifs);//vt <u> <v>
-	void parseFace(std::ifstream &ifs);//f <v/vn/vt> <v/vn/vt> <v/vn/vt> //除了“v”，任一分量可以省略
+	void parseFace(std::ifstream &ifs);//f <v/vt/vn <v/vt/vn> <v/vt/vn> //除了“v”，任一分量可以省略
 	
 	/*来自obj文件的原始数据*/
 	vector<CZVector3D<float>> m_vertRawVector;

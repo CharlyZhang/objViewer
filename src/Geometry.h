@@ -88,8 +88,19 @@ public:
 	//@required 调用了方法"bind"
 	void draw() const;
 
-	void addFace(const CZFace& face) { m_faceVector.push_back(face); }
+	void addFace(const CZFace& face) 
+	{
+		if (face.vn[0] != -1)
+			m_hasNormals = true;
+		if (face.vt[0] != -1)
+			m_hasTexCoords = true;
+
+		m_faceVector.push_back(face); 
+	}
 	const int getNumFaces() const { return m_faceVector.size(); }
+
+	bool hasNormals() const{ return m_hasNormals; }
+	bool hasTexCoords() const{ return m_hasTexCoords; }
 
 	/*提取重排的数据。这些数据按整个顶点索引
 	 *	来自obj文件的原始数据（raw data）并未按整个顶点索引，而是按分量索引
@@ -128,6 +139,10 @@ private:
 	GLuint m_lastAttribPos = -1;
 	GLuint m_lastAttribNorm = -1;
 	GLuint m_lastAttribTexCoord = -1;
+
+	/*每次调用方法addFace()，一旦检测到有法向量或者纹理坐标，就将下列属性置为true*/
+	bool m_hasNormals = false;
+	bool m_hasTexCoords = false;
 };
 
 #endif

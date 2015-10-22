@@ -15,12 +15,13 @@ using namespace std;
 class CObjFileParser
 {
 public:
+	//注：“显示百分比”部分非线程安全，因为用了static变量
 	virtual void load(const string& path);
 
 protected:
 	//@param is 文件流，用于提取有效数据（不含行前缀）
 	//@param ele_id 数据行的前缀，据此决定提取哪些数据
-	virtual void parseLine(ifstream& ifs, string ele_id)
+	virtual void parseLine(ifstream& ifs, const string& ele_id)
 	{
 		/*在子类中像下列代码一样实现： */
 		//if ("mtllib" == ele_id) {
