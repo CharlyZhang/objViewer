@@ -41,5 +41,27 @@ protected:
 	void skipLine(ifstream& is);
 	bool skipCommentLine(ifstream& is);
 
+	/*读取一个元素（两个非数字且非分隔符的符号之间的内容）所含有的数据
+	*	一个元素的数据以@param sep为分隔符。两个分隔符之间若没有数据，则视其值为@param defaultValue
+	*	读取每个分隔符之前的数据
+	*	读取最近的非数字且非分隔符前的数据，然后停止读取
+	*	不读取紧邻文件尾的数据
+	*@require pData处分配了足够的内存。
+	*@param maxCount 最多读取多少个数据就停止。用于防止溢出
+	*@return 数据个数
+	*@promise ifs的内置指针指向最近的非数字且非分隔符（含EOF）。该字符可通过ifs.peek()查看
+	*@promise ifs.good()为true
+	*
+	*测试用例
+	* 输入			data
+	* 1/2/3空格		 1,  2, 3
+	* 1//3空格		 1, -1, 3
+	* 1/2空格		 1,  2
+	* 1空格			 1
+	* /尾				-1
+	* 1//3尾		 1, -1
+	* 1/2尾			 1		*/
+	int CObjFileParser::parseNumberElement(ifstream &ifs, int *pData, char sep = '/', int defaultValue = -1, int maxCount = 3);
+
 	string m_dir;//相对路径(以程序根目录为根目录）
 };

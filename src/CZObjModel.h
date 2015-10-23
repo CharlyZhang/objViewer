@@ -55,7 +55,7 @@ private:
 	void parseVertex(std::ifstream &ifs);//v <x> <y> <z>
 	void parseVertexNormal(std::ifstream &ifs);//vn <x> <y> <z>
 	void parseVertexTexCoord(std::ifstream &ifs);//vt <u> <v>
-	void parseFace(std::ifstream &ifs);//f <v/vt/vn <v/vt/vn> <v/vt/vn> //除了“v”，任一分量可以省略
+	void parseFace(std::ifstream &ifs);//f <v/vt/vn <v/vt/vn> <v/vt/vn> //只处理三角形面；除了“v”，任一分量可以省略
 	
 	/*来自obj文件的原始数据*/
 	vector<CZVector3D<float>> m_vertRawVector;

@@ -117,29 +117,16 @@ void CZObjModel::parseVertexTexCoord(std::ifstream &ifs)
 
 void CZObjModel::parseFace(std::ifstream &ifs)
 {
-	//	face treatment
-	//  Note: obviously this technique only works for convex polygons with ten verts or less.
-	int vi[10];                               // vertex indices.
-	int ni[10] = { -1, -1, -1, -1, };         // normal indices.
-	int ti[10] = { -1, -1, -1, -1, };         // tex indices.
-	int i = 0;
-	for (char c; i < 10; ++i) {
-		if (!hasTextureCoords() && !hasNormals())
-			ifs >> vi[i];
-		else if (!hasTextureCoords())
-			ifs >> vi[i] >> c >> c >> ni[i];
-		else if (!hasNormals())
-			ifs >> vi[i] >> c >> ti[i];
-		else
-			ifs >> vi[i] >> c >> ti[i] >> c >> ni[i];
-
-		if (!ifs.good())
-			break;
-	}
-	//	Create the polygon face
 	CZFace face;
-	for (int k = 0; k < i; ++k)
-		face.addVertTexNorm(vi[k], ti[k], ni[k]);
+	int data[3];
+	int count;
+
+	for (int i = 0; i < 3;i++){
+		count = parseNumberElement(ifs, data);
+		face.addVertTexNorm(data[0], data[1], data[2]);
+	}
+	skipLine(ifs);
+
 	m_pCurGeometry->addFace(face);
 
 	ifs.clear();

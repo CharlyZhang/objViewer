@@ -31,7 +31,8 @@ void main() {
     // 1. The angle of incidence: brightness
     // 2. The color/intensities of the light: light.intensities
     // 3. The texture and texture coord: texture(tex, fragTexCoord)
-    vec4 surfaceColor = texture(tex, fragTexCoord);
+    vec4 surfaceColor = vec4(1.0, 1.0, 1.0, 1.0);//无纹理
+	//vec4 surfaceColor = texture(tex, fragTexCoord);//有纹理
 
 	//对教程源代码的修改：增加这一项“+vec4(vec3(0.2, 0.2, 0.2)*surfaceColor.rgb, 0.0)”，从而表现了环境光
     gl_FragColor = vec4(brightness * light.intensities * surfaceColor.rgb, surfaceColor.a) + vec4(vec3(0.2, 0.2, 0.2)*surfaceColor.rgb, 0.0);
