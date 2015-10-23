@@ -122,23 +122,24 @@ bool CZMaterial::loadTexture(const string &filename)
 	FREE_IMAGE_TYPE type = FreeImage_GetImageType(dib);
 	FREE_IMAGE_COLOR_TYPE colorType = FreeImage_GetColorType(dib);
 	
+	// TO DO: inverse pixel data sequence manually
 	GLenum texFormat;	GLint internalFormat;	GLint components;
 	switch (colorType)
 	{
 	case FIC_RGB:
 		components = 3;
-		texFormat = GL_RGB;
-		internalFormat = GL_RGB;
+		texFormat = GL_BGR_EXT;
+		internalFormat = GL_BGR_EXT;
 		break;
 	case FIC_RGBALPHA:
 		components = 4;
-		texFormat = GL_RGBA;
-		internalFormat = GL_RGBA;
+		texFormat = GL_BGRA_EXT;
+		internalFormat = GL_BGRA_EXT;
 		break;
 	default:
 		components = 3;
-		texFormat = GL_RGB;
-		internalFormat = GL_RGBA;
+		texFormat = GL_BGR_EXT;
+		internalFormat = GL_BGR_EXT;
 		LOG_WARN("the color type has not been considered\n");
 		break;
 	}

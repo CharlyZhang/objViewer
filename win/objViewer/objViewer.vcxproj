@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{13E4D5FC-3CA0-4237-903D-089CABF6FCA8}</ProjectGuid>
     <RootNamespace>objViewer</RootNamespace>
+    <ProjectName>objViewer13</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -59,7 +60,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>../lib/include</AdditionalIncludeDirectories>
-      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -70,9 +70,6 @@
       <Command>copy "$(SolutionDir)lib\*.dll" "$(OutDir)"
 </Command>
     </PostBuildEvent>
-    <Bscmake>
-      <PreserveSbr>true</PreserveSbr>
-    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -95,7 +92,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\Camera.cpp" />
+    <ClCompile Include="..\..\src\Application3D.cpp" />
     <ClCompile Include="..\..\src\CZMat4.cpp" />
     <ClCompile Include="..\..\src\CZMaterial.cpp" />
     <ClCompile Include="..\..\src\CZObjModel.cpp" />
@@ -107,13 +104,12 @@
     <ClCompile Include="..\..\src\ObjFileLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\Camera.h" />
-    <ClInclude Include="..\..\src\CZBasicStruct.h" />
+    <ClInclude Include="..\..\src\Application3D.h" />
+    <ClInclude Include="..\..\src\CZBasic.h" />
     <ClInclude Include="..\..\src\CZLog.h" />
     <ClInclude Include="..\..\src\CZMat4.h" />
     <ClInclude Include="..\..\src\CZMaterial.h" />
     <ClInclude Include="..\..\src\CZObjModel.h" />
-    <ClInclude Include="..\..\src\CZScene.h" />
     <ClInclude Include="..\..\src\CZShader.h" />
     <ClInclude Include="..\..\src\CZVector.h" />
     <ClInclude Include="..\..\src\CZDefine.h" />

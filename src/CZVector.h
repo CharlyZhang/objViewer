@@ -69,6 +69,7 @@ public:
 
 	/// 求级数
 	T magnitude() {	return (T)sqrt(x*x + y*y + z*z);}
+	T length() { return magnitude();}
 	/// 规范化本点
 	void normalize() {	*this = *this / magnitude();}
 	/// 叉乘

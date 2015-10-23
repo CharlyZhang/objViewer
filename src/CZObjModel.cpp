@@ -17,6 +17,8 @@ CZObjModel::CZObjModel()
 	m_vertRawVector.push_back(CZVector3D<float>(0, 0, 0));
 	m_texRawVector.push_back(CZVector3D<float>(0, 0, 0));
 	m_normRawVector.push_back(CZVector3D<float>(0, 0, 0));
+
+	m_pCurGeometry = NULL;
 }
 
 void CZObjModel::load(const string& path)

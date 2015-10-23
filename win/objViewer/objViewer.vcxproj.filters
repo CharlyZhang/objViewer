@@ -16,20 +16,11 @@
     <Filter Include="glsl">
       <UniqueIdentifier>{207310d0-4def-4a15-97e2-c166046ff23c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="model">
+      <UniqueIdentifier>{621f0440-3258-40fe-be92-0c52791a9dae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\CZObjModel.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\CZMaterial.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Camera.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\CZShader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -39,27 +30,28 @@
     <ClCompile Include="..\..\src\CZUtil.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MaterialLib.cpp">
+    <ClCompile Include="..\..\src\Application3D.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Geometry.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\CZObjModel.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\CZMaterial.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MaterialLib.cpp">
+      <Filter>model</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\ObjFileLoader.cpp">
-      <Filter>源文件</Filter>
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Geometry.cpp">
+      <Filter>model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\CZObjModel.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\CZLog.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\CZMaterial.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Camera.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\CZVector.h">
@@ -74,20 +66,26 @@
     <ClInclude Include="..\..\src\CZMat4.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\CZBasicStruct.h">
+    <ClInclude Include="..\..\src\Application3D.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\CZScene.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\MaterialLib.h">
+    <ClInclude Include="..\..\src\CZBasic.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\CZMaterial.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\CZObjModel.h">
+      <Filter>model</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Geometry.h">
-      <Filter>头文件</Filter>
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\MaterialLib.h">
+      <Filter>model</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\ObjFileLoader.h">
-      <Filter>头文件</Filter>
+      <Filter>model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

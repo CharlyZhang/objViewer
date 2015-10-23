@@ -4,13 +4,13 @@
 #ifndef __GEMORETRY_HPP__
 #define __GEMORETRY_HPP__
 
-#include "gl/glew.h"
-#include "gl/glut.h"
-
 #include "CZVector.h"
 #include "CZMaterial.h"
 
 #include <vector>
+
+#include "glew.h"
+#include "glut.h"
 using namespace std;
 
 /// CZFace
@@ -142,13 +142,13 @@ private:
 	GLuint m_vboTexCoord;
 
 	/*vbo上次绑定的通道*/
-	GLuint m_lastAttribPos = -1;
-	GLuint m_lastAttribNorm = -1;
-	GLuint m_lastAttribTexCoord = -1;
+	GLuint m_lastAttribPos;
+	GLuint m_lastAttribNorm;
+	GLuint m_lastAttribTexCoord;
 
 	/*每次调用方法addFace()，一旦检测到有法向量或者纹理坐标，就将下列属性置为true*/
-	bool m_hasNormals = false;
-	bool m_hasTexCoords = false;
+	bool m_hasNormals;
+	bool m_hasTexCoords;
 };
 
 #endif

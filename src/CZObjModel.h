@@ -62,7 +62,7 @@ private:
 	vector<CZVector3D<float>> m_texRawVector;
 	vector<CZVector3D<float>> m_normRawVector;
 
-	CGeometry *m_pCurGeometry = nullptr;
+	CGeometry *m_pCurGeometry;
 	//ObjModel托管这些Geometry对象占用的内存，不要在其他地方析构它们
 	//因为有且仅有ObjModel需要管理Geometry对象，所以不必使用std::shared_ptr
 	list<CGeometry*> m_geometries;

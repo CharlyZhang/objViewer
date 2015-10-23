@@ -1,17 +1,20 @@
 #include "Geometry.h"
 
-#include "gl/glut.h"
+#include "glut.h"
 
 // Static member
 GLuint CGeometry::ATTRIB_POS_DEFAULT = 0;
-GLuint CGeometry::ATTRIB_NORM_DEFAULT = 2;
-GLuint CGeometry::ATTRIB_TEX_COORD_DEFAULT = 8;
+GLuint CGeometry::ATTRIB_NORM_DEFAULT = 1;
+GLuint CGeometry::ATTRIB_TEX_COORD_DEFAULT = 2;
 
 CGeometry::CGeometry()
 : m_minVert(numeric_limits<float>::max(), numeric_limits<float>::max(), numeric_limits<float>::max())
 , m_maxVert(-numeric_limits<float>::max(), -numeric_limits<float>::max(), -numeric_limits<float>::max())
 {
+	m_lastAttribPos = m_lastAttribNorm = m_lastAttribTexCoord = -1;
 
+	m_hasNormals = false;
+	m_hasTexCoords = false;
 }
 
 CGeometry::~CGeometry()
