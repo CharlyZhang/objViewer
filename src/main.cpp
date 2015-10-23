@@ -127,9 +127,10 @@ void Init()
 	//model.load("../../data/lady/lady.obj");//含有非纹理材质
 	//model.load("../../data/piano/piano.obj");//含有非纹理材质
 	//model.load("../../data/plane/plane.obj");
-	model.load("../../data/zheng/zheng.obj");//含有非纹理材质；存在不含纹理坐标的物体
+	//model.load("../../data/zheng/zheng.obj");//含有非纹理材质；存在不含纹理坐标的物体
 
 	//model.load("../../data/incomplete/noTexCoord.obj");
+	model.load("../../data/incomplete/noNorm.obj");
 	//model.load("../../data/zhengPart/zheng.obj");
 }
 

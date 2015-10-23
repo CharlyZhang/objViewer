@@ -118,7 +118,7 @@ void CZObjModel::parseVertexTexCoord(std::ifstream &ifs)
 void CZObjModel::parseFace(std::ifstream &ifs)
 {
 	CZFace face;
-	int data[3];
+	int data[3] = {-1, -1, -1};
 	int count;
 
 	for (int i = 0; i < 3;i++){

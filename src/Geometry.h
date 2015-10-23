@@ -126,6 +126,12 @@ public:
 	CZMaterial *pMaterial;
 
 private:
+	/*设vertVector每3个点为一个三角形，将每个顶点处的法向量设置为所在三角形的法向量并写入(*pNormVector)
+	 *@param count vertVector中要处理的顶点数，应为3的倍数
+	 *@require (*pNormVector)为空
+	 *@promise (*pNormVector)中填写了count个顶点的法向量*/
+	void generateFaceNorm(vector<CZVector3D<float>> *pNormVector, const vector<CZVector3D<float>> &vertVector, int count) const;
+
 	vector<CZFace> m_faceVector;
 
 	GLuint m_vao;

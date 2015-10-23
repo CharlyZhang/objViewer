@@ -44,15 +44,16 @@ void CGeometry::unpackTo(vector<CZVector3D<float>> *pPosVector, vector<CZVector3
 			pPosVector->push_back(posRawVector[(*itFace).v[i]]);
 			if (hasNormals())
 				pNormVector->push_back(normRawVector[(*itFace).vn[i]]);
-			else
-				pNormVector->push_back(CZVector3D<float>(0, 0, 0));//FIXME 应先调用方法generateFlatNormals()
-			
+
 			if (hasTexCoords())
 				pTexCoordVector->push_back(texCoordRawVector[(*itFace).vt[i]]);
 			else
 				pTexCoordVector->push_back(CZVector3D<float>(0, 0, 0));
 		}
 	}
+
+	if (!hasNormals())
+		generateFaceNorm(pNormVector, *pPosVector, pPosVector->size());
 }
 
 //@side-effect openGL分配了一个VAO、若干VBO，并设置它们的状态
@@ -111,5 +112,35 @@ void CGeometry::bind(GLuint attribPos, GLuint attribNorm, GLuint attribTexCoord)
 		glEnableVertexAttribArray(attribTexCoord);
 		glVertexAttribPointer(attribTexCoord, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		m_lastAttribTexCoord = attribTexCoord;
+	}
+}
+
+void CGeometry::generateFaceNorm(vector<CZVector3D<float>> *pNormVector, const vector<CZVector3D<float>> &vertVector, int count)const
+{
+	//每次从vertVector内取出3个顶点，其序号为iVert{+0, +1, +2}
+	for (int iVert = 0; iVert < count ; iVert+=3)
+	{
+		//一个面有3个顶点：v1、v2、v3
+		const CZVector3D<float>& v1 = vertVector[iVert];
+		const CZVector3D<float>& v2 = vertVector[iVert + 1];
+		const CZVector3D<float>& v3 = vertVector[iVert + 2];
+
+		//该面上有2个向量：向量v=v1->v2；向量w=v1->v3
+		CZVector3D<float> v(v2.x - v1.x, v2.y - v1.y, v2.z - v1.z);
+		CZVector3D<float> w(v3.x - v1.x, v3.y - v1.y, v3.z - v1.z);
+
+		//向量v 向 向量w 作外积，结果即法向量vn
+		CZVector3D<float> vn(v.y*w.z - v.z*w.y, v.z*w.x - v.x*w.z, v.x*w.y - v.y*w.x);
+
+		//对法向量vn单位化
+		float length = sqrtf(vn.x*vn.x + vn.y*vn.y + vn.z*vn.z);
+		if (0 < length) {
+			const float a = 1 / length;
+			vn.x *= a;
+			vn.y *= a;
+			vn.z *= a;
+		}
+
+		pNormVector->push_back(vn);
 	}
 }
