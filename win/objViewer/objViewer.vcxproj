@@ -93,7 +93,6 @@
     <ClCompile Include="..\..\src\CZMat4.cpp" />
     <ClCompile Include="..\..\src\CZMaterial.cpp" />
     <ClCompile Include="..\..\src\CZObjModel.cpp" />
-    <ClCompile Include="..\..\src\CZScene.cpp" />
     <ClCompile Include="..\..\src\CZShader.cpp" />
     <ClCompile Include="..\..\src\CZUtil.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
@@ -105,7 +104,6 @@
     <ClInclude Include="..\..\src\CZMat4.h" />
     <ClInclude Include="..\..\src\CZMaterial.h" />
     <ClInclude Include="..\..\src\CZObjModel.h" />
-    <ClInclude Include="..\..\src\CZScene.h" />
     <ClInclude Include="..\..\src\CZShader.h" />
     <ClInclude Include="..\..\src\CZVector.h" />
     <ClInclude Include="..\..\src\CZDefine.h" />

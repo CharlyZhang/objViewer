@@ -370,10 +370,9 @@ public:
 	CZMat4 GetAffineInverseTranspose(void) const;
 
 	//set to perform an operation on space - removes other entries
-	void SetTranslation(float x, float y, float z)
-	{ SetTranslation(VECTOR3D(x,y,z)); }
-
+	void SetTranslation(float x, float y, float z)	{ SetTranslation(VECTOR3D(x,y,z)); }
 	void SetTranslation(const VECTOR3D & translation);
+	void SetScale(float s) { SetScale(VECTOR3D(s,s,s));}
 	void SetScale(const VECTOR3D & scaleFactor);
 	void SetUniformScale(const float scaleFactor);
 	void SetRotationAxis(const double angle, const VECTOR3D & axis);

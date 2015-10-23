@@ -1,7 +1,6 @@
 
 #include "Application3D.h"
 #include "CZDefine.h"
-#include "CZBasic.h"
 #include <vector>
 #include <string>
 
@@ -12,13 +11,13 @@ using namespace std;
 Application3D::Application3D()
 {
 	width = height = DEFAULT_RENDER_SIZE;
-	pScene = NULL;
+	pModel = NULL;
 	pShader = NULL;
 }
 
 Application3D::~Application3D()
 {
-	if(pScene) { delete pScene; pScene = NULL;}
+	if(pModel) { delete pModel; pModel = NULL;}
 	if(pShader) { delete pShader; pShader = NULL;}
 }
 
@@ -33,7 +32,6 @@ bool Application3D::init()
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
-	glClearColor(0.8f, 0.8f, 0.9f, 1.f);
 
 	glCullFace(GL_BACK);						// 只绘制正面
 	glEnable(GL_CULL_FACE);
@@ -55,6 +53,27 @@ bool Application3D::init()
 	uniforms.push_back("light.intensities");
 	pShader = new CZShader("shading","shading",attributes,uniforms);
 
+	/// config scene
+	if(!loadScene())
+	{
+		scene.eyePosition = CZPoint3D(0,0,-200);
+		scene.light.position = CZPoint3D(0,0,-120);
+		scene.light.intensity = CZPoint3D(1,1,1);
+		scene.bgColor = CZColor(0.8f, 0.8f, 0.9f, 1.f);
+		scene.mColor = CZColor(1.f, 1.f, 1.f, 1.f);
+	}
+
+	return true;
+}
+
+bool Application3D::loadObjModel(const string &filename)
+{
+	if(pModel) delete pModel;
+	pModel = new CZObjModel;
+	pModel->load(filename);
+	
+	reset();
+
 	return true;
 }
 
@@ -75,44 +94,18 @@ bool Application3D::setRenderBufferSize(int w, int h)
 	return true;
 }
 
-bool Application3D::loadScene(const string &filename)
-{
-	// TO DO : load scene file
-	if (pScene) delete pScene;
-	
-	pScene = new CZScene;
-
-	pScene->eyePosition = CZPoint3D(0,0,-200);
-
-	pScene->light.position = CZPoint3D(0,0,-120);
-	pScene->light.intensity = CZPoint3D(1,1,1);
-
-	pScene->model.load("../../data/plane/plane.obj");
-
-	rotateMat.LoadIdentity();
-	translateMat.LoadIdentity();
-
-	return true;
-}
-
 void Application3D::frame()
 {
-	if(!pScene) 
-	{
-		LOG_WARN("scene has not been set up yet!\n");
-		return;
-	}
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// 清理颜色缓冲区 和 深度缓冲区
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	gluLookAt(pScene->eyePosition.x,pScene->eyePosition.y,pScene->eyePosition.z, 0,0,0,0,1,0);
+	gluLookAt(scene.eyePosition.x,scene.eyePosition.y,scene.eyePosition.z, 0,0,0,0,1,0);
 
 	CZMat4 mvpMat,modelMat;
-	modelMat = translateMat * rotateMat;
-	mvpMat.SetLookAt(pScene->eyePosition.x,pScene->eyePosition.y,pScene->eyePosition.z, 0,0,0,0,1,0);
+	modelMat = translateMat * scaleMat * rotateMat;
+	mvpMat.SetLookAt(scene.eyePosition.x,scene.eyePosition.y,scene.eyePosition.z, 0,0,0,0,1,0);
 	mvpMat = projMat * mvpMat * modelMat;
 
 	pShader->begin();
@@ -122,10 +115,10 @@ void Application3D::frame()
 	CZCheckGLError();
 	//glUniform3fv(pShader->getUniformLocation("light.position"),3,&light.position[0]);
 	//CZCheckGLError();
-	glUniform3f(pShader->getUniformLocation("light.position"),pScene->light.position.x,pScene->light.position.y,pScene->light.position.z);
+	glUniform3f(pShader->getUniformLocation("light.position"),scene.light.position.x,scene.light.position.y,scene.light.position.z);
 	CZCheckGLError();
 	//glUniform3fv(pShader->getUniformLocation("light.intensities"),3,light.intensity);
-	glUniform3f(pShader->getUniformLocation("light.intensities"),pScene->light.intensity.x,pScene->light.intensity.y,pScene->light.intensity.z);
+	glUniform3f(pShader->getUniformLocation("light.intensities"),scene.light.intensity.x,scene.light.intensity.y,scene.light.intensity.z);
 	CZCheckGLError();
 	//GLuint mVertexBufferObject;
 	//// 装载顶点
@@ -137,7 +130,7 @@ void Application3D::frame()
 	//glVertexAttribPointer(0,2,GL_FLOAT, GL_FALSE, sizeof(float)*2,0);
 
 	/// 绘制
-	pScene->model.draw();
+	if(pModel)	pModel->draw();
 	CZCheckGLError();
 	/*glDisableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -149,58 +142,67 @@ void Application3D::frame()
 	
 	glColor3f(1.0,0.0,0.0);
 	glPushMatrix();
-	glTranslatef(pScene->light.position.x, pScene->light.position.y, pScene->light.position.z);
-		glutSolidSphere(5,100,100);
+	glTranslatef(scene.light.position.x, scene.light.position.y, scene.light.position.z);
+	glDisable(GL_TEXTURE_2D);	
+	glutSolidSphere(2,100,100);
 	glPopMatrix();
+}
+
+void Application3D::reset()
+{
+	/// model matrix
+	rotateMat.LoadIdentity();
+	translateMat.LoadIdentity();
+	scaleMat.LoadIdentity();
+
+	/// color
+	modelColor = scene.mColor;
+	glClearColor(scene.bgColor.r, scene.bgColor.g, scene.bgColor.b, scene.bgColor.a);
 }
 
 // control
 void Application3D::rotate(float deltaX, float deltaY)
 {
-	if(!pScene) 
-	{
-		LOG_WARN("scene has not been set up yet!\n");
-		return;
-	}
 	CZMat4 tempMat;
 	tempMat.SetRotationY(deltaX);
 	rotateMat = tempMat * rotateMat;
 	tempMat.SetRotationX(-deltaY);
 	rotateMat = tempMat * rotateMat;
 }
-
 void Application3D::translate(float deltaX, float deltaY)
 {
-	if(!pScene) 
-	{
-		LOG_WARN("scene has not been set up yet!\n");
-		return;
-	}
 	CZMat4 tempMat;
 	tempMat.SetTranslation(-deltaX,-deltaY,0);
 	translateMat = tempMat * translateMat;
 }
-
-// eye position
-void Application3D::setEyePosition(float x, float y, float z)
+void Application3D::scale(float s)
 {
+	CZMat4 tempMat;
+	tempMat.SetScale(s);
+	scaleMat = tempMat * scaleMat;
+}
 
-	if(!pScene)
-	{
-		LOG_WARN("scene has not been set up yet!\n");
-		return;
-	}
-
-	pScene->eyePosition = CZPoint3D(x,y,z);
+// custom config
+void Application3D::setBackgroundColor(float r, float g, float b, float a)
+{
+	glClearColor(r,g,b,a);
+}
+void Application3D::setModelColor(float r, float g, float b, float a)
+{
+	modelColor = CZColor(r,g,b,a);
 }
 
 void Application3D::setLightPosition(float x, float y, float z)
 {
-	if(!pScene) 
-	{
-		LOG_WARN("scene has not been set up yet!\n");
-		return;
-	}
 
-	pScene->light.position = CZPoint3D(x,y,z);
+	scene.light.position = CZPoint3D(x,y,z);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+bool Application3D::loadScene()
+{
+	// TO DO : load scene file
+
+	return false;
 }

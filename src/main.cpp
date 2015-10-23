@@ -38,8 +38,7 @@ void Init()
 	InitGL();
 
 	app3d.init();
-	string temp;
-	app3d.loadScene(temp);
+	app3d.loadObjModel("../../data/plane/plane.obj");
 }
 
 void Display()
@@ -66,11 +65,11 @@ void key(unsigned char k, int x, int y)
 		exit(0);
 		break;
 	case 'w':
-		lightY += 1.0;
+		lightZ += 1.0;
 		app3d.setLightPosition(lightX,lightY,lightZ);
 		break;
 	case 's':
-		lightY -= 1.0;
+		lightZ -= 1.0;
 		app3d.setLightPosition(lightX,lightY,lightZ);
 		break;
 	case 'a':
@@ -82,12 +81,22 @@ void key(unsigned char k, int x, int y)
 		app3d.setLightPosition(lightX,lightY,lightZ);
 		break;
 	case 'q':
-		lightZ += 1.0;
+		lightY += 1.0;
 		app3d.setLightPosition(lightX,lightY,lightZ);
 		break;
 	case 'e':
-		lightZ -= 1.0;
+		lightY -= 1.0;
 		app3d.setLightPosition(lightX,lightY,lightZ);
+		break;
+	case 'j':
+		app3d.scale(0.8);
+		break;
+	case 'k':
+		app3d.scale(1.25);
+		break;
+
+	case 'r':
+		app3d.reset();
 		break;
 	}
 	glutPostRedisplay();
