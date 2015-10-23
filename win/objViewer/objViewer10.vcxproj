@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{13E4D5FC-3CA0-4237-903D-089CABF6FCA8}</ProjectGuid>
     <RootNamespace>objViewer</RootNamespace>
+    <ProjectName>objViewer10</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -117,6 +118,7 @@
   <ItemGroup>
     <None Include="..\..\src\glsl\shading.frag" />
     <None Include="..\..\src\glsl\shading.vert" />
+    <None Include="scene.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

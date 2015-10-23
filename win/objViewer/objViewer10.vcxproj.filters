@@ -95,5 +95,6 @@
     <None Include="..\..\src\glsl\shading.vert">
       <Filter>glsl</Filter>
     </None>
+    <None Include="scene.config" />
   </ItemGroup>
 </Project>
