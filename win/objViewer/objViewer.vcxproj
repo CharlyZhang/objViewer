@@ -95,7 +95,10 @@
     <ClCompile Include="..\..\src\CZObjModel.cpp" />
     <ClCompile Include="..\..\src\CZShader.cpp" />
     <ClCompile Include="..\..\src\CZUtil.cpp" />
+    <ClCompile Include="..\..\src\Geometry.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\MaterialLib.cpp" />
+    <ClCompile Include="..\..\src\ObjFileLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Application3D.h" />
@@ -107,6 +110,9 @@
     <ClInclude Include="..\..\src\CZShader.h" />
     <ClInclude Include="..\..\src\CZVector.h" />
     <ClInclude Include="..\..\src\CZDefine.h" />
+    <ClInclude Include="..\..\src\Geometry.h" />
+    <ClInclude Include="..\..\src\MaterialLib.h" />
+    <ClInclude Include="..\..\src\ObjFileLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\glsl\shading.frag" />

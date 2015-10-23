@@ -25,7 +25,7 @@ void InitGL()
 	glewInit();
 
 	if (glewIsSupported("GL_VERSION_3_1"))
-		cout << "Ready for OpenGL 3.1\n" ;
+		cout << "Ready for OpenGL 3.1\n";
 	else
 	{
 		cout << "OpenGL 3.1 not supported\n";
@@ -52,15 +52,13 @@ void Reshape(int w, int h)
 	if (h == 0) h = 1;
 
 	winWidth = w;	winHeight = h;
-
 	app3d.setRenderBufferSize(w,h);
-	 
 }
-void key(unsigned char k, int x, int y) 
+void key(unsigned char k, int x, int y)
 {
 	k = (unsigned char)tolower(k);
 
- 	switch(k) {
+	switch (k) {
 	case 27:
 		exit(0);
 		break;
@@ -101,13 +99,13 @@ void key(unsigned char k, int x, int y)
 	}
 	glutPostRedisplay();
 }
-void specialKey(int key,int x,int y)
+void specialKey(int key, int x, int y)
 {
-	switch(key) 
-	{ 
+	switch (key)
+	{
 	case GLUT_KEY_F1:
 		break;
-	} 
+	}
 	glutPostRedisplay();
 }
 
@@ -140,14 +138,13 @@ void MouseMove(int x, int y)
 	glutPostRedisplay();
 }
 
-void idle() 
+void idle()
 {
-	
 }
 
 void Menu(int value)
 {
-	switch(value)
+	switch (value)
 	{
 	case 1:
 		break;
@@ -157,16 +154,16 @@ void Menu(int value)
 void InitMenu()
 {
 	glutCreateMenu(Menu);
-	glutAddMenuEntry("123",1);
-	glutAddMenuEntry("adb",2);
+	glutAddMenuEntry("123", 1);
+	glutAddMenuEntry("adb", 2);
 	glutAttachMenu(GLUT_MIDDLE_BUTTON);//把当前菜单注册到指定的鼠标键
 }
 
-int main(int argc,char** argv)
+int main(int argc, char** argv)
 {
-	glutInit(&argc,argv);
+	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowSize(winWidth,winHeight);
+	glutInitWindowSize(winWidth, winHeight);
 	glutCreateWindow("objViewer");
 
 	glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
@@ -186,7 +183,3 @@ int main(int argc,char** argv)
 	return 0;
 }
 
-
-//////////////////////////////////////////////////////////////////////////
-// camera operation
-//////////////////////////////////////////////////////////////////////////
