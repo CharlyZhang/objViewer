@@ -23,7 +23,7 @@ CZObjModel::CZObjModel()
 
 void CZObjModel::load(const string& path)
 {
-	LOG_INFO("Parsing .obj: %d", path);
+	LOG_INFO("Parsing .obj: %s", path.c_str());
 
 	CObjFileParser::load(path);
 

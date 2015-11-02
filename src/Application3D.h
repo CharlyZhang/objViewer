@@ -15,6 +15,7 @@ public:
 
 	bool init();
 	bool loadObjModel(const std::string &filename);
+    bool loadObjModel(const char *filename);
 	bool setRenderBufferSize(int w, int h);
 	void frame();
 	void reset();

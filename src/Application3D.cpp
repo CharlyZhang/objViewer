@@ -23,13 +23,12 @@ Application3D::~Application3D()
 
 bool Application3D::init()
 {
+# if !defined(__APPLE__)
 	/// OpenGL initialization
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
 	glShadeModel(GL_SMOOTH);					// 平滑着色
 
 	glEnable(GL_NORMALIZE);
-	glClearDepth(1.0f);							// 设置深度缓存
-	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 
@@ -39,7 +38,11 @@ bool Application3D::init()
 	//texture
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	//glEnable(GL_TEXTURE_2D);
-
+# endif
+    
+    glClearDepthf(1.0f);							// 设置深度缓存
+    glEnable(GL_DEPTH_TEST);
+    
 	CZCheckGLError();
 
 	/// load shader
@@ -77,32 +80,47 @@ bool Application3D::loadObjModel(const string &filename)
 	return true;
 }
 
+bool Application3D::loadObjModel(const char *filename)
+{
+    if (!filename) {
+        return false;
+    }
+    string f(filename);
+    return loadObjModel(f);
+}
+
 bool Application3D::setRenderBufferSize(int w, int h)
 {
 	width = w;	height = h;
 
 	glViewport(0,0,width,height);
-
+#if !defined(__APPLE__)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.5f, 500.0f);
-	projMat.SetPerspective(60.0,(GLfloat)width/(GLfloat)height, 0.5f, 500.0f);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+# endif
+    
+    projMat.SetPerspective(60.0,(GLfloat)width/(GLfloat)height, 0.5f, 500.0f);
+    
 	return true;
 }
 
 void Application3D::frame()
 {
+    CZCheckGLError();
+    
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// 清理颜色缓冲区 和 深度缓冲区
 
+#if !defined(__APPLE__)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
 	gluLookAt(scene.eyePosition.x,scene.eyePosition.y,scene.eyePosition.z, 0,0,0,0,1,0);
-
+#endif
+    
 	CZMat4 mvpMat,modelMat;
 	modelMat = translateMat * scaleMat * rotateMat;
 	mvpMat.SetLookAt(scene.eyePosition.x,scene.eyePosition.y,scene.eyePosition.z, 0,0,0,0,1,0);
@@ -110,7 +128,7 @@ void Application3D::frame()
 
 	pShader->begin();
 	CZCheckGLError();
-	glUniformMatrix4fv(pShader->getUniformLocation("modelMat"),1,GL_FALSE,modelMat);
+	glUniformMatrix4fv(pShader->getUniformLocation("modelMat"),1,GL_FALSE,modelMat.GetInverseTranspose());
 	glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"),1,GL_FALSE,mvpMat);
 	CZCheckGLError();
 	//glUniform3fv(pShader->getUniformLocation("light.position"),3,&light.position[0]);
@@ -139,13 +157,14 @@ void Application3D::frame()
 	glDeleteBuffers(1, &mVertexBufferObject);*/
 
 	pShader->end();
-	
+#if USE_OPENGL
 	glColor3f(1.0,0.0,0.0);
 	glPushMatrix();
 	glTranslatef(scene.light.position.x, scene.light.position.y, scene.light.position.z);
 	glDisable(GL_TEXTURE_2D);	
 	glutSolidSphere(2,100,100);
 	glPopMatrix();
+#endif
 }
 
 void Application3D::reset()

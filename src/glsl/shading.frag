@@ -1,4 +1,19 @@
-#version 150
+//#version 150
+
+#ifdef GL_ES
+precision highp float;
+#endif
+
+#if __VERSION__ >= 140
+in vec2      fragTexCoord;
+in vec3      fragNormal;
+in vec3      fragVert;
+#else
+varying vec2      fragTexCoord;
+varying vec3      fragNormal;
+varying vec3      fragVert;
+#endif
+
 
 uniform mat4 modelMat;
 uniform sampler2D tex;
@@ -8,13 +23,10 @@ uniform struct Light {
    vec3 intensities; //a.k.a the color of the light
 } light;
 
-in vec2 fragTexCoord;
-in vec3 fragNormal;
-in vec3 fragVert;
 
 void main() {
     //calculate normal in world coordinates
-    mat3 normalMatrix = transpose(inverse(mat3(modelMat)));
+    mat3 normalMatrix = mat3(modelMat);// transpose(inverse(mat3(modelMat)));
     vec3 normal = normalize(normalMatrix * fragNormal);
     
     //calculate the location of this fragment (pixel) in world coordinates
@@ -25,17 +37,15 @@ void main() {
 
     //calculate the cosine of the angle of incidence
     float brightness = dot(normal, surfaceToLight) / (length(surfaceToLight) * length(normal));
-    brightness = clamp(brightness, 0, 1);
-
+    brightness = clamp(brightness, 0.0, 1.0);
+    
     //calculate final color of the pixel, based on:
     // 1. The angle of incidence: brightness
     // 2. The color/intensities of the light: light.intensities
     // 3. The texture and texture coord: texture(tex, fragTexCoord)
-    vec4 surfaceColor = vec4(1.0, 1.0, 1.0, 1.0);//无纹理
-	//vec4 surfaceColor = texture(tex, fragTexCoord);//有纹理
+    //vec4 surfaceColor = vec4(1.0, 1.0, 1.0, 1.0);//脦脼脦脝脌铆
+	vec4 surfaceColor = vec4(texture2D(tex, fragTexCoord).rgb,1.0);//脫脨脦脝脌铆
 
-	//对教程源代码的修改：增加这一项“+vec4(vec3(0.2, 0.2, 0.2)*surfaceColor.rgb, 0.0)”，从而表现了环境光
+	//露脭陆脤鲁脤脭麓麓煤脗毛碌脛脨脼赂脛拢潞脭枚录脫脮芒脪禄脧卯隆掳+vec4(vec3(0.2, 0.2, 0.2)*surfaceColor.rgb, 0.0)隆卤拢卢麓脫露酶卤铆脧脰脕脣禄路戮鲁鹿芒
     gl_FragColor = vec4(brightness * light.intensities * surfaceColor.rgb, surfaceColor.a) + vec4(vec3(0.2, 0.2, 0.2)*surfaceColor.rgb, 0.0);
-	//gl_FragColor = vec4(fragNormal,1);
-	//gl_FragColor = surfaceColor;
 }

@@ -61,7 +61,7 @@ protected:
 	* /尾				-1
 	* 1//3尾		 1, -1
 	* 1/2尾			 1		*/
-	int CObjFileParser::parseNumberElement(ifstream &ifs, int *pData, char sep = '/', int defaultValue = -1, int maxCount = 3);
+	int parseNumberElement(ifstream &ifs, int *pData, char sep = '/', int defaultValue = -1, int maxCount = 3);
 
 	string m_dir;//相对路径(以程序根目录为根目录）
 };

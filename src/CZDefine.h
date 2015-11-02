@@ -8,11 +8,13 @@
 //#include "CZTexture.h"
 
 #define GLSL_DIR "../../src/glsl/"
+#define _DEBUG
 
 //////////////////////////////////////////////////////////////////////////
 //	OpenGL definition
 //////////////////////////////////////////////////////////////////////////
-#define USE_OPENGL 1
+#define USE_OPENGL      0
+#define USE_OPENGL_ES   1
 
 #if USE_OPENGL
 /// include
@@ -20,7 +22,6 @@
  //#include <gl/GLU.h>
 # include "glew.h"
 # include "glut.h"
-# include "CZLog.h"
 
 /// type
 
@@ -34,9 +35,10 @@
 
 #elif USE_OPENGL_ES
 /// include
-# include <OpenGLES/EAGL.h>
-# include <OpenGLES/ES2/gl.h>
-# include <OpenGLES/ES2/glext.h>
+//#import <OpenGLES/ES1/gl.h>
+//#import <OpenGLES/ES1/glext.h>
+#import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
 
 /// type
 # define GL_RGB8					GL_RGB8_OES
@@ -52,6 +54,7 @@
 #endif
 
 
+#include "CZLog.h"
 
 extern void CZCheckGLError_(const char *file, int line);
 

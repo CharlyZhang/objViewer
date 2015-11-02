@@ -22,7 +22,7 @@ void CObjFileParser::load(const string& path)
 		LOG_WARN("文件里没有数据");
 
 	//	explain what's going on
-	LOG_INFO("Parsing file %s  (size = %d bytes)...\n", path, fileSize);
+	LOG_INFO("Parsing file %s  (size = %d bytes)...\n", path.c_str(), fileSize);
 
 	// and go.
 	static int lastPercent = 0;

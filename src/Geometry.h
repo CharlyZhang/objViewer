@@ -9,8 +9,8 @@
 
 #include <vector>
 
-#include "glew.h"
-#include "glut.h"
+#include "CZDefine.h"
+
 using namespace std;
 
 /// CZFace

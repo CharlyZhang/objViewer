@@ -1,4 +1,5 @@
 #include "CZDefine.h"
+#include "CZLog.h"
 
 void CZCheckGLError_(const char *file, int line)
 {

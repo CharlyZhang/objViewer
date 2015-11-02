@@ -6,3 +6,7 @@ win/obj/
 data/
 *.sdf
 *.suo
+ios/lib
+ios/objViewer.xcworkspace/xcuserdata
+ios/objViewer/objViewer.xcodeproj/xcuserdata
+ios/Application3D/Application3D.xcodeproj/xcuserdata
