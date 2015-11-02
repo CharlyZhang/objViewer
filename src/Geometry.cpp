@@ -18,21 +18,70 @@ CGeometry::CGeometry()
 
 CGeometry::~CGeometry()
 {
-	glDeleteBuffers(1, &m_vao);
-	glDeleteBuffers(1, &m_vboPos);
-	glDeleteBuffers(1, &m_vboNorm);
-	glDeleteBuffers(1, &m_vboTexCoord);
+    
+//	glDeleteBuffers(1, &m_vao);
+//	glDeleteBuffers(1, &m_vboPos);
+//	glDeleteBuffers(1, &m_vboNorm);
+//	glDeleteBuffers(1, &m_vboTexCoord);
+    posVector.clear();
+    normVector.clear();
+    texCoordVector.clear();
 }
 
 //@side-effect openGL绑定了另一个VAO对象
 void CGeometry::draw() const
 {
-    CZCheckGLError();
 	pMaterial->use();
 
     CZCheckGLError();
-	GL_BIND_VERTEXARRAY(m_vao);
-	glDrawArrays(GL_TRIANGLES, 0, m_numVert);
+    
+    long m_numVert = posVector.size();
+    
+    /*顶点位置分量对象（vbo）*/
+    glGenBuffers(1, &m_vboPos);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboPos);
+    glBufferData(GL_ARRAY_BUFFER, posVector.size() * 3 * sizeof(GLfloat), posVector.data(), GL_STATIC_DRAW);
+    CZCheckGLError();
+    
+    //法向量分量对象（vbo）
+    glGenBuffers(1, &m_vboNorm);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboNorm);
+    glBufferData(GL_ARRAY_BUFFER, normVector.size() * 3 * sizeof(GLfloat), normVector.data(), GL_STATIC_DRAW);
+    CZCheckGLError();
+    
+    //纹理坐标分量对象（vbo）
+    if (hasTexCoords()){
+        glGenBuffers(1, &m_vboTexCoord);
+        glBindBuffer(GL_ARRAY_BUFFER, m_vboTexCoord);
+        glBufferData(GL_ARRAY_BUFFER, texCoordVector.size() * 3 * sizeof(GLfloat), texCoordVector.data(), GL_STATIC_DRAW);
+        CZCheckGLError();
+    }
+    
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboPos);
+    glEnableVertexAttribArray(ATTRIB_POS_DEFAULT);
+    glVertexAttribPointer(ATTRIB_POS_DEFAULT, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    CZCheckGLError();
+    
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboNorm);
+    glEnableVertexAttribArray(ATTRIB_NORM_DEFAULT);
+    glVertexAttribPointer(ATTRIB_NORM_DEFAULT, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    CZCheckGLError();
+    
+    if (hasTexCoords()){
+        glBindBuffer(GL_ARRAY_BUFFER, m_vboTexCoord);
+        glEnableVertexAttribArray(ATTRIB_TEX_COORD_DEFAULT);
+        glVertexAttribPointer(ATTRIB_TEX_COORD_DEFAULT, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        CZCheckGLError();
+    }
+    
+    glDrawArrays(GL_TRIANGLES, 0, m_numVert);
+    
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+    
+    glDeleteBuffers(1, &m_vboPos);
+    glDeleteBuffers(1, &m_vboNorm);
+    glDeleteBuffers(1, &m_vboTexCoord);
+	
 }
 
 void CGeometry::unpackTo(vector<CZVector3D<float>> *pPosVector, vector<CZVector3D<float>> *pNormVector, vector<CZVector3D<float>> *pTexCoordVector,
@@ -61,44 +110,13 @@ void CGeometry::unpackTo(vector<CZVector3D<float>> *pPosVector, vector<CZVector3
 
 //@side-effect openGL分配了一个VAO、若干VBO，并设置它们的状态
 void CGeometry::unpack(const vector<CZVector3D<float>> &posRawVector, const vector<CZVector3D<float>> &normRawVector, const vector<CZVector3D<float>> &texCoordRawVector){
-	vector<CZVector3D<float>> posVector;
-	vector<CZVector3D<float>> normVector;
-	vector<CZVector3D<float>> texCoordVector;
 	unpackTo(&posVector, &normVector, &texCoordVector,
 		posRawVector, normRawVector, texCoordRawVector);
-	m_numVert = posVector.size();
-
-	/*模型对象（vao）*/
-	GL_GEN_VERTEXARRAY(1, &m_vao);
-	GL_BIND_VERTEXARRAY(m_vao);
-    CZCheckGLError();
-    
-	/*顶点位置分量对象（vbo）*/
-	glGenBuffers(1, &m_vboPos);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vboPos);
-	glBufferData(GL_ARRAY_BUFFER, posVector.size() * 3 * sizeof(GLfloat), posVector.data(), GL_STATIC_DRAW);
-    CZCheckGLError();
-    
-	//法向量分量对象（vbo）
-	glGenBuffers(1, &m_vboNorm);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vboNorm);
-	glBufferData(GL_ARRAY_BUFFER, normVector.size() * 3 * sizeof(GLfloat), normVector.data(), GL_STATIC_DRAW);
-    CZCheckGLError();
-    
-	//纹理坐标分量对象（vbo）
-	if (hasTexCoords()){
-		glGenBuffers(1, &m_vboTexCoord);
-		glBindBuffer(GL_ARRAY_BUFFER, m_vboTexCoord);
-		glBufferData(GL_ARRAY_BUFFER, texCoordVector.size() * 3 * sizeof(GLfloat), texCoordVector.data(), GL_STATIC_DRAW);
-        CZCheckGLError();
-	}
-
-	bind(ATTRIB_POS_DEFAULT, ATTRIB_NORM_DEFAULT, ATTRIB_TEX_COORD_DEFAULT);
-    CZCheckGLError();
 }
 
 void CGeometry::bind(GLuint attribPos, GLuint attribNorm, GLuint attribTexCoord)
 {
+    return;
 	GL_BIND_VERTEXARRAY(m_vao);
 
 	if(m_lastAttribPos != -1)    glDisableVertexAttribArray(m_lastAttribPos);

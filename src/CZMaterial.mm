@@ -202,9 +202,9 @@ bool CZMaterial::loadTexture(const string &filename)
     //store the texture data for OpenGL use
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height,
                  0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
-    for (int i=0; i<10; i++) {
-        printf("%d, %d, %d, %d \n",data[i*4+0],data[i*4+1],data[i*4+2],data[i*4+3]);
-    }
+//    for (int i=0; i<10; i++) {
+//        printf("%d, %d, %d, %d \n",data[i*4+0],data[i*4+1],data[i*4+2],data[i*4+3]);
+//    }
     //	gluBuild2DMipmaps(GL_TEXTURE_2D, components, width, height, texFormat, GL_UNSIGNED_BYTE, bits);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

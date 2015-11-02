@@ -129,7 +129,7 @@ private:
 	vector<CZFace> m_faceVector;
 
 	GLuint m_vao;
-	GLushort m_numVert;
+	long m_numVert;
 
 	GLuint m_vboPos;
 	GLuint m_vboNorm;
@@ -143,6 +143,11 @@ private:
 	/*每次调用方法addFace()，一旦检测到有法向量或者纹理坐标，就将下列属性置为true*/
 	bool m_hasNormals;
 	bool m_hasTexCoords;
+    
+    
+    vector<CZVector3D<float>> posVector;
+    vector<CZVector3D<float>> normVector;
+    vector<CZVector3D<float>> texCoordVector;
 };
 
 #endif

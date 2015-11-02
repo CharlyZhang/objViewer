@@ -19,6 +19,7 @@
 		2D7673841BE752AD00783623 /* MaterialLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673731BE752AD00783623 /* MaterialLib.cpp */; };
 		2D7673851BE752AD00783623 /* ObjFileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673751BE752AD00783623 /* ObjFileLoader.cpp */; };
 		2D7673871BE753F000783623 /* ReadMe.md in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673861BE753F000783623 /* ReadMe.md */; };
+		2D7673891BE7709400783623 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7673881BE7709400783623 /* OpenGLES.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		2D7673751BE752AD00783623 /* ObjFileLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ObjFileLoader.cpp; path = ../../../src/ObjFileLoader.cpp; sourceTree = "<group>"; };
 		2D7673761BE752AD00783623 /* ObjFileLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjFileLoader.h; path = ../../../src/ObjFileLoader.h; sourceTree = "<group>"; };
 		2D7673861BE753F000783623 /* ReadMe.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReadMe.md; path = ../../ReadMe.md; sourceTree = "<group>"; };
+		2D7673881BE7709400783623 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D7673891BE7709400783623 /* OpenGLES.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				2D7673861BE753F000783623 /* ReadMe.md */,
+				2D7673881BE7709400783623 /* OpenGLES.framework */,
 				2D76733F1BE7527800783623 /* Application3D */,
 				2D76734C1BE7527800783623 /* Application3DTests */,
 				2D76733E1BE7527800783623 /* Products */,
@@ -424,6 +428,7 @@
 				2D7673531BE7527800783623 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2D7673541BE7527800783623 /* Build configuration list for PBXNativeTarget "Application3DTests" */ = {
 			isa = XCConfigurationList;
@@ -432,6 +437,7 @@
 				2D7673561BE7527800783623 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
