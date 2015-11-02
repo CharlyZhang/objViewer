@@ -23,33 +23,26 @@
     glView = [[EAGLView alloc]initWithFrame:self.view.bounds];
     [self.view addSubview:glView];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(willResignActive)
-                                                 name:UIApplicationWillResignActiveNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didBecomeActive)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
+    [self.view setUserInteractionEnabled:YES];
     
     UIPanGestureRecognizer *rot = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];
-    [self.view setUserInteractionEnabled:YES];
     [rot setMinimumNumberOfTouches:1];
     [rot setMaximumNumberOfTouches:1];
     [self.view addGestureRecognizer:rot];
+    
+    UIPanGestureRecognizer *mov = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+    [mov setMinimumNumberOfTouches:2];
+    [mov setMaximumNumberOfTouches:2];
+    [self.view addGestureRecognizer:mov];
+    
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scale:)];
+    [self.view addGestureRecognizer:pinch];
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)willResignActive{
-    [glView stopRenderLoop];
-}
-
--(void)didBecomeActive{
-    [glView startRenderLoop];
 }
 
 -(void)rotate:(id)sender {
@@ -64,4 +57,22 @@
     lastPoint = point;
 }
 
+-(void)move:(id)sender {
+    
+    static CGPoint lastPoint;
+    
+    CGPoint point = [(UIPanGestureRecognizer*)sender translationInView:self.view];
+    if([(UIPanGestureRecognizer*)sender state] == UIGestureRecognizerStateChanged) {
+        [glView moveWithX:(point.x - lastPoint.x)/5 Y:(point.y - lastPoint.y)/5];
+    }
+    
+    lastPoint = point;
+}
+
+- (void)scale:(UIPinchGestureRecognizer*)pinch {
+    if (pinch.state == UIGestureRecognizerStateChanged) {
+        [glView scale:pinch.scale];
+        pinch.scale = 1;
+    }
+}
 @end

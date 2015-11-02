@@ -44,6 +44,8 @@
 - (void) startRenderLoop;
 - (void) stopRenderLoop;
 - (void) rotateWithX:(float)x Y:(float)y;
+- (void) moveWithX:(float)x Y:(float)y;
+- (void) scale:(float)s;
 @end
 
 

@@ -193,15 +193,14 @@
      [self createFramebuffer];*/
     
     
-//    animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval target:self selector:@selector(drawFrame) userInfo:nil repeats:YES];
-    [self drawFrame];
+    animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval target:self selector:@selector(drawFrame) userInfo:nil repeats:YES];
 }
     
 
 //we have to be able to stop the render loop
 - (void)stopRenderLoop
 {
-//    [animationTimer invalidate];
+    [animationTimer invalidate];
     
 }
 
@@ -211,14 +210,24 @@
     [self drawFrame];
 }
 
+- (void) moveWithX:(float)x Y:(float)y
+{
+    app3d.translate(x, y);
+    [self drawFrame];
+}
 
-
+- (void) scale:(float)s
+{
+    app3d.scale(s);
+    [self drawFrame];
+}
 
 - (void)layoutSubviews
 {
     [EAGLContext setCurrentContext:context];
     [self deleteFramebuffer];
     [self createFramebuffer];
+    [self drawFrame];
 }
 
 //cleanup our view
