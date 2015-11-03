@@ -17,6 +17,7 @@ varying vec3      fragVert;
 
 uniform mat4 modelMat;
 uniform sampler2D tex;
+uniform int hasTex;
 
 uniform struct Light {
    vec3 position;
@@ -44,8 +45,15 @@ void main() {
     // 2. The color/intensities of the light: light.intensities
     // 3. The texture and texture coord: texture(tex, fragTexCoord)
     //vec4 surfaceColor = vec4(1.0, 1.0, 1.0, 1.0);//ÎÞÎÆÀí
-	vec4 surfaceColor = vec4(texture2D(tex, fragTexCoord).rgb,1.0);//ÓÐÎÆÀí
+    vec4 surfaceColor = texture2D(tex,fragTexCoord);//vec4(texture2D(tex, fragTexCoord).rgb,1.0);//ÓÐÎÆÀí
 
+    if (hasTex == 0) {
+        surfaceColor = vec4(1,1,1,1);
+    }
+    
 	//¶Ô½Ì³ÌÔ´´úÂëµÄÐÞ¸Ä£ºÔö¼ÓÕâÒ»Ïî¡°+vec4(vec3(0.2, 0.2, 0.2)*surfaceColor.rgb, 0.0)¡±£¬´Ó¶ø±íÏÖÁË»·¾³¹â
     gl_FragColor = vec4(brightness * light.intensities * surfaceColor.rgb, surfaceColor.a) + vec4(vec3(0.2, 0.2, 0.2)*surfaceColor.rgb, 0.0);
+    
+ //   gl_FragColor = vec4(fragTexCoord,0.5,1);
+ //   gl_FragColor = vec4(fragNormal,1);
 }

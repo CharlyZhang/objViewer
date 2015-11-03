@@ -11,7 +11,10 @@ void CObjFileParser::load(const string& path)
 	//从文件尾处打开文件，便于统计文件大小；之后回到文件头处
 	ifstream ifs(path.c_str(), ios::in | ios::ate);
 	if (!ifs)
+    {
 		LOG_WARN("文件不存在");
+        return;
+    }
 
 	m_dir = path.substr(0, path.find_last_of('/'));
 

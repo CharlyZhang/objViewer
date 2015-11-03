@@ -86,7 +86,7 @@ public:
 
 	//@required 设置了当前材质
 	//@required 调用了方法"bind"
-	void draw() const;
+	void draw();
 
 	void addFace(const CZFace& face) 
 	{
@@ -101,6 +101,7 @@ public:
 
 	bool hasNormals() const{ return m_hasNormals; }
 	bool hasTexCoords() const{ return m_hasTexCoords; }
+    bool useTexture() const{ return m_hasTexCoords && pMaterial && pMaterial->texId != -1;}
 
 	/*提取重排的数据。这些数据按整个顶点索引
 	 *	来自obj文件的原始数据（raw data）并未按整个顶点索引，而是按分量索引

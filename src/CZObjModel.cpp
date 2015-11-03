@@ -5,6 +5,7 @@
 #include "Geometry.h"
 #include "CZMaterial.h"
 #include "CZLog.h"
+#include "CZDefine.h"
 
 using namespace std;
 
@@ -43,10 +44,12 @@ void CZObjModel::clearRaw()
 }
 
 
-void CZObjModel::draw()
+void CZObjModel::draw(CZShader *pShader)
 {
 	for (auto iterGeometry = m_geometries.begin(); iterGeometry != m_geometries.end(); iterGeometry++)
 	{
+        int hasTex = (*iterGeometry)->useTexture()? 1 : 0;
+        glUniform1i(pShader->getUniformLocation("hasTex"), hasTex);
 		(*iterGeometry)->draw();
 	}
 }

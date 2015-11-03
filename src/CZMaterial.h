@@ -25,10 +25,10 @@ public:
 	float	Ka[4];	//	ambient color
 	float	Kd[4];	//  diffuse color
 	float	Ks[4];	//	specular color
-
+    unsigned int texId;
+    
 private:
 	std::string	 dirPath;
-	unsigned int texId;
 };
 
 #endif

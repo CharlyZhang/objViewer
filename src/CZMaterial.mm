@@ -21,6 +21,7 @@ CZMaterial::CZMaterial()
 	Kd[0] = Kd[1] = Kd[2] = 0.6f;	// diffuse color
 	Kd[3] = 0;
 	Ks[0] = Ks[1] = Ks[2] = Ks[3] = 0;	//	specular color
+    texId = -1;
 }
 
 bool CZMaterial::load(const string &filename)
@@ -202,12 +203,18 @@ bool CZMaterial::loadTexture(const string &filename)
     //store the texture data for OpenGL use
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height,
                  0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
-//    for (int i=0; i<10; i++) {
-//        printf("%d, %d, %d, %d \n",data[i*4+0],data[i*4+1],data[i*4+2],data[i*4+3]);
+//    for (int i=0; i<height; i++) {
+//        for (int j=0; j<width; j++) {
+//            int idx = i*width+j;
+//            printf("%d, %d, %d, %d \n",imageData[idx*4+0],imageData[idx*4+1],imageData[idx*4+2],imageData[idx*4+3]);
+//        }
+//        printf("\n");
 //    }
     //	gluBuild2DMipmaps(GL_TEXTURE_2D, components, width, height, texFormat, GL_UNSIGNED_BYTE, bits);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
     free(imageData);
 #endif
@@ -221,7 +228,7 @@ void CZMaterial::use() const
     //	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, Ks);
     //	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, Ns);
     
-    if (texId != 0)
+    if (texId != -1)
     {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texId);

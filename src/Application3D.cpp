@@ -54,6 +54,7 @@ bool Application3D::init()
 	uniforms.push_back("modelMat");
 	uniforms.push_back("light.position");
 	uniforms.push_back("light.intensities");
+    uniforms.push_back("hasTex");
 	pShader = new CZShader("shading","shading",attributes,uniforms);
 
 	/// config scene
@@ -148,7 +149,7 @@ void Application3D::frame()
 	//glVertexAttribPointer(0,2,GL_FLOAT, GL_FALSE, sizeof(float)*2,0);
 
 	/// »æÖÆ
-	if(pModel)	pModel->draw();
+	if(pModel)	pModel->draw(pShader);
 	CZCheckGLError();
 	/*glDisableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -173,7 +174,8 @@ void Application3D::reset()
 	rotateMat.LoadIdentity();
 	translateMat.LoadIdentity();
 	scaleMat.LoadIdentity();
-
+   // translateMat.SetTranslation(-205400, 0.000000, 445500);
+    
 	/// color
 	modelColor = scene.mColor;
 	glClearColor(scene.bgColor.r, scene.bgColor.g, scene.bgColor.b, scene.bgColor.a);

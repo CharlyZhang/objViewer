@@ -10,6 +10,7 @@
 #include "Geometry.h"
 #include "CZMaterial.h"
 #include "MaterialLib.h"
+#include "CZShader.h"
 
 using namespace std;
 
@@ -41,7 +42,7 @@ public:
 	*@side-effect 进入RENDER状态，不能再调用unpack()*/
 	void clearRaw();
 
-	void draw();
+	void draw(CZShader *pShader);
 
 private:
 	//来自obj文件的原始数据从哪个下标开始存储{0 or 1}

@@ -29,10 +29,11 @@ CGeometry::~CGeometry()
 }
 
 //@side-effect openGL绑定了另一个VAO对象
-void CGeometry::draw() const
+void CGeometry::draw()
 {
 	pMaterial->use();
-
+    CZCheckGLError();
+    
     CZCheckGLError();
     
     long m_numVert = posVector.size();
@@ -81,7 +82,6 @@ void CGeometry::draw() const
     glDeleteBuffers(1, &m_vboPos);
     glDeleteBuffers(1, &m_vboNorm);
     glDeleteBuffers(1, &m_vboTexCoord);
-	
 }
 
 void CGeometry::unpackTo(vector<CZVector3D<float>> *pPosVector, vector<CZVector3D<float>> *pNormVector, vector<CZVector3D<float>> *pTexCoordVector,

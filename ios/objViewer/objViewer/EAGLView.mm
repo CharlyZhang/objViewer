@@ -59,8 +59,10 @@
     app3d.init();
     NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plane.obj"];
     NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/violin.obj"];
+//        NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/box/盒子.obj"];
+//        NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/rect/rect.obj"];
     app3d.loadObjModel([bundlePath UTF8String]);
-    app3d.scale(0.8);
+    app3d.scale(3);
     
     return self;
 }// We have to implement this method

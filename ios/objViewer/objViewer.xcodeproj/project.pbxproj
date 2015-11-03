@@ -19,7 +19,6 @@
 		2DD43A0E1BE2216D004F1B8D /* libApplication3D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD43A0D1BE2216D004F1B8D /* libApplication3D.a */; };
 		2DD43A241BE30008004F1B8D /* shading.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2DD43A211BE30008004F1B8D /* shading.frag */; };
 		2DD43A251BE30008004F1B8D /* shading.vert in Resources */ = {isa = PBXBuildFile; fileRef = 2DD43A221BE30008004F1B8D /* shading.vert */; };
-		2DD43A271BE37B57004F1B8D /* texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DD43A261BE37B57004F1B8D /* texture.jpg */; };
 		2DD43A291BE37BDA004F1B8D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD43A281BE37BDA004F1B8D /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,7 +52,6 @@
 		2DD43A0D1BE2216D004F1B8D /* libApplication3D.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libApplication3D.a; path = "../Application3D/build/Debug-iphoneos/libApplication3D.a"; sourceTree = "<group>"; };
 		2DD43A211BE30008004F1B8D /* shading.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shading.frag; sourceTree = "<group>"; };
 		2DD43A221BE30008004F1B8D /* shading.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shading.vert; sourceTree = "<group>"; };
-		2DD43A261BE37B57004F1B8D /* texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = texture.jpg; path = ../../../../../Desktop/obj/plane/texture.jpg; sourceTree = "<group>"; };
 		2DD43A281BE37BDA004F1B8D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -101,7 +99,6 @@
 		2DD4390F1BDA35CD004F1B8D /* objViewer */ = {
 			isa = PBXGroup;
 			children = (
-				2DD43A261BE37B57004F1B8D /* texture.jpg */,
 				2DD43A081BE1FC30004F1B8D /* EAGLView.h */,
 				2DD43A091BE1FC30004F1B8D /* EAGLView.mm */,
 				2DD439141BDA35CD004F1B8D /* AppDelegate.h */,
@@ -234,7 +231,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DD4391C1BDA35CD004F1B8D /* Main.storyboard in Resources */,
-				2DD43A271BE37B57004F1B8D /* texture.jpg in Resources */,
 				2DD439211BDA35CD004F1B8D /* LaunchScreen.xib in Resources */,
 				2DD43A0C1BE21F73004F1B8D /* obj in Resources */,
 				2DD43A241BE30008004F1B8D /* shading.frag in Resources */,
