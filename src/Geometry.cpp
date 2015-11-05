@@ -96,9 +96,9 @@ void CGeometry::bind(GLuint attribPos, GLuint attribNorm, GLuint attribTexCoord)
 {
 	glBindVertexArray(m_vao);
 
-	glDisableVertexAttribArray(m_lastAttribPos);
-	glDisableVertexAttribArray(m_vboNorm);
-	glDisableVertexAttribArray(m_vboTexCoord);
+	if(m_lastAttribPos != -1)	glDisableVertexAttribArray(m_lastAttribPos);
+	if(m_vboNorm != -1)			glDisableVertexAttribArray(m_vboNorm);
+	if(m_vboTexCoord != -1)		glDisableVertexAttribArray(m_vboTexCoord);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboPos);
 	glEnableVertexAttribArray(attribPos);

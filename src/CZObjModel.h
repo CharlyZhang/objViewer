@@ -3,15 +3,12 @@
 #define _CZOBJMODEL_H_
 
 #include <string>
-#include <list>
-#include <fstream>
+#include <vector>
 #include "CZVector.h"
-#include "ObjFileLoader.h"
-#include "Geometry.h"
-#include "CZMaterial.h"
-#include "MaterialLib.h"
-
-using namespace std;
+#include "CZObjFileParser.h"
+#include "CZGeometry.h"
+#include "CZMaterialLib.h"
+#include "CZShader.h"
 
 /// file type
 typedef enum _ObjFileType {
@@ -22,51 +19,37 @@ typedef enum _ObjFileType {
 
 
 /// CZObjModel
-class CZObjModel : public CObjFileParser
+class CZObjModel : public CZObjFileParser
 {
 public:
 	CZObjModel();
+	~CZObjModel();
 
-	//@required 设置了openGL的二维纹理，如glEnable(GL_TEXTURE_2D);
-	void load(const string& path) override;
+	bool load(const std::string& path) override;
+	bool loadBinary(const std::string& path);
+	bool saveAsBinary(const std::string& path);
 
-	const bool hasNormals() const { return static_cast<int>(m_normRawVector.size()) > FIRST_INDEX; }
-	const bool hasTextureCoords() const { return static_cast<int>(m_texRawVector.size()) > FIRST_INDEX; }
-
-	const int getNumVertices() const { return static_cast<int>(m_vertRawVector.size()) - FIRST_INDEX; }
-	const int getNumTextureCoords() const { return static_cast<int>(m_texRawVector.size()) - FIRST_INDEX; }
-	const int getNumNormals() const { return static_cast<int>(m_normRawVector.size()) - FIRST_INDEX; }
-
-	/*清除来自obj文件的原始数据，以节约内存
-	*@side-effect 进入RENDER状态，不能再调用unpack()*/
-	void clearRaw();
-
-	void draw();
+	void draw(CZShader* pShader);
 
 private:
-	//来自obj文件的原始数据从哪个下标开始存储{0 or 1}
-	//在文件《ObjModel.cpp》里设置
-	static const int FIRST_INDEX;
-
-	void parseLine(ifstream& ifs, const string& ele_id) override;
-
-	void parseMaterialLib(std::ifstream &ifs);//mtllib <mtl文件路径>
-	void parseUseMaterial(std::ifstream &ifs);//usemtl <材质名称>
-	void parseVertex(std::ifstream &ifs);//v <x> <y> <z>
-	void parseVertexNormal(std::ifstream &ifs);//vn <x> <y> <z>
-	void parseVertexTexCoord(std::ifstream &ifs);//vt <u> <v>
-	void parseFace(std::ifstream &ifs);//f <v/vt/vn <v/vt/vn> <v/vt/vn> //只处理三角形面；除了“v”，任一分量可以省略
+	void parseLine(std::ifstream& ifs, const std::string& ele_id) override;
+	void parseMaterialLib(std::ifstream &ifs);		//mtllib <material lib name>
+	void parseUseMaterial(std::ifstream &ifs);		//usemtl <material name>
+	void parseVertex(std::ifstream &ifs);			//v <x> <y> <z>
+	void parseVertexNormal(std::ifstream &ifs);		//vn <x> <y> <z>
+	void parseVertexTexCoord(std::ifstream &ifs);	//vt <u> <v>
+	void parseFace(std::ifstream &ifs);				//f <v/vt/vn <v/vt/vn> <v/vt/vn> 
 	
-	/*来自obj文件的原始数据*/
-	vector<CZVector3D<float>> m_vertRawVector;
-	vector<CZVector3D<float>> m_texRawVector;
-	vector<CZVector3D<float>> m_normRawVector;
+	void clearRawData();
 
-	CGeometry *m_pCurGeometry;
-	//ObjModel托管这些Geometry对象占用的内存，不要在其他地方析构它们
-	//因为有且仅有ObjModel需要管理Geometry对象，所以不必使用std::shared_ptr
-	list<CGeometry*> m_geometries;
+	// raw data
+	std::vector<CZVector3D<float>> m_vertRawVector;
+	std::vector<CZVector3D<float>> m_texRawVector;
+	std::vector<CZVector3D<float>> m_normRawVector;
 
-	CMaterialLib m_materialLib;
+	CZGeometry *pCurGeometry;
+	std::vector<CZGeometry*> geometries;
+	CZMaterialLib materialLib;
+	std::string mtlLibName;							///< material lib name
 };
 #endif

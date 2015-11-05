@@ -2,33 +2,27 @@
 #define _CZMATERIAL_H_
 
 #include <string>
-#include <fstream>
+#include "CZDefine.h"
 
 class CZMaterial
 {
 public:
 	CZMaterial();
 
-	bool load(const std::string &filename);
-
 	bool loadTexture(const std::string &filename);
-	void use() const;
-
-private:
-	
-	void parseLine(std::ifstream &ifs,std::string &elementId);
-	bool skipCommentLine(std::ifstream &ifs);
-	void skipLine(std::ifstream &ifs);
+	bool use() const;
 
 public:
-	float	Ns;		//	shininess
-	float	Ka[4];	//	ambient color
-	float	Kd[4];	//  diffuse color
-	float	Ks[4];	//	specular color
+	float	Ns;		///<	shininess
+	float	Ka[4];	///<	ambient color
+	float	Kd[4];	///<	diffuse color
+	float	Ks[4];	///<	specular color
+
+	bool hasTexture;
+	unsigned int texId;
 
 private:
 	std::string	 dirPath;
-	unsigned int texId;
 };
 
 #endif

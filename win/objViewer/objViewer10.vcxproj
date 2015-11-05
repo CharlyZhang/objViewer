@@ -91,34 +91,37 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Application3D.cpp" />
+    <ClCompile Include="..\..\src\CZGeometry.cpp" />
     <ClCompile Include="..\..\src\CZMat4.cpp" />
     <ClCompile Include="..\..\src\CZMaterial.cpp" />
+    <ClCompile Include="..\..\src\CZMaterialLib.cpp" />
+    <ClCompile Include="..\..\src\CZObjFileParser.cpp" />
     <ClCompile Include="..\..\src\CZObjModel.cpp" />
     <ClCompile Include="..\..\src\CZShader.cpp" />
     <ClCompile Include="..\..\src\CZUtil.cpp" />
-    <ClCompile Include="..\..\src\Geometry.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
-    <ClCompile Include="..\..\src\MaterialLib.cpp" />
-    <ClCompile Include="..\..\src\ObjFileLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Application3D.h" />
     <ClInclude Include="..\..\src\CZBasic.h" />
+    <ClInclude Include="..\..\src\CZGeometry.h" />
     <ClInclude Include="..\..\src\CZLog.h" />
     <ClInclude Include="..\..\src\CZMat4.h" />
     <ClInclude Include="..\..\src\CZMaterial.h" />
+    <ClInclude Include="..\..\src\CZMaterialLib.h" />
+    <ClInclude Include="..\..\src\CZObjFileParser.h" />
     <ClInclude Include="..\..\src\CZObjModel.h" />
     <ClInclude Include="..\..\src\CZShader.h" />
     <ClInclude Include="..\..\src\CZVector.h" />
     <ClInclude Include="..\..\src\CZDefine.h" />
-    <ClInclude Include="..\..\src\Geometry.h" />
-    <ClInclude Include="..\..\src\MaterialLib.h" />
-    <ClInclude Include="..\..\src\ObjFileLoader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\src\glsl\shading.frag" />
-    <None Include="..\..\src\glsl\shading.vert" />
-    <None Include="scene.config" />
+    <None Include="..\..\ReadMe.md" />
+    <None Include="..\..\src\glsl\nonTex.frag" />
+    <None Include="..\..\src\glsl\standard.frag" />
+    <None Include="..\..\src\glsl\standard.vert" />
+    <None Include="..\..\src\glsl\standardDirectional.frag" />
+    <None Include="scene_violin.cfg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

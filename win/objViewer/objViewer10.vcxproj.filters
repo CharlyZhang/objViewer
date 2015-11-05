@@ -40,13 +40,13 @@
     <ClCompile Include="..\..\src\CZMaterial.cpp">
       <Filter>model</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MaterialLib.cpp">
+    <ClCompile Include="..\..\src\CZObjFileParser.cpp">
       <Filter>model</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ObjFileLoader.cpp">
+    <ClCompile Include="..\..\src\CZGeometry.cpp">
       <Filter>model</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Geometry.cpp">
+    <ClCompile Include="..\..\src\CZMaterialLib.cpp">
       <Filter>model</Filter>
     </ClCompile>
   </ItemGroup>
@@ -78,23 +78,30 @@
     <ClInclude Include="..\..\src\CZObjModel.h">
       <Filter>model</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Geometry.h">
+    <ClInclude Include="..\..\src\CZObjFileParser.h">
       <Filter>model</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\MaterialLib.h">
+    <ClInclude Include="..\..\src\CZGeometry.h">
       <Filter>model</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ObjFileLoader.h">
+    <ClInclude Include="..\..\src\CZMaterialLib.h">
       <Filter>model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\src\glsl\shading.frag">
+    <None Include="..\..\src\glsl\standard.vert">
       <Filter>glsl</Filter>
     </None>
-    <None Include="..\..\src\glsl\shading.vert">
+    <None Include="..\..\src\glsl\standard.frag">
       <Filter>glsl</Filter>
     </None>
-    <None Include="scene.config" />
+    <None Include="..\..\src\glsl\nonTex.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\src\glsl\standardDirectional.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="scene_violin.cfg" />
+    <None Include="..\..\ReadMe.md" />
   </ItemGroup>
 </Project>

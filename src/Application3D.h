@@ -2,19 +2,28 @@
 #define _CZAPPLICATION3D_H_
 
 #include <string>
+#include <map>
 #include "CZBasic.h"
-#include "CZObjModel.h"
+#include "CZObjFileParser.h"
 #include "CZShader.h"
 #include "CZMat4.h"
+#include "CZObjModel.h"
+#include <map>
 
-class Application3D 
+class Application3D : private CZObjFileParser
 {
 public:
+	// define type
+	typedef enum _ShaderType {
+		kDirectionalLightShading		///< 平行光光照
+	} ShaderType;
+	typedef std::map<ShaderType,CZShader*> ShaderMap;
+
 	Application3D();
 	~Application3D();
 
-	bool init();
-	bool loadObjModel(const std::string &filename);
+	bool init(const char* sceneFilename = NULL);
+	bool loadObjModel(const char* filename, bool quickLoad = true);
 	bool setRenderBufferSize(int w, int h);
 	void frame();
 	void reset();
@@ -34,13 +43,22 @@ public:
 	bool enableTexture(bool flag);
 
 private:
-	bool loadScene();
+	bool loadShaders();
+	CZShader* getShader(ShaderType type);
+
+	void parseLine(std::ifstream& ifs, const std::string& ele_id) override;
+	void parseEyePosition(std::ifstream& ifs);
+	void parsePointLight(std::ifstream& ifs);
+	void parseDirectionalLight(std::ifstream& ifs);
+	void parseBackgroundColor(std::ifstream& ifs);
+	void parseMainColor(std::ifstream& ifs);
 
 private:
-	CZScene scene;				
+	CZScene scene;
+
+	ShaderMap shaders;
 	CZObjModel *pModel;
-	CZShader *pShader;
-	CZMat4 projMat,rotateMat,translateMat,scaleMat;
+	CZMat4 projMat, rotateMat, translateMat, scaleMat;
 	int width, height;
 	CZColor modelColor;
 };

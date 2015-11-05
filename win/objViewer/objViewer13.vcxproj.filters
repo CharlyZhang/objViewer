@@ -19,11 +19,14 @@
     <Filter Include="model">
       <UniqueIdentifier>{621f0440-3258-40fe-be92-0c52791a9dae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\shaders">
+      <UniqueIdentifier>{b08b9d41-6d93-4bbb-bae8-ad1cd9e1dae4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\shaders">
+      <UniqueIdentifier>{894e3395-aa5a-4b20-a6ed-9efd26a0cb52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\CZShader.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\CZMat4.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -40,14 +43,29 @@
     <ClCompile Include="..\..\src\CZMaterial.cpp">
       <Filter>model</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MaterialLib.cpp">
+    <ClCompile Include="..\..\src\CZRenderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\CZGeometry.cpp">
       <Filter>model</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ObjFileLoader.cpp">
+    <ClCompile Include="..\..\src\CZMaterialLib.cpp">
       <Filter>model</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Geometry.cpp">
+    <ClCompile Include="..\..\src\CZObjFileParser.cpp">
       <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\CZShader.cpp">
+      <Filter>源文件\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\CZStandardShader.cpp">
+      <Filter>源文件\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\CZNontexShader.cpp">
+      <Filter>源文件\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\CZStandardDirectionalShader.cpp">
+      <Filter>源文件\shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -55,9 +73,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\CZVector.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\CZShader.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\CZDefine.h">
@@ -78,22 +93,47 @@
     <ClInclude Include="..\..\src\CZObjModel.h">
       <Filter>model</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Geometry.h">
+    <ClInclude Include="..\..\src\CZRenderer.h">
       <Filter>model</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\MaterialLib.h">
+    <ClInclude Include="..\..\src\CZGeometry.h">
       <Filter>model</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ObjFileLoader.h">
+    <ClInclude Include="..\..\src\CZMaterialLib.h">
       <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\CZObjFileParser.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\CZStandardShader.h">
+      <Filter>头文件\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\CZShader.h">
+      <Filter>头文件\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\CZNontexShader.h">
+      <Filter>头文件\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\CZStandardDirectionalShader.h">
+      <Filter>头文件\shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\src\glsl\shading.frag">
+    <None Include="..\..\src\glsl\standard.frag">
       <Filter>glsl</Filter>
     </None>
-    <None Include="..\..\src\glsl\shading.vert">
+    <None Include="..\..\src\glsl\standard.vert">
       <Filter>glsl</Filter>
     </None>
+    <None Include="..\..\src\glsl\nonTex.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="scene.cfg" />
+    <None Include="scene_violin.cfg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\src\glsl\standardDirectional.frag">
+      <Filter>glsl</Filter>
+    </Text>
   </ItemGroup>
 </Project>
