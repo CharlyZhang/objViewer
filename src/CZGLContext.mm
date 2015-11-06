@@ -1,8 +1,10 @@
 
 
 #include "CZGLContext.h"
-#include "../CZUtil.h"
-#include "glDef.h"
+//#include "../CZUtil.h"
+#include "CZDefine.h"
+
+#import <OpenGLES/EAGL.h>
 
 struct CZGLContext::Impl
 {
@@ -14,7 +16,7 @@ struct CZGLContext::Impl
 	}
 	~Impl()
 	{
-		if(realContext) [realContext release ];
+		//if(realContext) [realContext release ];
 		realContext = NULL;
 	}
 #endif
@@ -58,7 +60,7 @@ bool CZGLContext::setAsCurrent()
 void* CZGLContext::getRealContext()
 {
 #if USE_OPENGL_ES
-	return (void*)impl->realContext;
+	return (__bridge void*)impl->realContext;
 #endif
 	return NULL;
 }

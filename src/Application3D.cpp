@@ -14,6 +14,7 @@ Application3D::Application3D()
 {
 	width = height = DEFAULT_RENDER_SIZE;
 	pModel = NULL;
+    documentDirectory = NULL;
 }
 
 Application3D::~Application3D()
@@ -25,17 +26,17 @@ Application3D::~Application3D()
 		delete itr->second;
 	}
 	shaders.clear();
+    if(documentDirectory)   delete documentDirectory;
 }
 
 bool Application3D::init(const char* sceneFilename /* = NULL */ )
 {
+# if !defined(__APPLE__)
 	/// OpenGL initialization
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glShadeModel(GL_SMOOTH);					// 平滑着色
 
 	glEnable(GL_NORMALIZE);
-	glClearDepth(1.0f);							// 设置深度缓存
-	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 
@@ -44,15 +45,19 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 
 	//texture
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glEnable(GL_TEXTURE_2D);
-
+	//glEnable(GL_TEXTURE_2D);
+# endif
+    
+    glClearDepthf(1.0f);							// 设置深度缓存
+    glEnable(GL_DEPTH_TEST);
+    
 	CZCheckGLError();
 
 	/// load shader
-	loadShaders();
-
+    loadShaders();
+    
 	/// config scene
-	if(1||!load(sceneFilename))
+	if(!load(sceneFilename))
 	{
 		scene.eyePosition = CZPoint3D(0, 0, -200);
 		scene.light.position = CZPoint3D(0, 0, -120);
@@ -60,6 +65,13 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 		scene.ambientLight.intensity = CZPoint3D(0.2,0.2,0.2);
 		scene.directionalLight.intensity = CZPoint3D(1,1,1);
 		scene.directionalLight.direction = CZPoint3D(0,-5,10);
+        
+        scene.eyePosition = CZPoint3D(0, 0, 95.1);
+        scene.light.position = CZPoint3D(105.351,86.679,133.965);
+        scene.light.intensity = CZPoint3D(1, 1, 1);
+        scene.ambientLight.intensity = CZPoint3D(0.2,0.2,0.2);
+        scene.directionalLight.intensity = CZPoint3D(1,1,1);
+        scene.directionalLight.direction = CZPoint3D(-105.351,-86.679,-133.965);
 		scene.bgColor = CZColor(0.8f, 0.8f, 0.9f, 1.f);
 		scene.mColor = CZColor(1.f, 1.f, 1.f, 1.f);
 	}
@@ -78,12 +90,22 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
 	if (pModel) delete pModel;
 	pModel = new CZObjModel;
 
-	bool success = false;
-	string strFileName(filename);
-	if (!quickLoad || !pModel->loadBinary(strFileName + ".b"))
+    bool success = false;
+    string strFileName(filename);
+    string tempFileName = strFileName + ".b";
+    if(documentDirectory)
+    {
+        size_t splitLoc = tempFileName.find_last_of('/');
+        size_t strLen = tempFileName.length();
+        string name = tempFileName.substr(splitLoc+1,strLen-splitLoc-1);
+        tempFileName = string(documentDirectory) + "/" + name;
+    }
+    
+	if (!quickLoad || !pModel->loadBinary(tempFileName,filename))
 	{
 		success = pModel->load(strFileName);
-		if(success && quickLoad)	pModel->saveAsBinary(strFileName + ".b");
+		if(success && quickLoad)
+            pModel->saveAsBinary(tempFileName);
 	}
 
 	reset();
@@ -95,29 +117,35 @@ bool Application3D::setRenderBufferSize(int w, int h)
 {
 	width = w;	height = h;
 
-	glViewport(0, 0, width, height);
-
+	glViewport(0,0,width,height);
+#if !defined(__APPLE__)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60.0, (GLfloat)width / (GLfloat)height, 0.5f, 500.0f);
-	projMat.SetPerspective(60.0, (GLfloat)width / (GLfloat)height, 0.5f, 500.0f);
+	gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.5f, 500.0f);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+# endif
+    
+    projMat.SetPerspective(60.0,(GLfloat)width/(GLfloat)height, 0.5f, 500.0f);
+    
 	return true;
 }
 
 void Application3D::frame()
 {
+    CZCheckGLError();
+    
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// 清理颜色缓冲区 和 深度缓冲区
 
+#if !defined(__APPLE__)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
-	gluLookAt(scene.eyePosition.x, scene.eyePosition.y, scene.eyePosition.z, 0, 0, 0, 0, 1, 0);
-
-	CZMat4 mvpMat, modelMat;
+	gluLookAt(scene.eyePosition.x,scene.eyePosition.y,scene.eyePosition.z, 0,0,0,0,1,0);
+#endif
+    
+	CZMat4 mvpMat,modelMat;
 	modelMat = translateMat * scaleMat * rotateMat;
 	mvpMat.SetLookAt(scene.eyePosition.x, scene.eyePosition.y, scene.eyePosition.z, 0, 0, 0, 0, 1, 0);
 	mvpMat = projMat * mvpMat * modelMat;
@@ -135,7 +163,7 @@ void Application3D::frame()
 
 	// common uniforms
 	glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, mvpMat);
-	glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
+	glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
 	glUniform3f(pShader->getUniformLocation("ambientLight.intensities"),
 		scene.ambientLight.intensity.x,
 		scene.ambientLight.intensity.y,
@@ -153,19 +181,17 @@ void Application3D::frame()
 	CZCheckGLError();
 
 	if(pModel)	pModel->draw(pShader);
-
 	CZCheckGLError();
 
 	pShader->end();
-
-	/*于光源位置绘制一个球体，便于测试
-	 *	在固定管线模式下绘制*/
-	glColor3f(1.0, 0.0, 0.0);
+#if USE_OPENGL
+	glColor3f(1.0,0.0,0.0);
 	glPushMatrix();
 	glTranslatef(scene.light.position.x, scene.light.position.y, scene.light.position.z);
 	glDisable(GL_TEXTURE_2D);
 	glutSolidSphere(2, 100, 100);
 	glPopMatrix();
+#endif
 }
 
 void Application3D::reset()
@@ -174,10 +200,29 @@ void Application3D::reset()
 	rotateMat.LoadIdentity();
 	translateMat.LoadIdentity();
 	scaleMat.LoadIdentity();
-
+   // translateMat.SetTranslation(-205400, 0.000000, 445500);
+    
 	/// color
 	modelColor = scene.mColor;
 	glClearColor(scene.bgColor.r, scene.bgColor.g, scene.bgColor.b, scene.bgColor.a);
+}
+
+// document directory
+//  /note : default as the same of model's location;
+//          should be set in ios platform to utilize binary data
+void Application3D::setDocDirectory(const char* docDir)
+{
+    if (docDir == NULL)
+    {
+        LOG_WARN("docDir is NULL\n");
+        return;
+    }
+    
+    delete documentDirectory;
+    size_t len = strlen(docDir);
+    documentDirectory = new char[len+1];
+    strcpy(documentDirectory, docDir);
+    documentDirectory[len] = '\0';
 }
 
 // control

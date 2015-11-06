@@ -1,4 +1,18 @@
-#version 150
+//#version 150
+
+#ifdef GL_ES
+precision highp float;
+#endif
+
+#if __VERSION__ >= 140
+in vec2      fragTexCoord;
+in vec3      fragNormal;
+in vec3      fragVert;
+#else
+varying vec2      fragTexCoord;
+varying vec3      fragNormal;
+varying vec3      fragVert;
+#endif
 
 uniform mat4 modelMat;
 uniform sampler2D tex;
@@ -6,44 +20,40 @@ uniform int hasTex;
 
 uniform struct AmbientLight
 {
-	vec3 intensities;//按颜色的强度，已经乘过强度系数
+	vec3 intensities;//掳麓脩脮脡芦碌脛脟驴露脠拢卢脪脩戮颅鲁脣鹿媒脟驴露脠脧碌脢媒
 }ambientLight;
 
-uniform vec3 ka;//物体的环境光反射系数
+uniform vec3 ka;//脦茂脤氓碌脛禄路戮鲁鹿芒路麓脡盲脧碌脢媒
 
 uniform struct DirectionalLight
 {
-	vec3 direction;//不必归一化
-	vec3 intensities;//按颜色的强度，已经乘过强度系数
-}directionalLight;//反射系数使用Kd
+	vec3 direction;//虏禄卤脴鹿茅脪禄禄炉
+	vec3 intensities;//掳麓脩脮脡芦碌脛脟驴露脠拢卢脪脩戮颅鲁脣鹿媒脟驴露脠脧碌脢媒
+}directionalLight;//路麓脡盲脧碌脢媒脢鹿脫脙Kd
 
-uniform vec3 kd;//物体的散射光反射系数
-
-in vec2 fragTexCoord;
-in vec3 fragNormal;
-in vec3 fragVert;
+uniform vec3 kd;//脦茂脤氓碌脛脡垄脡盲鹿芒路麓脡盲脧碌脢媒
 
 void main() {
 	vec3 lightDirection = normalize(directionalLight.direction);
 
     //calculate normal in world coordinates
-    mat3 normalMatrix = transpose(inverse(mat3(modelMat)));
+    mat3 normalMatrix = mat3(modelMat);//transpose(inverse(mat3(modelMat)));
     vec3 normal = normalize(normalMatrix * fragNormal);
     
-    float brightness = -dot(normal, lightDirection);//normal、lightDirection要归一化
-    brightness = clamp(brightness, 0, 1);
+    float brightness = -dot(normal, lightDirection);//normal隆垄lightDirection脪陋鹿茅脪禄禄炉
+    brightness = clamp(brightness, 0.0, 1.0);
 
     //calculate final color of the pixel, based on:
     // 1. The angle of incidence: brightness
     // 2. The color/intensities of the light: light.intensities
 	// 3. The reflection coefficient(ka for Ambient & kd for Diffuse) of the surface
     // 4. The texture and texture coord: texture(tex, fragTexCoord)
-	vec4 surfaceColor = texture(tex, fragTexCoord);
+	vec4 surfaceColor = texture2D(tex, fragTexCoord);
 
 	if(hasTex == 0) surfaceColor = vec4(1,1,1,1);
 
-	vec3 fragColorRGB = ambientLight.intensities * ka +				//环境光
-		brightness * directionalLight.intensities * surfaceColor.rgb * kd.rgb;	//平行光
+	vec3 fragColorRGB = ambientLight.intensities * ka +				//禄路戮鲁鹿芒
+		brightness * directionalLight.intensities * surfaceColor.rgb * kd.rgb;	//脝陆脨脨鹿芒
 	
     gl_FragColor = vec4(fragColorRGB, surfaceColor.a);
 

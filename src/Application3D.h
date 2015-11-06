@@ -8,7 +8,6 @@
 #include "CZShader.h"
 #include "CZMat4.h"
 #include "CZObjModel.h"
-#include <map>
 
 class Application3D : private CZObjFileParser
 {
@@ -27,7 +26,12 @@ public:
 	bool setRenderBufferSize(int w, int h);
 	void frame();
 	void reset();
-
+    
+    // document directory
+    //  /note : default as the same of model's location;
+    //          should be set in ios platform to utilize binary data 
+    void setDocDirectory(const char* docDir);
+    
 	// control
 	//	/note : (deltaX,deltaY) is in the screen coordinate system
 	void rotate(float deltaX, float deltaY);
@@ -55,12 +59,13 @@ private:
 
 private:
 	CZScene scene;
-
 	ShaderMap shaders;
 	CZObjModel *pModel;
 	CZMat4 projMat, rotateMat, translateMat, scaleMat;
 	int width, height;
 	CZColor modelColor;
+    
+    char *documentDirectory;                          ///< to store the binary data of model
 };
 
 #endif

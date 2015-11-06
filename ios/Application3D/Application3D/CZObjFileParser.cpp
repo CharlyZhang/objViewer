@@ -8,11 +8,11 @@ bool CZObjFileParser::load(const string& path)
 	ifstream ifs(path.c_str(), ios::in | ios::ate);
 	if (!ifs)
 	{
-		LOG_WARN("% not exist\n",path.c_str());
+		LOG_WARN("%s not exist\n",path.c_str());
 		return false;
 	}
 
-	m_dir = path.substr(0, path.find_last_of('/'));
+	curDirPath = path.substr(0, path.find_last_of('/'));
 
 	const int fileSize = ifs.tellg();
 	ifs.seekg(0, ios::beg);
@@ -32,7 +32,7 @@ bool CZObjFileParser::load(const string& path)
 
 			if (lastPercent != percent)
 			{
-				LOG_INFO("processing£º%d%\n", percent);
+				LOG_INFO("processing %d%%\n", percent);
 				lastPercent = percent;
 			}
 		}
@@ -51,7 +51,7 @@ bool CZObjFileParser::load(const char *filename)
 {
 	if(filename == NULL)
 	{
-		LOG_ERROR("filename is NULL\n");
+		LOG_WARN("filename is NULL\n");
 		return false;
 	}
 	

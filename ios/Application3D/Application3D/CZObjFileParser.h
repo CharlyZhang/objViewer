@@ -12,6 +12,7 @@
 
 #include <fstream>
 #include <string>
+#include "CZLog.h"
 
 class CZObjFileParser
 {
@@ -24,21 +25,9 @@ protected:
 	//@param is 文件流，用于提取有效数据（不含行前缀）
 	//@param ele_id 数据行的前缀，据此决定提取哪些数据
 	virtual void parseLine(std::ifstream& ifs, const std::string& ele_id)
-	{
-		/*在子类中像下列代码一样实现： */
-		//if ("mtllib" == ele_id) {
-		//	string mtlFilePath;
-		//	ifs >> mtlFilePath;
-		//	cout << "	mtllib " << (m_dir + "/" + mtlFilePath) << endl;
-		//}
-		//else if ("v" == ele_id) {	//vertex data
-		//	float x, y, z;
-		//	ifs >> x >> y >> z;
-		//	m_pGeometry->addVertex(SVertex3f(x, y, z));
-		//}
-		//else
-		//	skipLine(is);
-	}
+    {
+        LOG_WARN("virtual function has not been impelemented!\n");
+    }
 
 	void skipLine(std::ifstream& is);
 	bool skipCommentLine(std::ifstream& is);

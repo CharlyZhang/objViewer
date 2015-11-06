@@ -26,10 +26,14 @@ public:
 	~CZObjModel();
 
 	bool load(const std::string& path) override;
-	bool loadBinary(const std::string& path);
+    bool loadBinary(const std::string& path, const char *originalPath = NULL);
 	bool saveAsBinary(const std::string& path);
 
-	void draw(CZShader* pShader);
+	/*清除来自obj文件的原始数据，以节约内存
+	*@side-effect 进入RENDER状态，不能再调用unpack()*/
+	void clearRaw();
+
+	void draw(CZShader *pShader);
 
 private:
 	void parseLine(std::ifstream& ifs, const std::string& ele_id) override;
