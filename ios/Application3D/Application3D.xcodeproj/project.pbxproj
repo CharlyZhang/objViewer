@@ -8,10 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2D7673491BE7527800783623 /* libApplication3D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D76733D1BE7527800783623 /* libApplication3D.a */; };
-		2D7673771BE752AD00783623 /* Application3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673581BE752AC00783623 /* Application3D.mm */; };
+		2D7673771BE752AD00783623 /* Application3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673581BE752AC00783623 /* Application3D.cpp */; };
 		2D7673791BE752AD00783623 /* CZMat4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D76735F1BE752AD00783623 /* CZMat4.cpp */; };
 		2D76737B1BE752AD00783623 /* CZMaterial.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673631BE752AD00783623 /* CZMaterial.mm */; };
-		2D76737C1BE752AD00783623 /* CZModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673641BE752AD00783623 /* CZModel.cpp */; };
 		2D76737D1BE752AD00783623 /* CZObjModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673661BE752AD00783623 /* CZObjModel.cpp */; };
 		2D76737F1BE752AD00783623 /* CZShader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2D76736A1BE752AD00783623 /* CZShader.mm */; };
 		2D7673811BE752AD00783623 /* CZUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D76736D1BE752AD00783623 /* CZUtil.cpp */; };
@@ -48,7 +47,7 @@
 		2D76733D1BE7527800783623 /* libApplication3D.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libApplication3D.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D7673481BE7527800783623 /* Application3DTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Application3DTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D76734E1BE7527800783623 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2D7673581BE752AC00783623 /* Application3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Application3D.mm; path = ../../../src/Application3D.mm; sourceTree = "<group>"; };
+		2D7673581BE752AC00783623 /* Application3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Application3D.cpp; path = ../../../src/Application3D.cpp; sourceTree = "<group>"; };
 		2D7673591BE752AC00783623 /* Application3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Application3D.h; path = ../../../src/Application3D.h; sourceTree = "<group>"; };
 		2D76735A1BE752AC00783623 /* CZBasic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZBasic.h; path = ../../../src/CZBasic.h; sourceTree = "<group>"; };
 		2D76735B1BE752AC00783623 /* CZDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZDefine.h; path = ../../../src/CZDefine.h; sourceTree = "<group>"; };
@@ -57,8 +56,6 @@
 		2D7673601BE752AD00783623 /* CZMat4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZMat4.h; path = ../../../src/CZMat4.h; sourceTree = "<group>"; };
 		2D7673621BE752AD00783623 /* CZMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZMaterial.h; path = ../../../src/CZMaterial.h; sourceTree = "<group>"; };
 		2D7673631BE752AD00783623 /* CZMaterial.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CZMaterial.mm; path = ../../../src/CZMaterial.mm; sourceTree = "<group>"; };
-		2D7673641BE752AD00783623 /* CZModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZModel.cpp; path = ../../../src/CZModel.cpp; sourceTree = "<group>"; };
-		2D7673651BE752AD00783623 /* CZModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZModel.h; path = ../../../src/CZModel.h; sourceTree = "<group>"; };
 		2D7673661BE752AD00783623 /* CZObjModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZObjModel.cpp; path = ../../../src/CZObjModel.cpp; sourceTree = "<group>"; };
 		2D7673671BE752AD00783623 /* CZObjModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZObjModel.h; path = ../../../src/CZObjModel.h; sourceTree = "<group>"; };
 		2D7673691BE752AD00783623 /* CZShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZShader.h; path = ../../../src/CZShader.h; sourceTree = "<group>"; };
@@ -118,7 +115,7 @@
 		2D76733F1BE7527800783623 /* Application3D */ = {
 			isa = PBXGroup;
 			children = (
-				2D7673581BE752AC00783623 /* Application3D.mm */,
+				2D7673581BE752AC00783623 /* Application3D.cpp */,
 				2D7673591BE752AC00783623 /* Application3D.h */,
 				2D7673B21BEC39E000783623 /* CZGeometry.cpp */,
 				2D7673B31BEC39E000783623 /* CZGeometry.h */,
@@ -133,8 +130,6 @@
 				2D7673601BE752AD00783623 /* CZMat4.h */,
 				2D7673621BE752AD00783623 /* CZMaterial.h */,
 				2D7673631BE752AD00783623 /* CZMaterial.mm */,
-				2D7673641BE752AD00783623 /* CZModel.cpp */,
-				2D7673651BE752AD00783623 /* CZModel.h */,
 				2D7673661BE752AD00783623 /* CZObjModel.cpp */,
 				2D7673671BE752AD00783623 /* CZObjModel.h */,
 				2D7673691BE752AD00783623 /* CZShader.h */,
@@ -250,10 +245,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D7673871BE753F000783623 /* ReadMe.md in Sources */,
-				2D76737C1BE752AD00783623 /* CZModel.cpp in Sources */,
 				2D7673BA1BEC39E000783623 /* CZGeometry.cpp in Sources */,
 				2D7673791BE752AD00783623 /* CZMat4.cpp in Sources */,
-				2D7673771BE752AD00783623 /* Application3D.mm in Sources */,
+				2D7673771BE752AD00783623 /* Application3D.cpp in Sources */,
 				2D76737D1BE752AD00783623 /* CZObjModel.cpp in Sources */,
 				2D76737F1BE752AD00783623 /* CZShader.mm in Sources */,
 				2D76737B1BE752AD00783623 /* CZMaterial.mm in Sources */,

@@ -32,7 +32,7 @@ bool CZObjFileParser::load(const string& path)
 
 			if (lastPercent != percent)
 			{
-				LOG_INFO("processing %d\%\n", percent);
+				LOG_INFO("processing %d%%\n", percent);
 				lastPercent = percent;
 			}
 		}
@@ -51,7 +51,7 @@ bool CZObjFileParser::load(const char *filename)
 {
 	if(filename == NULL)
 	{
-		LOG_ERROR("filename is NULL\n");
+		LOG_WARN("filename is NULL\n");
 		return false;
 	}
 	

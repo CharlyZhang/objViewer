@@ -26,7 +26,7 @@
 
 #define LOG_ERROR(fmt, args...)	do { if (LOG_LEVEL_CUR >= LOG_LEVEL_ERROR) LOG("[ERROR]%s at:%d(%s):" fmt ,__FILE__, __LINE__, __FUNCTION__, ##args);} while (0)
 #define LOG_WARN(fmt,  args...)	do { if (LOG_LEVEL_CUR >= LOG_LEVEL_WARN)  LOG("[WARN](%s):" fmt ,  __FUNCTION__, ##args);} while (0)
-#define LOG_INFO(fmt,  args...)	do { if (LOG_LEVEL_CUR >= LOG_LEVEL_INFO)  LOG("[INFO]%s at:%d(%s):" fmt ,__FILE__, __LINE__,  __FUNCTION__, ##args);} while (0)
+#define LOG_INFO(fmt,  args...)	do { if (LOG_LEVEL_CUR >= LOG_LEVEL_INFO)  LOG("[INFO](%s):" fmt ,  __FUNCTION__, ##args);} while (0)
 #define LOG_DEBUG(fmt, args...) do { if (LOG_LEVEL_CUR >= LOG_LEVEL_DEBUG) LOG("[DEBUG](%s):" fmt,  __FUNCTION__ ,##args);} while (0)
 # endif
 

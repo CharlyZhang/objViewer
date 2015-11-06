@@ -55,13 +55,17 @@
        // [self release];
         return nil;
     }
-    
-    app3d.init();
-    NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plane.obj"];
-    NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/violin.obj"];
 
-//        NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/box/盒子.obj"];
-//        NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/rect/rect.obj"];
+    NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/中提琴/zhongtiqin.obj"];
+//    NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/小提琴/xiaotiqin.obj"];
+//    NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/低音提琴/diyintiqing.obj"];
+//    NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/大提琴/datiqing.obj"];
+
+    NSString *configPath = [[[NSBundle mainBundle]bundlePath]stringByAppendingPathComponent:@"scene.cfg"];
+    NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    app3d.init([configPath UTF8String]);
+    app3d.setDocDirectory([docPath UTF8String]);
     app3d.loadObjModel([bundlePath UTF8String]);
     app3d.scale(3);
     

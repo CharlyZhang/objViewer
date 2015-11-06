@@ -5,10 +5,6 @@
 #include <vector>
 #include <string>
 
-#if defined(__APPLE__)
-#import <Foundation/Foundation.h>
-#endif
-
 #define DEFAULT_RENDER_SIZE 500					///< Ä¬ÈÏäÖÈ¾»º´æ´óÐ¡
 #define CONFIG_FILE_PATH	"./scene.cfg"
 
@@ -18,6 +14,7 @@ Application3D::Application3D()
 {
 	width = height = DEFAULT_RENDER_SIZE;
 	pModel = NULL;
+    documentDirectory = NULL;
 }
 
 Application3D::~Application3D()
@@ -29,6 +26,7 @@ Application3D::~Application3D()
 		delete itr->second;
 	}
 	shaders.clear();
+    if(documentDirectory)   delete documentDirectory;
 }
 
 bool Application3D::init(const char* sceneFilename /* = NULL */ )
@@ -59,7 +57,7 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
     loadShaders();
     
 	/// config scene
-	if(1||!load(sceneFilename))
+	if(!load(sceneFilename))
 	{
 		scene.eyePosition = CZPoint3D(0, 0, -200);
 		scene.light.position = CZPoint3D(0, 0, -120);
@@ -67,6 +65,13 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 		scene.ambientLight.intensity = CZPoint3D(0.2,0.2,0.2);
 		scene.directionalLight.intensity = CZPoint3D(1,1,1);
 		scene.directionalLight.direction = CZPoint3D(0,-5,10);
+        
+        scene.eyePosition = CZPoint3D(0, 0, 95.1);
+        scene.light.position = CZPoint3D(105.351,86.679,133.965);
+        scene.light.intensity = CZPoint3D(1, 1, 1);
+        scene.ambientLight.intensity = CZPoint3D(0.2,0.2,0.2);
+        scene.directionalLight.intensity = CZPoint3D(1,1,1);
+        scene.directionalLight.direction = CZPoint3D(-105.351,-86.679,-133.965);
 		scene.bgColor = CZColor(0.8f, 0.8f, 0.9f, 1.f);
 		scene.mColor = CZColor(1.f, 1.f, 1.f, 1.f);
 	}
@@ -87,14 +92,15 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
 
     bool success = false;
     string strFileName(filename);
-    
     string tempFileName = strFileName + ".b";
-#if defined(__APPLE__)
-    string name = tempFileName.substr(tempFileName.find_last_of('/')+1,tempFileName.length()-tempFileName.find_last_of('/')-1);
-    NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *file = [NSString stringWithFormat:@"%@/%s",docPath,name.c_str()];
-    tempFileName = string([file UTF8String]);
-#endif
+    if(documentDirectory)
+    {
+        size_t splitLoc = tempFileName.find_last_of('/');
+        size_t strLen = tempFileName.length();
+        string name = tempFileName.substr(splitLoc+1,strLen-splitLoc-1);
+        tempFileName = string(documentDirectory) + "/" + name;
+    }
+    
 	if (!quickLoad || !pModel->loadBinary(tempFileName,filename))
 	{
 		success = pModel->load(strFileName);
@@ -199,6 +205,24 @@ void Application3D::reset()
 	/// color
 	modelColor = scene.mColor;
 	glClearColor(scene.bgColor.r, scene.bgColor.g, scene.bgColor.b, scene.bgColor.a);
+}
+
+// document directory
+//  /note : default as the same of model's location;
+//          should be set in ios platform to utilize binary data
+void Application3D::setDocDirectory(const char* docDir)
+{
+    if (docDir == NULL)
+    {
+        LOG_WARN("docDir is NULL\n");
+        return;
+    }
+    
+    delete documentDirectory;
+    size_t len = strlen(docDir);
+    documentDirectory = new char[len+1];
+    strcpy(documentDirectory, docDir);
+    documentDirectory[len] = '\0';
 }
 
 // control
