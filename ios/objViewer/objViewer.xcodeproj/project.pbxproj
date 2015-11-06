@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D7673C51BEC3A0A00783623 /* nonTex.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673BF1BEC3A0A00783623 /* nonTex.frag */; };
+		2D7673C61BEC3A0A00783623 /* shadingWithTex.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C01BEC3A0A00783623 /* shadingWithTex.frag */; };
+		2D7673C71BEC3A0A00783623 /* shadingWithTex.vert in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C11BEC3A0A00783623 /* shadingWithTex.vert */; };
+		2D7673C81BEC3A0A00783623 /* standard.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C21BEC3A0A00783623 /* standard.frag */; };
+		2D7673C91BEC3A0A00783623 /* standard.vert in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C31BEC3A0A00783623 /* standard.vert */; };
+		2D7673CA1BEC3A0A00783623 /* standardDirectional.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C41BEC3A0A00783623 /* standardDirectional.frag */; };
+		2D7673CC1BEC3A4C00783623 /* scene.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673CB1BEC3A4C00783623 /* scene.cfg */; };
 		2DD439131BDA35CD004F1B8D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD439121BDA35CD004F1B8D /* main.m */; };
 		2DD439161BDA35CD004F1B8D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD439151BDA35CD004F1B8D /* AppDelegate.m */; };
 		2DD439191BDA35CD004F1B8D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD439181BDA35CD004F1B8D /* ViewController.m */; };
@@ -17,8 +24,6 @@
 		2DD43A0A1BE1FC30004F1B8D /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2DD43A091BE1FC30004F1B8D /* EAGLView.mm */; };
 		2DD43A0C1BE21F73004F1B8D /* obj in Resources */ = {isa = PBXBuildFile; fileRef = 2DD43A0B1BE21F73004F1B8D /* obj */; };
 		2DD43A0E1BE2216D004F1B8D /* libApplication3D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD43A0D1BE2216D004F1B8D /* libApplication3D.a */; };
-		2DD43A241BE30008004F1B8D /* shading.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2DD43A211BE30008004F1B8D /* shading.frag */; };
-		2DD43A251BE30008004F1B8D /* shading.vert in Resources */ = {isa = PBXBuildFile; fileRef = 2DD43A221BE30008004F1B8D /* shading.vert */; };
 		2DD43A291BE37BDA004F1B8D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD43A281BE37BDA004F1B8D /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +38,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2D7673BF1BEC3A0A00783623 /* nonTex.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = nonTex.frag; sourceTree = "<group>"; };
+		2D7673C01BEC3A0A00783623 /* shadingWithTex.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shadingWithTex.frag; sourceTree = "<group>"; };
+		2D7673C11BEC3A0A00783623 /* shadingWithTex.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shadingWithTex.vert; sourceTree = "<group>"; };
+		2D7673C21BEC3A0A00783623 /* standard.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = standard.frag; sourceTree = "<group>"; };
+		2D7673C31BEC3A0A00783623 /* standard.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = standard.vert; sourceTree = "<group>"; };
+		2D7673C41BEC3A0A00783623 /* standardDirectional.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = standardDirectional.frag; sourceTree = "<group>"; };
+		2D7673CB1BEC3A4C00783623 /* scene.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = scene.cfg; path = ../../win/objViewer/scene.cfg; sourceTree = "<group>"; };
 		2DD4390D1BDA35CD004F1B8D /* objViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = objViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DD439111BDA35CD004F1B8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2DD439121BDA35CD004F1B8D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -50,8 +62,6 @@
 		2DD43A091BE1FC30004F1B8D /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
 		2DD43A0B1BE21F73004F1B8D /* obj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = obj; path = ../../../../../Desktop/obj; sourceTree = "<group>"; };
 		2DD43A0D1BE2216D004F1B8D /* libApplication3D.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libApplication3D.a; path = "../Application3D/build/Debug-iphoneos/libApplication3D.a"; sourceTree = "<group>"; };
-		2DD43A211BE30008004F1B8D /* shading.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shading.frag; sourceTree = "<group>"; };
-		2DD43A221BE30008004F1B8D /* shading.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shading.vert; sourceTree = "<group>"; };
 		2DD43A281BE37BDA004F1B8D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -78,6 +88,7 @@
 		2DD439041BDA35CD004F1B8D = {
 			isa = PBXGroup;
 			children = (
+				2D7673CB1BEC3A4C00783623 /* scene.cfg */,
 				2DD43A281BE37BDA004F1B8D /* UIKit.framework */,
 				2DD43A0D1BE2216D004F1B8D /* libApplication3D.a */,
 				2DD43A231BE30008004F1B8D /* glsl */,
@@ -143,8 +154,12 @@
 		2DD43A231BE30008004F1B8D /* glsl */ = {
 			isa = PBXGroup;
 			children = (
-				2DD43A211BE30008004F1B8D /* shading.frag */,
-				2DD43A221BE30008004F1B8D /* shading.vert */,
+				2D7673BF1BEC3A0A00783623 /* nonTex.frag */,
+				2D7673C01BEC3A0A00783623 /* shadingWithTex.frag */,
+				2D7673C11BEC3A0A00783623 /* shadingWithTex.vert */,
+				2D7673C21BEC3A0A00783623 /* standard.frag */,
+				2D7673C31BEC3A0A00783623 /* standard.vert */,
+				2D7673C41BEC3A0A00783623 /* standardDirectional.frag */,
 			);
 			name = glsl;
 			path = /Users/charlyzhang/Git/OBJViewer/ios/Application3D/Application3D/../../../src/glsl;
@@ -230,12 +245,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D7673C51BEC3A0A00783623 /* nonTex.frag in Resources */,
+				2D7673C91BEC3A0A00783623 /* standard.vert in Resources */,
 				2DD4391C1BDA35CD004F1B8D /* Main.storyboard in Resources */,
+				2D7673C61BEC3A0A00783623 /* shadingWithTex.frag in Resources */,
 				2DD439211BDA35CD004F1B8D /* LaunchScreen.xib in Resources */,
+				2D7673C81BEC3A0A00783623 /* standard.frag in Resources */,
+				2D7673C71BEC3A0A00783623 /* shadingWithTex.vert in Resources */,
 				2DD43A0C1BE21F73004F1B8D /* obj in Resources */,
-				2DD43A241BE30008004F1B8D /* shading.frag in Resources */,
+				2D7673CC1BEC3A4C00783623 /* scene.cfg in Resources */,
 				2DD4391E1BDA35CD004F1B8D /* Images.xcassets in Resources */,
-				2DD43A251BE30008004F1B8D /* shading.vert in Resources */,
+				2D7673CA1BEC3A0A00783623 /* standardDirectional.frag in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

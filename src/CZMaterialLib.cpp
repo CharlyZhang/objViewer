@@ -1,14 +1,15 @@
-#include "MaterialLib.h"
+#include "CZMaterialLib.h"
+#include "CZLog.h"
 
 #include <string>
 using namespace std;
 
-void CMaterialLib::parseLine(ifstream& ifs, const string& ele_id)
+void CZMaterialLib::parseLine(ifstream& ifs, const string& ele_id)
 {
 	if ("newmtl" == ele_id) {
 		string mtlName;
 		ifs >> mtlName;
-		cout << "newmtl " << mtlName << endl;
+		LOG_INFO("newmtl %s\n",mtlName.c_str());
 
 		CZMaterial *pNewMtl = new CZMaterial();
 		m_materials.insert(pair<string, CZMaterial*>(mtlName, pNewMtl));
@@ -30,25 +31,29 @@ void CMaterialLib::parseLine(ifstream& ifs, const string& ele_id)
 		ifs.clear();
 	}
 	else if ("map_Kd" == ele_id) {
-		string texImgPath;
-		ifs >> texImgPath;//纹理图相对路径（以该mtl文件所在目录为根）
+		string texImgName,texImgPath;
+		ifs >> texImgName;//纹理图相对路径（以该mtl文件所在目录为根）
 
-		texImgPath = m_dir + "/" + texImgPath;//转换到相对于程序根目录的相对路径
+		texImgPath = m_dir + "/" + texImgName;//转换到相对于程序根目录的相对路径
 		bool success = m_pCur->loadTexture(texImgPath.c_str());
-		cout << success << endl;
+		if(success)	LOG_INFO(" texture(%s) loaded successfully\n",texImgName.c_str());
 	}
 	else
 		skipLine(ifs);
 }
 
-CZMaterial* CMaterialLib::get(string name)
+CZMaterial* CZMaterialLib::get(string &name)
 {
 	auto iterMtl = m_materials.find(name);
 	return iterMtl != m_materials.end() ? iterMtl->second : nullptr;
 }
 
+const map<std::string, CZMaterial*>& CZMaterialLib::getAll()
+{
+	return m_materials;
+}
 
-CMaterialLib::~CMaterialLib()
+CZMaterialLib::~CZMaterialLib()
 {
 	for (auto iterMtl = m_materials.begin(); iterMtl != m_materials.end(); iterMtl++)
 	{

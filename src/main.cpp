@@ -36,9 +36,11 @@ void InitGL()
 void Init()
 {
 	InitGL();
-
-	app3d.init();
-	app3d.loadObjModel("../../data/plane/plane.obj");
+	app3d.init("scene_violin.cfg");
+	app3d.loadObjModel("../../data/大提琴/大提琴.obj",true);
+	//app3d.loadObjModel("../../data/plane/plane.obj",true);
+	//app3d.loadObjModel("../../data/incomplete/planeIncomplete.obj");
+	//app3d.loadObjModel("../../data/box/box.obj");
 }
 
 void Display()

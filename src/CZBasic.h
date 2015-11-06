@@ -19,12 +19,23 @@ typedef struct _CZLight {
 	CZPoint3D intensity;
 } CZLight;
 
+typedef struct _CZAmbientLight {
+	CZPoint3D intensity;
+} CZAmbientLight;
+
+typedef struct _CZDirectionalLight {
+	CZPoint3D direction;
+	CZPoint3D intensity;
+} CZDirectionalLight;
+
 // Scene
 typedef struct _CZScene {
-	CZColor	bgColor;		//< 背景颜色
-	CZColor mColor;			//< 模型颜色
-	CZLight	light;			//< 光源
-	CZPoint3D eyePosition;	//< 视点位置
+	CZColor	bgColor;						//< 背景颜色
+	CZColor mColor;							//< 模型颜色
+	CZLight	light;							//< 点光源
+	CZAmbientLight ambientLight;			//< 环境光
+	CZDirectionalLight directionalLight;	//< 平行光
+	CZPoint3D eyePosition;					//< 视点位置
 } CZScene;
 
 #endif

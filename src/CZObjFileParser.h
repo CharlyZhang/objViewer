@@ -1,4 +1,4 @@
-/*工具类。用于辅助下列类型文件的读取：
+/*工具类。用于辅助下列类型文件的读取：CZObjFileParser.h
  *	.obj格式的3d模型文件
  *	.ojb文件附属的.mtl文件
  *文件特点：
@@ -7,21 +7,23 @@
  *	注释行的前缀是字符“#”
  *	两行间可以有任意多数据行和空行*/
 
-#pragma once
+#ifndef _CZOBJFILEPARSER_H_
+#define _CZOBJFILEPARSER_H_
 
-#include <iostream>
-using namespace std;
+#include <fstream>
+#include <string>
 
-class CObjFileParser
+class CZObjFileParser
 {
 public:
 	//注：“显示百分比”部分非线程安全，因为用了static变量
-	virtual void load(const string& path);
+	virtual bool load(const std::string& path);
+	bool load(const char* path);
 
 protected:
 	//@param is 文件流，用于提取有效数据（不含行前缀）
 	//@param ele_id 数据行的前缀，据此决定提取哪些数据
-	virtual void parseLine(ifstream& ifs, const string& ele_id)
+	virtual void parseLine(std::ifstream& ifs, const std::string& ele_id)
 	{
 		/*在子类中像下列代码一样实现： */
 		//if ("mtllib" == ele_id) {
@@ -38,8 +40,8 @@ protected:
 		//	skipLine(is);
 	}
 
-	void skipLine(ifstream& is);
-	bool skipCommentLine(ifstream& is);
+	void skipLine(std::ifstream& is);
+	bool skipCommentLine(std::ifstream& is);
 
 	/*读取一个元素（两个非数字且非分隔符的符号之间的内容）所含有的数据
 	*	一个元素的数据以@param sep为分隔符。两个分隔符之间若没有数据，则视其值为@param defaultValue
@@ -61,7 +63,9 @@ protected:
 	* /尾				-1
 	* 1//3尾		 1, -1
 	* 1/2尾			 1		*/
-	int parseNumberElement(ifstream &ifs, int *pData, char sep = '/', int defaultValue = -1, int maxCount = 3);
+	int parseNumberElement(std::ifstream &ifs, int *pData, char sep = '/', int defaultValue = -1, int maxCount = 3);
 
-	string m_dir;//相对路径(以程序根目录为根目录）
+	std::string m_dir;//相对路径(以程序根目录为根目录）
 };
+
+#endif

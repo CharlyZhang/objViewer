@@ -1,28 +1,21 @@
-#include "ObjFileLoader.h"
+#include "CZObjFileParser.h"
 #include "CZLog.h"
-
-#include <fstream>
-#include <string>
 
 using namespace std;
 
-void CObjFileParser::load(const string& path)
+bool CZObjFileParser::load(const string& path)
 {
-	//从文件尾处打开文件，便于统计文件大小；之后回到文件头处
 	ifstream ifs(path.c_str(), ios::in | ios::ate);
 	if (!ifs)
-    {
-		LOG_WARN("文件不存在");
-        return;
-    }
+	{
+		LOG_WARN("% not exist\n",path.c_str());
+		return false;
+	}
 
 	m_dir = path.substr(0, path.find_last_of('/'));
 
 	const int fileSize = ifs.tellg();
 	ifs.seekg(0, ios::beg);
-
-	if (0 == fileSize)
-		LOG_WARN("文件里没有数据");
 
 	//	explain what's going on
 	LOG_INFO("Parsing file %s  (size = %d bytes)...\n", path.c_str(), fileSize);
@@ -39,10 +32,9 @@ void CObjFileParser::load(const string& path)
 
 			if (lastPercent != percent)
 			{
-				LOG_INFO("进度：百分之%d\n", percent);
+				LOG_INFO("processing：%d%\n", percent);
 				lastPercent = percent;
 			}
-			
 		}
 
 		string ele_id;
@@ -51,16 +43,30 @@ void CObjFileParser::load(const string& path)
 		else
 			parseLine(ifs, ele_id);
 	}
+
+	return true;
 }
 
-void CObjFileParser::skipLine(ifstream& is)
+bool CZObjFileParser::load(const char *filename)
+{
+	if(filename == NULL)
+	{
+		LOG_ERROR("filename is NULL\n");
+		return false;
+	}
+	
+	string strFilename(filename);
+	return load(strFilename);
+}
+
+void CZObjFileParser::skipLine(ifstream& is)
 {
 	char next;
 	is >> std::noskipws;
 	while ((is >> next) && ('\n' != next));
 }
 
-bool CObjFileParser::skipCommentLine(ifstream& is)
+bool CZObjFileParser::skipCommentLine(ifstream& is)
 {
 	char next;
 	while (is >> std::skipws >> next)
@@ -84,7 +90,7 @@ bool CObjFileParser::skipCommentLine(ifstream& is)
 *<digit>0 <文件尾>		尾		|F		F		T		EOF		|T			F		EOF 
 *
 *实现parseNumberElement()时，需要根据上述几种情况决定如何处理数据*/
-int CObjFileParser::parseNumberElement(ifstream &ifs, int *pData, char sep, int defaultValue, int maxCount)
+int CZObjFileParser::parseNumberElement(ifstream &ifs, int *pData, char sep, int defaultValue, int maxCount)
 {
 	int count = 0;
 	int data;

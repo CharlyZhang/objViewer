@@ -57,3 +57,5 @@ void main() {
  //   gl_FragColor = vec4(fragTexCoord,0.5,1);
  //   gl_FragColor = vec4(fragNormal,1);
 }
+
+}
