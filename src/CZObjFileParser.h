@@ -65,7 +65,7 @@ protected:
 	* 1/2尾			 1		*/
 	int parseNumberElement(std::ifstream &ifs, int *pData, char sep = '/', int defaultValue = -1, int maxCount = 3);
 
-	std::string m_dir;//相对路径(以程序根目录为根目录）
+	std::string curDirPath;//相对路径(以程序根目录为根目录）
 };
 
 #endif

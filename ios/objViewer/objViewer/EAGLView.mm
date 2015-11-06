@@ -59,6 +59,7 @@
     app3d.init();
     NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plane.obj"];
     NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/violin.obj"];
+
 //        NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/box/盒子.obj"];
 //        NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/rect/rect.obj"];
     app3d.loadObjModel([bundlePath UTF8String]);

@@ -5,6 +5,10 @@
 #include <vector>
 #include <string>
 
+#if defined(__APPLE__)
+#import <Foundation/Foundation.h>
+#endif
+
 #define DEFAULT_RENDER_SIZE 500					///< Ä¬ÈÏäÖÈ¾»º´æ´óÐ¡
 #define CONFIG_FILE_PATH	"./scene.cfg"
 
@@ -81,12 +85,21 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
 	if (pModel) delete pModel;
 	pModel = new CZObjModel;
 
-	bool success = false;
-	string strFileName(filename);
-	if (!quickLoad || !pModel->loadBinary(strFileName + ".b"))
+    bool success = false;
+    string strFileName(filename);
+    
+    string tempFileName = strFileName + ".b";
+#if defined(__APPLE__)
+    string name = tempFileName.substr(tempFileName.find_last_of('/')+1,tempFileName.length()-tempFileName.find_last_of('/')-1);
+    NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *file = [NSString stringWithFormat:@"%@/%s",docPath,name.c_str()];
+    tempFileName = string([file UTF8String]);
+#endif
+	if (!quickLoad || !pModel->loadBinary(tempFileName,filename))
 	{
 		success = pModel->load(strFileName);
-		if(success && quickLoad)	pModel->saveAsBinary(strFileName + ".b");
+		if(success && quickLoad)
+            pModel->saveAsBinary(tempFileName);
 	}
 
 	reset();

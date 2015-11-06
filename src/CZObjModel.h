@@ -26,7 +26,7 @@ public:
 	~CZObjModel();
 
 	bool load(const std::string& path) override;
-	bool loadBinary(const std::string& path);
+    bool loadBinary(const std::string& path, const char *originalPath = NULL);
 	bool saveAsBinary(const std::string& path);
 
 	/*清除来自obj文件的原始数据，以节约内存
