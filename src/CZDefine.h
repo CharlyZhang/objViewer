@@ -8,13 +8,13 @@
 //#include "CZTexture.h"
 
 #define GLSL_DIR "../../src/glsl/"
-#define _DEBUG
+//#define _DEBUG
 
 //////////////////////////////////////////////////////////////////////////
 //	OpenGL definition
 //////////////////////////////////////////////////////////////////////////
-#define USE_OPENGL      0
-#define USE_OPENGL_ES   1
+#define USE_OPENGL      1
+#define USE_OPENGL_ES   0
 
 #if USE_OPENGL
 /// include

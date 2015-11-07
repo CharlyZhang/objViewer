@@ -61,7 +61,7 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName)
 	//创建程序对象
 	m_Program = glCreateProgram();
 
-	if(!compile()) 
+	if(!compile())
 	{
 		printShaderInfoLog(m_Vert);
 		printShaderInfoLog(m_Frag);
@@ -78,12 +78,12 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName)
 	printProgramInfoLog(m_Program);
 
 	// release vertex and fragment shaders
-	if (m_Vert) 
+	if (m_Vert)
 	{
 		glDeleteShader(m_Vert);
 		m_Vert = NULL;
 	}
-	if (m_Frag) 
+	if (m_Frag)
 	{
 		glDeleteShader(m_Frag);
 		m_Frag = NULL;
@@ -138,9 +138,9 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
 	_filename = [NSString stringWithCString: fragFileName encoding: NSASCIIStringEncoding ];
 	fragShaderPathname = [[NSBundle mainBundle] pathForResource:_filename ofType:@"frag"];
 
-    NSError *err;
+	NSError *err;
 	source = (GLchar *)[[NSString stringWithContentsOfFile:fragShaderPathname encoding:NSUTF8StringEncoding error:&err] UTF8String];
-    
+
 	if (!source) {
 		LOG_ERROR("Failed to load fragment shader!\n");
 		return;
@@ -152,17 +152,17 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
 	m_FragmentShader[len] = '\0';
 #endif
 
-    CZCheckGLError();
+	CZCheckGLError();
 	//创建shader对象
 	m_Vert = glCreateShader(GL_VERTEX_SHADER);
 	m_Frag = glCreateShader(GL_FRAGMENT_SHADER);
-    CZCheckGLError();
-    
+	CZCheckGLError();
+
 	//创建程序对象
 	m_Program = glCreateProgram();
-    CZCheckGLError();
-    
-	if(!compile()) 
+	CZCheckGLError();
+
+	if(!compile())
 	{
 		LOG_ERROR("shader compile failed!\n");
 		destroyShaders(m_Vert,m_Frag,m_Program);
@@ -200,13 +200,13 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
 	}
 
 	// release vertex and fragment shaders
-	if (m_Vert) 
+	if (m_Vert)
 	{
 		glDetachShader(m_Program, m_Vert);
 		glDeleteShader(m_Vert);
 		m_Vert = NULL;
 	}
-	if (m_Frag) 
+	if (m_Frag)
 	{
 		glDetachShader(m_Program, m_Frag);
 		glDeleteShader(m_Frag);
@@ -277,7 +277,7 @@ bool CZShader::initOpenGLExtensions()
 	extensionsInit = true;
 
 	GLenum err = glewInit();
-	CZCheckGLError();  
+	CZCheckGLError();
 
 	if (GLEW_OK != err)
 	{
@@ -398,7 +398,7 @@ bool CZShader::hasGLSLSupport()
 	else
 	{
 		LOG_INFO("[FAILED] OpenGL Shading Language is not available...\n\n");
-	}   
+	}
 #endif
 	return useGLSL;
 }
@@ -442,11 +442,11 @@ bool CZShader::compile()
 {
 	if (!useGLSL) return false;
 
-    if (m_VertexShader == NULL || m_FragmentShader == NULL) {
-        LOG_ERROR("shader source is NULL!\n");
-        return false;
-    }
-    
+	if (m_VertexShader == NULL || m_FragmentShader == NULL) {
+		LOG_ERROR("shader source is NULL!\n");
+		return false;
+	}
+
 	isCompiled = false;
 
 	GLint compiled = 0;

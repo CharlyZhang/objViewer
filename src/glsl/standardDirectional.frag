@@ -8,10 +8,15 @@ precision highp float;
 in vec2      fragTexCoord;
 in vec3      fragNormal;
 in vec3      fragVert;
+
+#define TEXTURE		texture
+
 #else
 varying vec2      fragTexCoord;
 varying vec3      fragNormal;
 varying vec3      fragVert;
+
+#define TEXTURE		texture2D
 #endif
 
 uniform mat4 modelMat;
@@ -37,10 +42,10 @@ void main() {
 	vec3 lightDirection = normalize(directionalLight.direction);
 
     //calculate normal in world coordinates
-    mat3 normalMatrix = mat3(modelMat);//transpose(inverse(mat3(modelMat)));
-    vec3 normal = normalize(normalMatrix * fragNormal);
+    mat4 normalMatrix = modelMat;//transpose(inverse(mat3(modelMat)));
+    vec4 normal = normalize(normalMatrix * vec4(fragNormal,1.0));
     
-    float brightness = -dot(normal, lightDirection);//normal¡¢lightDirectionÒª¹éÒ»»¯
+    float brightness = -dot(normal, vec4(lightDirection,1.0));//normal¡¢lightDirectionÒª¹éÒ»»¯
     brightness = clamp(brightness, 0.0, 1.0);
 
     //calculate final color of the pixel, based on:
@@ -48,7 +53,7 @@ void main() {
     // 2. The color/intensities of the light: light.intensities
 	// 3. The reflection coefficient(ka for Ambient & kd for Diffuse) of the surface
     // 4. The texture and texture coord: texture(tex, fragTexCoord)
-	vec4 surfaceColor = texture2D(tex, fragTexCoord);
+	vec4 surfaceColor = TEXTURE(tex, fragTexCoord);
 
 	if(hasTex == 0) surfaceColor = vec4(1,1,1,1);
 
@@ -57,6 +62,7 @@ void main() {
 	
     gl_FragColor = vec4(fragColorRGB, surfaceColor.a);
 
+//	gl_FragColor = vec4(surfaceColor.rgb,1.0);
 //	gl_FragColor = vec4(fragNormal,1);
-	//gl_FragColor = vec4(fragTexCoord,0.5,1);
+//	gl_FragColor = vec4(fragTexCoord,0.5,1);
 }

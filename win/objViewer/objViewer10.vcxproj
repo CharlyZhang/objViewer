@@ -99,7 +99,7 @@
     <ClCompile Include="..\..\src\CZObjModel.cpp" />
     <ClCompile Include="..\..\src\CZShader.cpp" />
     <ClCompile Include="..\..\src\CZUtil.cpp" />
-    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Application3D.h" />
@@ -121,7 +121,7 @@
     <None Include="..\..\src\glsl\standard.frag" />
     <None Include="..\..\src\glsl\standard.vert" />
     <None Include="..\..\src\glsl\standardDirectional.frag" />
-    <None Include="scene_violin.cfg" />
+    <None Include="..\..\src\scene_violin.cfg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

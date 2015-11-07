@@ -147,7 +147,11 @@ bool CZObjModel::loadBinary(const std::string& path,const char *originalPath/*  
 
 	fclose(fp);
 
+	CZCheckGLError();
+
 	materialLib.load(curDirPath + "/" + mtlLibName);
+
+	CZCheckGLError();
 
 	return true;
 }

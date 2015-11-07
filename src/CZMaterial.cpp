@@ -75,8 +75,8 @@ bool CZMaterial::loadTexture(const string &filename)
 	{
 	case FIC_RGB:
 		components = 3;
-		texFormat = GL_RGB;
-		internalFormat = GL_RGB;
+		texFormat = GL_BGR_EXT;
+		internalFormat = GL_BGR_EXT;
 		break;
 	case FIC_RGBALPHA:
 		components = 4;
@@ -85,8 +85,8 @@ bool CZMaterial::loadTexture(const string &filename)
 		break;
 	default:
 		components = 3;
-		texFormat = GL_RGB;
-		internalFormat = GL_RGB;
+		texFormat = GL_BGR_EXT;
+		internalFormat = GL_BGR_EXT;
 		LOG_WARN("the color type has not been considered\n");
 		break;
 	}
@@ -98,10 +98,12 @@ bool CZMaterial::loadTexture(const string &filename)
 	//bind to the new texture ID
 	glBindTexture(GL_TEXTURE_2D, gl_texId);
 	//store the texture data for OpenGL use
-	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height,
-		0, texFormat, GL_UNSIGNED_BYTE, bits);
-
-//	gluBuild2DMipmaps(GL_TEXTURE_2D, components, width, height, texFormat, GL_UNSIGNED_BYTE, bits);
+	/// \note
+	///    GL_BGR_EXT is invalid in this context, but we can use gluBuild2DMipmaps() to generate textures from data
+	//glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height,
+	//	0, texFormat, GL_UNSIGNED_BYTE, bits);
+	CZCheckGLError();
+	gluBuild2DMipmaps(GL_TEXTURE_2D, components, width, height, texFormat, GL_UNSIGNED_BYTE, bits);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -115,7 +117,7 @@ bool CZMaterial::loadTexture(const string &filename)
     
     CGImageRef img = image.CGImage;
     
-    //数据源提供者
+    //数据源提供�?
     CGDataProviderRef inProvider = CGImageGetDataProvider(img);
     // provider’s data.
     CFDataRef inBitmapData = CGDataProviderCopyData(inProvider);

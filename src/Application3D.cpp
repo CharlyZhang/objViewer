@@ -36,6 +36,9 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glShadeModel(GL_SMOOTH);					// 平滑着色
 
+	glClearDepth(1.0f);							// 设置深度缓存
+	glEnable(GL_DEPTH_TEST);
+
 	glEnable(GL_NORMALIZE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
@@ -46,11 +49,12 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 	//texture
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	//glEnable(GL_TEXTURE_2D);
+# else
+    
+	glClearDepthf(1.0f);							// 设置深度缓存
+	glEnable(GL_DEPTH_TEST);
 # endif
-    
-    glClearDepthf(1.0f);							// 设置深度缓存
-    glEnable(GL_DEPTH_TEST);
-    
+
 	CZCheckGLError();
 
 	/// load shader
@@ -75,6 +79,8 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 		scene.bgColor = CZColor(0.8f, 0.8f, 0.9f, 1.f);
 		scene.mColor = CZColor(1.f, 1.f, 1.f, 1.f);
 	}
+
+	CZCheckGLError();
 
 	return true;
 }
@@ -109,6 +115,8 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
 	}
 
 	reset();
+
+	CZCheckGLError();
 
 	return true;
 }
@@ -158,9 +166,9 @@ void Application3D::frame()
 		LOG_ERROR("there's no shader designated\n");
 		return;
 	}
-
+	CZCheckGLError();
 	pShader->begin();
-
+	CZCheckGLError();
 	// common uniforms
 	glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, mvpMat);
 	glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
@@ -168,7 +176,7 @@ void Application3D::frame()
 		scene.ambientLight.intensity.x,
 		scene.ambientLight.intensity.y,
 		scene.ambientLight.intensity.z);
-
+	CZCheckGLError();
 	glUniform3f(pShader->getUniformLocation("directionalLight.direction"),
 		scene.directionalLight.direction.x,
 		scene.directionalLight.direction.y, 
@@ -284,6 +292,8 @@ bool Application3D::loadShaders()
 
 	CZShader *pShader = new CZShader("standard","standardDirectional",attributes,uniforms);
 	shaders.insert(make_pair(kDirectionalLightShading,pShader));
+	
+	CZCheckGLError();
 
 	return true;
 }
