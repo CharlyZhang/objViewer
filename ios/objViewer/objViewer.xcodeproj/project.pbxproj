@@ -7,13 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2D7673C51BEC3A0A00783623 /* nonTex.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673BF1BEC3A0A00783623 /* nonTex.frag */; };
-		2D7673C61BEC3A0A00783623 /* shadingWithTex.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C01BEC3A0A00783623 /* shadingWithTex.frag */; };
-		2D7673C71BEC3A0A00783623 /* shadingWithTex.vert in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C11BEC3A0A00783623 /* shadingWithTex.vert */; };
-		2D7673C81BEC3A0A00783623 /* standard.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C21BEC3A0A00783623 /* standard.frag */; };
 		2D7673C91BEC3A0A00783623 /* standard.vert in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C31BEC3A0A00783623 /* standard.vert */; };
-		2D7673CA1BEC3A0A00783623 /* standardDirectional.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C41BEC3A0A00783623 /* standardDirectional.frag */; };
+		2D7673CA1BEC3A0A00783623 /* directionalLight.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C41BEC3A0A00783623 /* directionalLight.frag */; };
 		2D7673CE1BECAF5C00783623 /* scene.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673CD1BECAF5C00783623 /* scene.cfg */; };
+		2D7673D01BF02D9100783623 /* scene_violin.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673CF1BF02D9100783623 /* scene_violin.cfg */; };
 		2DD439131BDA35CD004F1B8D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD439121BDA35CD004F1B8D /* main.m */; };
 		2DD439161BDA35CD004F1B8D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD439151BDA35CD004F1B8D /* AppDelegate.m */; };
 		2DD439191BDA35CD004F1B8D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD439181BDA35CD004F1B8D /* ViewController.m */; };
@@ -38,13 +35,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2D7673BF1BEC3A0A00783623 /* nonTex.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = nonTex.frag; sourceTree = "<group>"; };
-		2D7673C01BEC3A0A00783623 /* shadingWithTex.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shadingWithTex.frag; sourceTree = "<group>"; };
-		2D7673C11BEC3A0A00783623 /* shadingWithTex.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shadingWithTex.vert; sourceTree = "<group>"; };
-		2D7673C21BEC3A0A00783623 /* standard.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = standard.frag; sourceTree = "<group>"; };
 		2D7673C31BEC3A0A00783623 /* standard.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = standard.vert; sourceTree = "<group>"; };
-		2D7673C41BEC3A0A00783623 /* standardDirectional.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = standardDirectional.frag; sourceTree = "<group>"; };
+		2D7673C41BEC3A0A00783623 /* directionalLight.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = directionalLight.frag; sourceTree = "<group>"; };
 		2D7673CD1BECAF5C00783623 /* scene.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = scene.cfg; path = ../../src/scene.cfg; sourceTree = "<group>"; };
+		2D7673CF1BF02D9100783623 /* scene_violin.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = scene_violin.cfg; path = ../../src/scene_violin.cfg; sourceTree = "<group>"; };
 		2DD4390D1BDA35CD004F1B8D /* objViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = objViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DD439111BDA35CD004F1B8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2DD439121BDA35CD004F1B8D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -88,6 +82,7 @@
 		2DD439041BDA35CD004F1B8D = {
 			isa = PBXGroup;
 			children = (
+				2D7673CF1BF02D9100783623 /* scene_violin.cfg */,
 				2D7673CD1BECAF5C00783623 /* scene.cfg */,
 				2DD43A281BE37BDA004F1B8D /* UIKit.framework */,
 				2DD43A0D1BE2216D004F1B8D /* libApplication3D.a */,
@@ -154,12 +149,8 @@
 		2DD43A231BE30008004F1B8D /* glsl */ = {
 			isa = PBXGroup;
 			children = (
-				2D7673BF1BEC3A0A00783623 /* nonTex.frag */,
-				2D7673C01BEC3A0A00783623 /* shadingWithTex.frag */,
-				2D7673C11BEC3A0A00783623 /* shadingWithTex.vert */,
-				2D7673C21BEC3A0A00783623 /* standard.frag */,
 				2D7673C31BEC3A0A00783623 /* standard.vert */,
-				2D7673C41BEC3A0A00783623 /* standardDirectional.frag */,
+				2D7673C41BEC3A0A00783623 /* directionalLight.frag */,
 			);
 			name = glsl;
 			path = /Users/charlyzhang/Git/OBJViewer/ios/Application3D/Application3D/../../../src/glsl;
@@ -245,17 +236,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D7673C51BEC3A0A00783623 /* nonTex.frag in Resources */,
 				2D7673C91BEC3A0A00783623 /* standard.vert in Resources */,
 				2DD4391C1BDA35CD004F1B8D /* Main.storyboard in Resources */,
-				2D7673C61BEC3A0A00783623 /* shadingWithTex.frag in Resources */,
+				2D7673D01BF02D9100783623 /* scene_violin.cfg in Resources */,
 				2DD439211BDA35CD004F1B8D /* LaunchScreen.xib in Resources */,
-				2D7673C81BEC3A0A00783623 /* standard.frag in Resources */,
-				2D7673C71BEC3A0A00783623 /* shadingWithTex.vert in Resources */,
 				2DD43A0C1BE21F73004F1B8D /* obj in Resources */,
 				2D7673CE1BECAF5C00783623 /* scene.cfg in Resources */,
 				2DD4391E1BDA35CD004F1B8D /* Images.xcassets in Resources */,
-				2D7673CA1BEC3A0A00783623 /* standardDirectional.frag in Resources */,
+				2D7673CA1BEC3A0A00783623 /* directionalLight.frag in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

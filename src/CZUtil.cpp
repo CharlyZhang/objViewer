@@ -9,7 +9,7 @@ void CZCheckGLError_(const char *file, int line)
 	while (glErr != GL_NO_ERROR) 
 	{
 
-#if USE_OPENGL
+#if defined USE_OPENGL
 		const GLubyte* sError = gluErrorString(glErr);
 
 		if (sError)
@@ -17,7 +17,7 @@ void CZCheckGLError_(const char *file, int line)
 		else
 			LOG_INFO("GL Error #%d (no message available) in File %s at line: %d\n",glErr,file,line);
 
-#elif USE_OPENGL_ES
+#elif defined USE_OPENGL_ES
 		switch (glErr) {
 		case GL_INVALID_ENUM:
 			LOG_ERROR("GL Error: Enum argument is out of range\n");

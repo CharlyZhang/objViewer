@@ -101,7 +101,7 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
     this->m_Frag = NULL;
     this->m_Vert = NULL;
     
-#if USE_OPENGL
+#if defined USE_OPENGL
     char fileName[128];
     strcpy(fileName,GLSL_DIR);
     strcat(fileName,vertFileName);
@@ -113,7 +113,7 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
     strcat(fileName,".frag");
     if(!textFileRead(fileName,m_FragmentShader))return;
     
-#elif USE_OPENGL_ES
+#elif defined USE_OPENGL_ES
     NSString *vertShaderPathname, *fragShaderPathname;
     NSString *_filename;
     const GLchar *source;

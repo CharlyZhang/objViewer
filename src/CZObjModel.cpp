@@ -182,8 +182,8 @@ void CZObjModel::draw(CZShader* pShader)
                 kd[i] = pMaterial->Kd[i];
             }
         }
-		glUniform3f(pShader->getUniformLocation("ka"), ka[0], ka[1], ka[2]);
-		glUniform3f(pShader->getUniformLocation("kd"), kd[0], kd[1], kd[2]);
+		glUniform3f(pShader->getUniformLocation("material.ka"), ka[0], ka[1], ka[2]);
+		glUniform3f(pShader->getUniformLocation("material.kd"), kd[0], kd[1], kd[2]);
 
 		int hasTex;
 		if (pMaterial->use() && pGeometry->hasTexCoord)

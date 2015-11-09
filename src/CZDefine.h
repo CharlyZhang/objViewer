@@ -13,10 +13,13 @@
 //////////////////////////////////////////////////////////////////////////
 //	OpenGL definition
 //////////////////////////////////////////////////////////////////////////
-#define USE_OPENGL      1
-#define USE_OPENGL_ES   0
+#if defined(__APPLE__)
+# define USE_OPENGL_ES
+#elif defined(_WIN32)
+# define USE_OPENGL
+#endif
 
-#if USE_OPENGL
+#if defined USE_OPENGL
 /// include
  //#include <gl/GL.h>
  //#include <gl/GLU.h>
@@ -33,7 +36,7 @@
 # define GL_PUSH_ATTR(arr)          glPushAttrib(arr)
 # define GL_POP_ATTR()              glPopAttrib()
 
-#elif USE_OPENGL_ES
+#elif defined USE_OPENGL_ES
 /// include
 //#import <OpenGLES/ES1/gl.h>
 //#import <OpenGLES/ES1/glext.h>

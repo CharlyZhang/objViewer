@@ -61,7 +61,7 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
     loadShaders();
     
 	/// config scene
-	if(!load(sceneFilename))
+	if(1||!load(sceneFilename))
 	{
 		scene.eyePosition = CZPoint3D(0, 0, -200);
 		scene.light.position = CZPoint3D(0, 0, -120);
@@ -70,12 +70,11 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 		scene.directionalLight.intensity = CZPoint3D(1,1,1);
 		scene.directionalLight.direction = CZPoint3D(0,-5,10);
         
-        scene.eyePosition = CZPoint3D(0, 0, 95.1);
-        scene.light.position = CZPoint3D(105.351,86.679,133.965);
+       // scene.light.position = CZPoint3D(-105.351,-86.679,-133.965);
         scene.light.intensity = CZPoint3D(1, 1, 1);
         scene.ambientLight.intensity = CZPoint3D(0.2,0.2,0.2);
         scene.directionalLight.intensity = CZPoint3D(1,1,1);
-        scene.directionalLight.direction = CZPoint3D(-105.351,-86.679,-133.965);
+        scene.directionalLight.direction = CZPoint3D(-105.351,-86.679,133.965);
 		scene.bgColor = CZColor(0.8f, 0.8f, 0.9f, 1.f);
 		scene.mColor = CZColor(1.f, 1.f, 1.f, 1.f);
 	}
@@ -287,10 +286,10 @@ bool Application3D::loadShaders()
 	uniforms.push_back("directionalLight.intensities");
 	uniforms.push_back("tex");
 	uniforms.push_back("hasTex");
-	uniforms.push_back("kd");
-	uniforms.push_back("ka");
+	uniforms.push_back("material.kd");
+	uniforms.push_back("material.ka");
 
-	CZShader *pShader = new CZShader("standard","standardDirectional",attributes,uniforms);
+	CZShader *pShader = new CZShader("standard","directionalLight",attributes,uniforms);
 	shaders.insert(make_pair(kDirectionalLightShading,pShader));
 	
 	CZCheckGLError();
