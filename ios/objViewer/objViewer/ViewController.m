@@ -9,7 +9,6 @@
 #import "ViewController.h"
 #import "EAGLView.h"
 #include "MBProgressHUD/MBProgressHUD.h"
-
 @interface ViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,MBProgressHUDDelegate>
 {
     EAGLView *glView;
@@ -58,10 +57,12 @@
     [self.view addSubview:hud];
 
     hud.labelText = @"正在载入模型...";
+    
+    [glView startRenderLoop];
 }
 
 - (void)dealloc {
-   // [glView stopRenderLoop];
+    [glView stopRenderLoop];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -169,12 +170,14 @@
     }
     selectedModel = row;
     [self.view setUserInteractionEnabled:NO];
+    [glView stopRenderLoop];
     __block EAGLView *blockGlView = glView;
     [hud showAnimated:YES whileExecutingBlock:^{
         [blockGlView loadModel:row];
     } completionBlock:^ {
         [self.view setUserInteractionEnabled:YES];
         [blockGlView drawFrame];
+        [blockGlView startRenderLoop];
     }];
 }
 @end

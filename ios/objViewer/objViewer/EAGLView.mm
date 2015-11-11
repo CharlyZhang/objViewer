@@ -14,6 +14,7 @@
 #include "Application3D.h"
 
 #define USE_DEPTH_BUFFER 1
+#define SHOW_RENDER_TIME
 //declare private methods, so they can be used everywhere in this file
 @interface EAGLView (PrivateMethods)
 - (void)createFramebuffer;
@@ -204,15 +205,18 @@
      [self deleteFramebuffer];
      [self createFramebuffer];*/
     
-    
+#ifdef SHOW_RENDER_TIME
     animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval target:self selector:@selector(drawFrame) userInfo:nil repeats:YES];
+#endif
 }
-    
+
 
 //we have to be able to stop the render loop
 - (void)stopRenderLoop
 {
+#ifdef SHOW_RENDER_TIME
     [animationTimer invalidate];
+#endif
     
 }
 

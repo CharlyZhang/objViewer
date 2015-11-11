@@ -43,13 +43,6 @@ bool CZObjModel::load(const string& path)
 	LOG_INFO("Parsing %s ...\n", path.c_str());
 
 	if(CZObjFileParser::load(path) == false) return false;
-
-	/// unpack each geometry
-//	for (vector<CZGeometry*>::iterator itr = geometries.begin(); itr != geometries.end(); itr++)
-//	{
-//		CZGeometry *pGeometry = (*itr);
-//		pGeometry->unpack(m_vertRawVector, m_normRawVector, m_texRawVector);
-//	}
     
     unpackRawData();
     
@@ -62,49 +55,6 @@ bool CZObjModel::load(const string& path)
 }
 
 bool CZObjModel::saveAsBinary(const std::string& path)
-{
-	FILE *fp = fopen(path.c_str(), "wb");
-
-	if (fp == NULL)
-	{
-		LOG_ERROR("file open failed\n");
-		return false;
-	}
-	// material lib name
-	unsigned char mtlLibNameLen = mtlLibName.size();
-	fwrite((char*)&mtlLibNameLen, sizeof(unsigned char), 1, fp);
-	fwrite((char*)mtlLibName.c_str(), sizeof(char), mtlLibNameLen, fp);
-
-	// geometry
-	unsigned short count = geometries.size();
-	fwrite((char*)(&count), sizeof(count), 1, fp);
-
-	for (vector<CZGeometry*>::iterator itr = geometries.begin(); itr != geometries.end(); itr++)
-	{
-		CZGeometry *p = *itr;
-		long numVert = p->positions.size();
-		// material name
-		unsigned char mtlNameLen = p->materialName.size();
-		fwrite(&mtlNameLen, sizeof(unsigned char), 1, fp);
-		fwrite(p->materialName.c_str(), sizeof(char), mtlNameLen, fp);
-
-		// data
-		fwrite(&(numVert), sizeof(numVert), 1, fp);
-		fwrite(p->positions.data(), sizeof(CZVector3D<float>), numVert, fp);
-		fwrite(p->normals.data(), sizeof(CZVector3D<float>), numVert, fp);
-
-		unsigned char c_hasTexCoords = p->hasTexCoord ? 1 : 0;
-		fwrite(&c_hasTexCoords, sizeof(bool), 1, fp);
-		if (p->hasTexCoord)	
-			fwrite((char*)p->texcoords.data(), sizeof(CZVector3D<float>), numVert, fp);
-	}
-
-	fclose(fp);
-
-	return true;
-}
-
-bool CZObjModel::saveAsBinary1(const std::string& path)
 {
     FILE *fp = fopen(path.c_str(), "wb");
     
@@ -147,77 +97,7 @@ bool CZObjModel::saveAsBinary1(const std::string& path)
     return true;
 }
 
-
 bool CZObjModel::loadBinary(const std::string& path,const char *originalPath/*  = NULL */)
-{
-    string strOriginalPath;
-    if(originalPath) strOriginalPath = string(originalPath);
-    else             strOriginalPath = path;
-    
-    curDirPath = strOriginalPath.substr(0, strOriginalPath.find_last_of('/'));
-
-	FILE *fp = fopen(path.c_str(), "rb");
-
-	if (fp == NULL)
-	{
-		LOG_DEBUG("there's no binary data for this model\n");
-		return false;
-	}
-	
-	unsigned char mtlLibNameLen;
-	fread((char*)&mtlLibNameLen, sizeof(unsigned char), 1, fp);
-	mtlLibName.resize(mtlLibNameLen);
-	fread((char*)mtlLibName.c_str(), sizeof(char), mtlLibNameLen, fp);
-
-
-	// geometry
-	unsigned short count;
-	fread((char*)(&count), sizeof(count), 1, fp);
-
-	for (int iGeo = 0; iGeo < count; iGeo++)
-	{
-		CZGeometry *pNewGeometry = new CZGeometry();
-		
-		// material name
-		unsigned char mtlLibNameLen;
-
-		fread(&mtlLibNameLen, sizeof(unsigned char), 1, fp);
-		pNewGeometry->materialName.resize(mtlLibNameLen);
-		fread((char*)pNewGeometry->materialName.c_str(), sizeof(char), mtlLibNameLen, fp);
-
-		// data
-		long numVert;
-		fread(&numVert, sizeof(numVert), 1, fp);
-
-		pNewGeometry->positions.resize(numVert);
-		pNewGeometry->normals.resize(numVert);
-		fread(pNewGeometry->positions.data(), sizeof(CZVector3D<float>), numVert, fp);
-		fread(pNewGeometry->normals.data(), sizeof(CZVector3D<float>), numVert, fp);
-        
-		unsigned char c_hasTexCoords;
-		fread(&c_hasTexCoords, sizeof(unsigned char), 1, fp);
-		if (c_hasTexCoords == 1)
-		{
-			pNewGeometry->hasTexCoord = true;
-			pNewGeometry->texcoords.resize(numVert);
-			fread((char*)pNewGeometry->texcoords.data(), sizeof(CZVector3D<float>), numVert, fp);
-		}
-		else
-			pNewGeometry->hasTexCoord = false;
-
-		geometries.push_back(pNewGeometry);
-	}
-
-	fclose(fp);
-
-	materialLib.load(curDirPath + "/" + mtlLibName);
-
-	CZCheckGLError();
-
-	return true;
-}
-
-bool CZObjModel::loadBinary1(const std::string& path,const char *originalPath/*  = NULL */)
 {
     string strOriginalPath;
     if(originalPath) strOriginalPath = string(originalPath);
@@ -319,88 +199,7 @@ bool CZObjModel::loadBinary1(const std::string& path,const char *originalPath/* 
     return true;
 }
 
-
 void CZObjModel::draw(CZShader* pShader)
-{
-	if(pShader == NULL) 
-	{
-		LOG_ERROR("pShader is NULL!\n");
-		return;
-	}
-
-	for (vector<CZGeometry*>::iterator itr = geometries.begin(); itr != geometries.end(); itr++)
-	{
-		CZGeometry *pGeometry = *itr;
-		CZMaterial *pMaterial = materialLib.get(pGeometry->materialName);
-
-        float ka[4], kd[4];
-        if (pMaterial == NULL)
-        {
-            ka[0] = 0.2; ka[1] = 0.2; ka[2] = 0.2;
-            kd[0] = 1;   kd[1] = 1.0; kd[2] = 1.0;
-        }
-        else
-        {
-            for (int i=0; i<3; i++) {
-                ka[i] = pMaterial->Ka[i];
-                kd[i] = pMaterial->Kd[i];
-            }
-        }
-		glUniform3f(pShader->getUniformLocation("material.ka"), ka[0], ka[1], ka[2]);
-		glUniform3f(pShader->getUniformLocation("material.kd"), kd[0], kd[1], kd[2]);
-
-		int hasTex;
-		if (pMaterial->use() && pGeometry->hasTexCoord)
-				hasTex = 1;
-		else	hasTex = 0;
-		
-		glUniform1i(pShader->getUniformLocation("hasTex"), hasTex);
-		glUniform1i(pShader->getUniformLocation("tex"), 0);
-
-		long numVert = pGeometry->positions.size();
-		
-		// vao
-		GL_GEN_VERTEXARRAY(1, &m_vao);
-		GL_BIND_VERTEXARRAY(m_vao);
-
-		// vertex 
-		glGenBuffers(1, &m_vboPos);
-		glBindBuffer(GL_ARRAY_BUFFER, m_vboPos);
-		glBufferData(GL_ARRAY_BUFFER,pGeometry->positions.size() * 3 * sizeof(GLfloat), pGeometry->positions.data(), GL_STATIC_DRAW);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-		// normal
-		glGenBuffers(1, &m_vboNorm);
-		glBindBuffer(GL_ARRAY_BUFFER, m_vboNorm);
-		glBufferData(GL_ARRAY_BUFFER, pGeometry->normals.size() * 3 * sizeof(GLfloat), pGeometry->normals.data(), GL_STATIC_DRAW);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-		// texcoord
-		if (pGeometry->hasTexCoord)
-		{
-			glGenBuffers(1, &m_vboTexCoord);
-			glBindBuffer(GL_ARRAY_BUFFER, m_vboTexCoord);
-			glBufferData(GL_ARRAY_BUFFER, pGeometry->texcoords.size() * 3 * sizeof(GLfloat), pGeometry->texcoords.data(), GL_STATIC_DRAW);
-
-			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		}
-
-
-		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)numVert);
-
-		GL_DEL_VERTEXARRAY(1, &m_vao);
-		glDeleteBuffers(1, &m_vboPos);
-		glDeleteBuffers(1, &m_vboNorm);
-		if (pGeometry->hasTexCoord) glDeleteBuffers(1, &m_vboTexCoord);
-
-		GL_BIND_VERTEXARRAY(0);
-	}
-}
-
-void CZObjModel::draw1(CZShader* pShader)
 {
     if(pShader == NULL)
     {

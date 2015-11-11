@@ -7,7 +7,6 @@
 #include <string>
 
 #define DEFAULT_RENDER_SIZE 500					///< Ä¬ÈÏäÖÈ¾»º´æ´óÐ¡
-#define SHOW_RENDER_TIME
 #define CONFIG_FILE_PATH	"./scene.cfg"
 
 using namespace std;
@@ -106,11 +105,11 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
         tempFileName = string(documentDirectory) + "/" + name;
     }
     
-	if (!quickLoad || !pModel->loadBinary1(tempFileName,filename))
+	if (!quickLoad || !pModel->loadBinary(tempFileName,filename))
 	{
 		success = pModel->load(strFileName);
 		if(success && quickLoad)
-            pModel->saveAsBinary1(tempFileName);
+            pModel->saveAsBinary(tempFileName);
 	}
 
 	reset();
@@ -188,7 +187,7 @@ void Application3D::frame()
 		scene.directionalLight.intensity.z);
 	CZCheckGLError();
 
-	if(pModel)	pModel->draw1(pShader);
+	if(pModel)	pModel->draw(pShader);
 	CZCheckGLError();
 
 	pShader->end();
@@ -204,7 +203,7 @@ void Application3D::frame()
 #ifdef SHOW_RENDER_TIME
     finish = clock();
     double totalTime = (double)(finish - start) / CLOCKS_PER_SEC;
-    LOG_INFO("rendering time is %0.4f\n",totalTime);
+    LOG_INFO("rendering time is %0.6f, FPS = %0.1f\n",totalTime, 1.0f/totalTime);
 #endif
 }
 

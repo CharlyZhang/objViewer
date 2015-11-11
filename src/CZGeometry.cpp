@@ -13,32 +13,6 @@ CZGeometry::CZGeometry(): aabbMin(CZVector3D<float>(FLT_MAX, FLT_MAX, FLT_MAX)),
 CZGeometry::~CZGeometry()
 {
 	faces.clear();
-	positions.clear();
-	normals.clear();
-	texcoords.clear();
-}
-
-void CZGeometry::unpack(const vector<CZVector3D<float>> &posRawVector, \
-						const vector<CZVector3D<float>> &normRawVector, \
-						const vector<CZVector3D<float>> &texCoordRawVector)
-{
-	for (vector<CZFace>::const_iterator itr = faces.begin(); itr != faces.end(); ++itr)
-	{
-		for (unsigned i = 0; i < itr->v.size(); ++i) 
-		{
-			positions.push_back(posRawVector[itr->v[i]-1]);
-			updateAABB(posRawVector[itr->v[i]-1]);
-			if (hasNormal)	normals.push_back(normRawVector[itr->vn[i]-1]);
-			if (hasTexCoord)	texcoords.push_back(texCoordRawVector[itr->vt[i]-1]);
-			else				texcoords.push_back(CZVector3D<float>(0, 0, 0));
-		}
-	}
-
-	if (!hasNormal)	generateFaceNorm();
-
-	positions.shrink_to_fit();
-	normals.shrink_to_fit();
-	texcoords.shrink_to_fit();
 }
 
 long CZGeometry::unpackRawData(const std::vector<CZVector3D<float> > &posRawVector,	\
@@ -48,6 +22,7 @@ long CZGeometry::unpackRawData(const std::vector<CZVector3D<float> > &posRawVect
             std::vector<CZVector3D<float> > &outNormals, \
             std::vector<CZVector2D<float> > &outTexcoords)
 {
+    vector<CZVector3D<float> > tempPositions;
     vertNum = 0;
     for (vector<CZFace>::const_iterator itr = faces.begin(); itr != faces.end(); ++itr)
     {
@@ -56,6 +31,7 @@ long CZGeometry::unpackRawData(const std::vector<CZVector3D<float> > &posRawVect
             vertNum ++ ;
             outPositions.push_back(posRawVector[itr->v[i]-1]);
             if (hasNormal)	outNormals.push_back(normRawVector[itr->vn[i]-1]);
+            else            tempPositions.push_back(posRawVector[itr->v[i]-1]);
             if (hasTexCoord)	outTexcoords.push_back(CZVector2D<float>(texCoordRawVector[itr->vt[i]-1].x,texCoordRawVector[itr->vt[i]-1].y));
             else				outTexcoords.push_back(CZVector2D<float>(0, 0));
         }
@@ -63,13 +39,9 @@ long CZGeometry::unpackRawData(const std::vector<CZVector3D<float> > &posRawVect
 
     if (!hasNormal)
     {
-        generateFaceNorm();
+        generateFaceNorm(tempPositions,outNormals);
         
-        for (int i=0; i<normals.size(); i++) {
-            outNormals.push_back(normals[i]);
-        }
-        
-        normals.clear();
+        tempPositions.clear();
     }
     
     return vertNum;
@@ -77,9 +49,8 @@ long CZGeometry::unpackRawData(const std::vector<CZVector3D<float> > &posRawVect
 
 //////////////////////////////////////////////////////////////////////////
 
-void CZGeometry::generateFaceNorm()
+void CZGeometry::generateFaceNorm(vector<CZVector3D<float> > &positions,vector<CZVector3D<float> > &outNormals)
 {
-	normals.clear();
 
 	long vertNum = positions.size();
 	for (long iVert = 0; iVert < vertNum; iVert += 3)
@@ -100,9 +71,9 @@ void CZGeometry::generateFaceNorm()
 		vn.normalize();
 
 		//计算结果作为这3个顶点的法向量
-		normals.push_back(vn);
-		normals.push_back(vn);
-		normals.push_back(vn);
+		outNormals.push_back(vn);
+		outNormals.push_back(vn);
+		outNormals.push_back(vn);
 	}
 }
 

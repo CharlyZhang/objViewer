@@ -45,26 +45,17 @@ public:
 
 		faces.push_back(face);
 	}
-	/// unpack the raw data 
-	void unpack(const std::vector<CZVector3D<float>> &posRawVector,	\
-			const std::vector<CZVector3D<float>> &normRawVector,	\
-			const std::vector<CZVector3D<float>> &texCoordRawVector);
-
+	/// unpack the raw data
     long unpackRawData(const std::vector<CZVector3D<float> > &posRawVector,	\
                        const std::vector<CZVector3D<float> > &normRawVector,	\
                        const std::vector<CZVector3D<float> > &texCoordRawVector, \
                        std::vector<CZVector3D<float> > &outPositions, \
                        std::vector<CZVector3D<float> > &outNormals, \
                        std::vector<CZVector2D<float> > &outTexcoords);
-    
-	// render data
-	std::vector<CZVector3D<float>> positions;
-	std::vector<CZVector3D<float>> normals;
-	std::vector<CZVector3D<float>> texcoords;
 
-	std::vector<CZFace> faces;			///< 面片
-	CZVector3D<float> aabbMin,aabbMax;	///< aabb 包围盒
-	std::string materialName;			///< 纹理名称
+	std::vector<CZFace> faces;			///< faces
+	CZVector3D<float> aabbMin,aabbMax;	///< aabb bounding box
+	std::string materialName;			///< material name
 
 	bool hasNormal;
 	bool hasTexCoord;
@@ -74,7 +65,7 @@ public:
 
 private:
 	/// generate face normals 
-	void generateFaceNorm();	
+    void generateFaceNorm(std::vector<CZVector3D<float> > &positions,std::vector<CZVector3D<float> > &outNormals);
 	/// update aabb
 	void updateAABB(CZVector3D<float> p);
 };
