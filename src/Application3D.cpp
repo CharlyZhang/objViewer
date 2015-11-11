@@ -2,10 +2,12 @@
 #include "CZDefine.h"
 #include "CZGeometry.h"
 #include "CZLog.h"
+#include <ctime>
 #include <vector>
 #include <string>
 
 #define DEFAULT_RENDER_SIZE 500					///< 默认渲染缓存大小
+#define SHOW_RENDER_TIME
 #define CONFIG_FILE_PATH	"./scene.cfg"
 
 using namespace std;
@@ -43,8 +45,7 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 
-	glCullFace(GL_BACK);						// 只绘制正面
-	glEnable(GL_CULL_FACE);
+	
 
 	//texture
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -55,26 +56,25 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 	glEnable(GL_DEPTH_TEST);
 # endif
 
+    glCullFace(GL_BACK);                            ///< cull back face
+    glEnable(GL_CULL_FACE);
+    
 	CZCheckGLError();
 
 	/// load shader
     loadShaders();
     
 	/// config scene
-	if(1||!load(sceneFilename))
+	if(!load(sceneFilename))
 	{
-		scene.eyePosition = CZPoint3D(0, 0, -200);
+		scene.eyePosition = CZPoint3D(0, 0, 95);
 		scene.light.position = CZPoint3D(0, 0, -120);
 		scene.light.intensity = CZPoint3D(1, 1, 1);
 		scene.ambientLight.intensity = CZPoint3D(0.2,0.2,0.2);
 		scene.directionalLight.intensity = CZPoint3D(1,1,1);
 		scene.directionalLight.direction = CZPoint3D(0,-5,10);
         
-       // scene.light.position = CZPoint3D(-105.351,-86.679,-133.965);
-        scene.light.intensity = CZPoint3D(1, 1, 1);
-        scene.ambientLight.intensity = CZPoint3D(0.2,0.2,0.2);
-        scene.directionalLight.intensity = CZPoint3D(1,1,1);
-        scene.directionalLight.direction = CZPoint3D(-105.351,-86.679,133.965);
+        //scene.directionalLight.direction = CZPoint3D(-105.351,-86.679,-133.965);
 		scene.bgColor = CZColor(0.8f, 0.8f, 0.9f, 1.f);
 		scene.mColor = CZColor(1.f, 1.f, 1.f, 1.f);
 	}
@@ -106,11 +106,11 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
         tempFileName = string(documentDirectory) + "/" + name;
     }
     
-	if (!quickLoad || !pModel->loadBinary(tempFileName,filename))
+	if (!quickLoad || !pModel->loadBinary1(tempFileName,filename))
 	{
 		success = pModel->load(strFileName);
 		if(success && quickLoad)
-            pModel->saveAsBinary(tempFileName);
+            pModel->saveAsBinary1(tempFileName);
 	}
 
 	reset();
@@ -142,7 +142,10 @@ bool Application3D::setRenderBufferSize(int w, int h)
 
 void Application3D::frame()
 {
-    CZCheckGLError();
+#ifdef SHOW_RENDER_TIME
+    static clock_t start, finish;
+    start = clock();
+#endif
     
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// 清理颜色缓冲区 和 深度缓冲区
 
@@ -165,9 +168,8 @@ void Application3D::frame()
 		LOG_ERROR("there's no shader designated\n");
 		return;
 	}
-	CZCheckGLError();
 	pShader->begin();
-	CZCheckGLError();
+    
 	// common uniforms
 	glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, mvpMat);
 	glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
@@ -175,7 +177,6 @@ void Application3D::frame()
 		scene.ambientLight.intensity.x,
 		scene.ambientLight.intensity.y,
 		scene.ambientLight.intensity.z);
-	CZCheckGLError();
 	glUniform3f(pShader->getUniformLocation("directionalLight.direction"),
 		scene.directionalLight.direction.x,
 		scene.directionalLight.direction.y, 
@@ -187,7 +188,7 @@ void Application3D::frame()
 		scene.directionalLight.intensity.z);
 	CZCheckGLError();
 
-	if(pModel)	pModel->draw(pShader);
+	if(pModel)	pModel->draw1(pShader);
 	CZCheckGLError();
 
 	pShader->end();
@@ -199,6 +200,12 @@ void Application3D::frame()
 	glutSolidSphere(2, 100, 100);
 	glPopMatrix();
 #endif
+    
+#ifdef SHOW_RENDER_TIME
+    finish = clock();
+    double totalTime = (double)(finish - start) / CLOCKS_PER_SEC;
+    LOG_INFO("rendering time is %0.4f\n",totalTime);
+#endif
 }
 
 void Application3D::reset()
@@ -207,7 +214,6 @@ void Application3D::reset()
 	rotateMat.LoadIdentity();
 	translateMat.LoadIdentity();
 	scaleMat.LoadIdentity();
-   // translateMat.SetTranslation(-205400, 0.000000, 445500);
     
 	/// color
 	modelColor = scene.mColor;
@@ -230,6 +236,18 @@ void Application3D::setDocDirectory(const char* docDir)
     documentDirectory = new char[len+1];
     strcpy(documentDirectory, docDir);
     documentDirectory[len] = '\0';
+    LOG_INFO("document diretory is %s\n", documentDirectory);
+}
+
+void Application3D::setGLSLDirectory(const char* glslDir)
+{
+    if (glslDir == NULL)
+    {
+        LOG_WARN("glslDir is NULL\n");
+        return;
+    }
+    
+    CZShader::glslDirectory = string(glslDir);
 }
 
 // control
@@ -264,9 +282,28 @@ void Application3D::setModelColor(float r, float g, float b, float a)
 	modelColor = CZColor(r, g, b, a);
 }
 
+// camera
+void Application3D::setCameraPosition(float x, float y, float z)
+{
+    scene.eyePosition = CZVector3D<float>(x,y,z);
+}
+
+// light
 void Application3D::setLightPosition(float x, float y, float z)
 {
-	scene.light.position = CZPoint3D(x, y, z);
+    scene.light.position = CZPoint3D(x, y, z);
+}
+void Application3D::setLigthDirection(float x, float y, float z)
+{
+    scene.directionalLight.direction = CZVector3D<float>(x,y,z);
+}
+void Application3D::setAmbientColor(unsigned char r, unsigned char g, unsigned char b)
+{
+    scene.ambientLight.intensity = CZVector3D<float>(r/255.0f,g/255.0f,b/255.0f);
+}
+void Application3D::setDiffuseColor(unsigned char r, unsigned char g, unsigned char b)
+{
+    scene.directionalLight.intensity = CZVector3D<float>(r/255.0f,g/255.0f,b/255.0f);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -306,6 +343,8 @@ CZShader* Application3D::getShader(ShaderType type)
 
 void Application3D::parseLine(ifstream& ifs, const string& ele_id)
 {
+    float x,y,z;
+    int r,g,b;
 	if ("camera_position" == ele_id)
 		parseEyePosition(ifs);
 
@@ -314,14 +353,16 @@ void Application3D::parseLine(ifstream& ifs, const string& ele_id)
 
 	else if ("dl" == ele_id)
 		parseDirectionalLight(ifs);
-	else if ("dl_direction" == ele_id)
-		ifs >> scene.directionalLight.direction.x >>
-		scene.directionalLight.direction.y >>
-		scene.directionalLight.direction.z;
+    else if ("dl_direction" == ele_id)
+    {
+        ifs >> x >> y >> z;
+        setLigthDirection(-x, -z, y);
+    }
 	else if ("dl_color" == ele_id)
-		ifs >> scene.directionalLight.intensity.x >>
-		scene.directionalLight.intensity.y >>
-		scene.directionalLight.intensity.z;
+    {
+		ifs >> r >> g >> b;
+        setDiffuseColor((unsigned char)r, (unsigned char)g, (unsigned char)b);
+    }
 	else if ("dl_intensity" == ele_id)
 	{
 		float intensity;
@@ -332,9 +373,10 @@ void Application3D::parseLine(ifstream& ifs, const string& ele_id)
 	}
 
 	else if ("al_color" == ele_id)
-		ifs >> scene.ambientLight.intensity.x >>
-		scene.ambientLight.intensity.y >>
-		scene.ambientLight.intensity.z;
+    {
+        ifs >> r >> g >> b;
+        setAmbientColor((unsigned char)r, (unsigned char)g, (unsigned char)b);
+    }
 	else if ("al_intensity" == ele_id)
 	{
 		float intensity;
@@ -352,11 +394,13 @@ void Application3D::parseLine(ifstream& ifs, const string& ele_id)
 		skipLine(ifs);
 }
 
+// \note
+// the coordinate (x,y,z) should be converted to (x,z,-y), for the 3dMax is diffrent
 void Application3D::parseEyePosition(ifstream& ifs)
 {
-	ifs >> scene.eyePosition.x
-		>> scene.eyePosition.y
-		>> scene.eyePosition.z;
+    float x, y, z;
+    ifs >> x >> y >> z;
+    scene.eyePosition = CZPoint3D(x,z,-y);
 }
 
 void Application3D::parsePointLight(ifstream& ifs)

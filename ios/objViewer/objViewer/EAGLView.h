@@ -46,6 +46,15 @@
 - (void) rotateWithX:(float)x Y:(float)y;
 - (void) moveWithX:(float)x Y:(float)y;
 - (void) scale:(float)s;
+
+- (void) drawFrame;
+// for debug
+- (BOOL) loadModel:(NSUInteger) modelIdx;
+- (void) setCameraPositionWithX:(float)x Y:(float)y Z:(float) z;
+- (void) setLigthDirectionWithX:(float)x Y:(float)y Z:(float) z;
+- (void) setAmbientColorWithX:(unsigned char)x Y:(unsigned char)y Z:(unsigned char) z;
+- (void) setDiffuseColorWithX:(unsigned char)x Y:(unsigned char)y Z:(unsigned char) z;
+
 @end
 
 

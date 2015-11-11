@@ -8,6 +8,7 @@ class CZMaterial
 {
 public:
 	CZMaterial();
+    ~CZMaterial();
 
 	bool loadTexture(const std::string &filename);
 	bool use() const;

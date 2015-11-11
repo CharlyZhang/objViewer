@@ -12,13 +12,12 @@
 		2D7673791BE752AD00783623 /* CZMat4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D76735F1BE752AD00783623 /* CZMat4.cpp */; };
 		2D76737B1BE752AD00783623 /* CZMaterial.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673631BE752AD00783623 /* CZMaterial.mm */; };
 		2D76737D1BE752AD00783623 /* CZObjModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673661BE752AD00783623 /* CZObjModel.cpp */; };
-		2D76737F1BE752AD00783623 /* CZShader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2D76736A1BE752AD00783623 /* CZShader.mm */; };
 		2D7673811BE752AD00783623 /* CZUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D76736D1BE752AD00783623 /* CZUtil.cpp */; };
-		2D7673871BE753F000783623 /* ReadMe.md in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673861BE753F000783623 /* ReadMe.md */; };
 		2D7673891BE7709400783623 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7673881BE7709400783623 /* OpenGLES.framework */; };
-		2D7673BA1BEC39E000783623 /* CZGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673B21BEC39E000783623 /* CZGeometry.cpp */; };
-		2D7673BC1BEC39E000783623 /* CZMaterialLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673B51BEC39E000783623 /* CZMaterialLib.cpp */; };
-		2D7673BD1BEC39E000783623 /* CZObjFileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673B71BEC39E000783623 /* CZObjFileParser.cpp */; };
+		2DE8F1431BF2E87C004FC906 /* CZShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8F1421BF2E87C004FC906 /* CZShader.cpp */; };
+		2DE8F14A1BF2E908004FC906 /* CZGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8F1441BF2E908004FC906 /* CZGeometry.cpp */; };
+		2DE8F14B1BF2E908004FC906 /* CZMaterialLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8F1461BF2E908004FC906 /* CZMaterialLib.cpp */; };
+		2DE8F14C1BF2E908004FC906 /* CZObjFileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8F1481BF2E908004FC906 /* CZObjFileParser.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,17 +58,16 @@
 		2D7673661BE752AD00783623 /* CZObjModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZObjModel.cpp; path = ../../../src/CZObjModel.cpp; sourceTree = "<group>"; };
 		2D7673671BE752AD00783623 /* CZObjModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZObjModel.h; path = ../../../src/CZObjModel.h; sourceTree = "<group>"; };
 		2D7673691BE752AD00783623 /* CZShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZShader.h; path = ../../../src/CZShader.h; sourceTree = "<group>"; };
-		2D76736A1BE752AD00783623 /* CZShader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CZShader.mm; path = ../../../src/CZShader.mm; sourceTree = "<group>"; };
 		2D76736D1BE752AD00783623 /* CZUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZUtil.cpp; path = ../../../src/CZUtil.cpp; sourceTree = "<group>"; };
 		2D76736E1BE752AD00783623 /* CZVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZVector.h; path = ../../../src/CZVector.h; sourceTree = "<group>"; };
-		2D7673861BE753F000783623 /* ReadMe.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReadMe.md; path = ../../ReadMe.md; sourceTree = "<group>"; };
 		2D7673881BE7709400783623 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		2D7673B21BEC39E000783623 /* CZGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CZGeometry.cpp; sourceTree = "<group>"; };
-		2D7673B31BEC39E000783623 /* CZGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZGeometry.h; sourceTree = "<group>"; };
-		2D7673B51BEC39E000783623 /* CZMaterialLib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CZMaterialLib.cpp; sourceTree = "<group>"; };
-		2D7673B61BEC39E000783623 /* CZMaterialLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZMaterialLib.h; sourceTree = "<group>"; };
-		2D7673B71BEC39E000783623 /* CZObjFileParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CZObjFileParser.cpp; sourceTree = "<group>"; };
-		2D7673B81BEC39E000783623 /* CZObjFileParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZObjFileParser.h; sourceTree = "<group>"; };
+		2DE8F1421BF2E87C004FC906 /* CZShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZShader.cpp; path = ../../../src/CZShader.cpp; sourceTree = "<group>"; };
+		2DE8F1441BF2E908004FC906 /* CZGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZGeometry.cpp; path = ../../../src/CZGeometry.cpp; sourceTree = "<group>"; };
+		2DE8F1451BF2E908004FC906 /* CZGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZGeometry.h; path = ../../../src/CZGeometry.h; sourceTree = "<group>"; };
+		2DE8F1461BF2E908004FC906 /* CZMaterialLib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZMaterialLib.cpp; path = ../../../src/CZMaterialLib.cpp; sourceTree = "<group>"; };
+		2DE8F1471BF2E908004FC906 /* CZMaterialLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZMaterialLib.h; path = ../../../src/CZMaterialLib.h; sourceTree = "<group>"; };
+		2DE8F1481BF2E908004FC906 /* CZObjFileParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZObjFileParser.cpp; path = ../../../src/CZObjFileParser.cpp; sourceTree = "<group>"; };
+		2DE8F1491BF2E908004FC906 /* CZObjFileParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZObjFileParser.h; path = ../../../src/CZObjFileParser.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +93,6 @@
 		2D7673341BE7527800783623 = {
 			isa = PBXGroup;
 			children = (
-				2D7673861BE753F000783623 /* ReadMe.md */,
 				2D7673881BE7709400783623 /* OpenGLES.framework */,
 				2D76733F1BE7527800783623 /* Application3D */,
 				2D76734C1BE7527800783623 /* Application3DTests */,
@@ -117,15 +114,15 @@
 			children = (
 				2D7673581BE752AC00783623 /* Application3D.cpp */,
 				2D7673591BE752AC00783623 /* Application3D.h */,
-				2D7673B21BEC39E000783623 /* CZGeometry.cpp */,
-				2D7673B31BEC39E000783623 /* CZGeometry.h */,
-				2D7673B51BEC39E000783623 /* CZMaterialLib.cpp */,
-				2D7673B61BEC39E000783623 /* CZMaterialLib.h */,
-				2D7673B71BEC39E000783623 /* CZObjFileParser.cpp */,
-				2D7673B81BEC39E000783623 /* CZObjFileParser.h */,
 				2D76735A1BE752AC00783623 /* CZBasic.h */,
 				2D76735B1BE752AC00783623 /* CZDefine.h */,
 				2D76735E1BE752AD00783623 /* CZLog.h */,
+				2DE8F1441BF2E908004FC906 /* CZGeometry.cpp */,
+				2DE8F1451BF2E908004FC906 /* CZGeometry.h */,
+				2DE8F1461BF2E908004FC906 /* CZMaterialLib.cpp */,
+				2DE8F1471BF2E908004FC906 /* CZMaterialLib.h */,
+				2DE8F1481BF2E908004FC906 /* CZObjFileParser.cpp */,
+				2DE8F1491BF2E908004FC906 /* CZObjFileParser.h */,
 				2D76735F1BE752AD00783623 /* CZMat4.cpp */,
 				2D7673601BE752AD00783623 /* CZMat4.h */,
 				2D7673621BE752AD00783623 /* CZMaterial.h */,
@@ -133,7 +130,7 @@
 				2D7673661BE752AD00783623 /* CZObjModel.cpp */,
 				2D7673671BE752AD00783623 /* CZObjModel.h */,
 				2D7673691BE752AD00783623 /* CZShader.h */,
-				2D76736A1BE752AD00783623 /* CZShader.mm */,
+				2DE8F1421BF2E87C004FC906 /* CZShader.cpp */,
 				2D76736D1BE752AD00783623 /* CZUtil.cpp */,
 				2D76736E1BE752AD00783623 /* CZVector.h */,
 			);
@@ -244,15 +241,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D7673871BE753F000783623 /* ReadMe.md in Sources */,
-				2D7673BA1BEC39E000783623 /* CZGeometry.cpp in Sources */,
+				2DE8F14A1BF2E908004FC906 /* CZGeometry.cpp in Sources */,
+				2DE8F1431BF2E87C004FC906 /* CZShader.cpp in Sources */,
+				2DE8F14B1BF2E908004FC906 /* CZMaterialLib.cpp in Sources */,
 				2D7673791BE752AD00783623 /* CZMat4.cpp in Sources */,
 				2D7673771BE752AD00783623 /* Application3D.cpp in Sources */,
 				2D76737D1BE752AD00783623 /* CZObjModel.cpp in Sources */,
-				2D76737F1BE752AD00783623 /* CZShader.mm in Sources */,
+				2DE8F14C1BF2E908004FC906 /* CZObjFileParser.cpp in Sources */,
 				2D76737B1BE752AD00783623 /* CZMaterial.mm in Sources */,
-				2D7673BC1BEC39E000783623 /* CZMaterialLib.cpp in Sources */,
-				2D7673BD1BEC39E000783623 /* CZObjFileParser.cpp in Sources */,
 				2D7673811BE752AD00783623 /* CZUtil.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,6 +352,7 @@
 		2D7673521BE7527800783623 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -384,6 +381,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Application3DTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -398,6 +396,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Application3DTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

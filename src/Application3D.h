@@ -32,6 +32,8 @@ public:
     //          should be set in ios platform to utilize binary data 
     void setDocDirectory(const char* docDir);
     
+    void setGLSLDirectory(const char* glslDir);
+    
 	// control
 	//	/note : (deltaX,deltaY) is in the screen coordinate system
 	void rotate(float deltaX, float deltaY);
@@ -41,8 +43,16 @@ public:
 	// custom config
 	void setBackgroundColor(float r, float g, float b, float a);
 	void setModelColor(float r, float g, float b, float a);
+    
+    // camera
+    void setCameraPosition(float x, float y, float z);
+    
 	// light
-	void setLightPosition(float x, float y, float z);		///< TO DEPRECATED
+	void setLightPosition(float x, float y, float z);   ///< TO DEPRECATED
+    void setLigthDirection(float x, float y, float z);
+    void setAmbientColor(unsigned char r, unsigned char g, unsigned char b);
+    void setDiffuseColor(unsigned char r, unsigned char g, unsigned char b);
+    
 	// texture
 	bool enableTexture(bool flag);
 

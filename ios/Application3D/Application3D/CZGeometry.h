@@ -49,8 +49,15 @@ public:
 	void unpack(const std::vector<CZVector3D<float>> &posRawVector,	\
 			const std::vector<CZVector3D<float>> &normRawVector,	\
 			const std::vector<CZVector3D<float>> &texCoordRawVector);
-
-
+    
+    long unpackRawData(const std::vector<CZVector3D<float> > &posRawVector,	\
+                const std::vector<CZVector3D<float> > &normRawVector,	\
+                const std::vector<CZVector3D<float> > &texCoordRawVector, \
+                std::vector<CZVector3D<float> > &outPositions, \
+                std::vector<CZVector3D<float> > &outNormals, \
+                std::vector<CZVector2D<float> > &outTexcoords);
+    
+    
 	// render data
 	std::vector<CZVector3D<float>> positions;
 	std::vector<CZVector3D<float>> normals;
@@ -62,6 +69,9 @@ public:
 
 	bool hasNormal;
 	bool hasTexCoord;
+    
+    long firstIdx;
+    long vertNum;
 
 private:
 	/// generate face normals 

@@ -15,7 +15,6 @@
 
 # if defined(__APPLE__)
 #import <Foundation/Foundation.h>
-
 # endif
 
 using namespace std;
@@ -156,11 +155,9 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
     //创建shader对象
     m_Vert = glCreateShader(GL_VERTEX_SHADER);
     m_Frag = glCreateShader(GL_FRAGMENT_SHADER);
-    CZCheckGLError();
     
     //创建程序对象
     m_Program = glCreateProgram();
-    CZCheckGLError();
     
     if(!compile())
     {

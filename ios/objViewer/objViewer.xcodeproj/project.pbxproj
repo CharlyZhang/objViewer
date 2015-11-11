@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D0715C01BF208CE002F0842 /* MBProgressHUD in Resources */ = {isa = PBXBuildFile; fileRef = 2D0715BF1BF208CE002F0842 /* MBProgressHUD */; };
+		2D0715C51BF20B78002F0842 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0715C41BF20B78002F0842 /* MBProgressHUD.m */; };
+		2D3F20651BF322C60089F1E9 /* ReadMe.md in Sources */ = {isa = PBXBuildFile; fileRef = 2D3F20641BF322C60089F1E9 /* ReadMe.md */; };
 		2D7673C91BEC3A0A00783623 /* standard.vert in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C31BEC3A0A00783623 /* standard.vert */; };
 		2D7673CA1BEC3A0A00783623 /* directionalLight.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C41BEC3A0A00783623 /* directionalLight.frag */; };
 		2D7673CE1BECAF5C00783623 /* scene.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673CD1BECAF5C00783623 /* scene.cfg */; };
@@ -35,6 +38,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2D0715BF1BF208CE002F0842 /* MBProgressHUD */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MBProgressHUD; path = /Users/charlyzhang/Git/OBJViewer/ios/objViewer/objViewer/MBProgressHUD; sourceTree = "<absolute>"; };
+		2D0715C31BF20B78002F0842 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = MBProgressHUD/MBProgressHUD.h; sourceTree = "<group>"; };
+		2D0715C41BF20B78002F0842 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = MBProgressHUD/MBProgressHUD.m; sourceTree = "<group>"; };
+		2D3F20641BF322C60089F1E9 /* ReadMe.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReadMe.md; path = /Users/charlyzhang/Git/OBJViewer/ios/Application3D/../../ReadMe.md; sourceTree = "<absolute>"; };
 		2D7673C31BEC3A0A00783623 /* standard.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = standard.vert; sourceTree = "<group>"; };
 		2D7673C41BEC3A0A00783623 /* directionalLight.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = directionalLight.frag; sourceTree = "<group>"; };
 		2D7673CD1BECAF5C00783623 /* scene.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = scene.cfg; path = ../../src/scene.cfg; sourceTree = "<group>"; };
@@ -79,6 +86,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2D0715C21BF20B66002F0842 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				2D0715C31BF20B78002F0842 /* MBProgressHUD.h */,
+				2D0715C41BF20B78002F0842 /* MBProgressHUD.m */,
+			);
+			name = MBProgressHUD;
+			sourceTree = "<group>";
+		};
 		2DD439041BDA35CD004F1B8D = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +121,7 @@
 		2DD4390F1BDA35CD004F1B8D /* objViewer */ = {
 			isa = PBXGroup;
 			children = (
+				2D0715C21BF20B66002F0842 /* MBProgressHUD */,
 				2DD43A081BE1FC30004F1B8D /* EAGLView.h */,
 				2DD43A091BE1FC30004F1B8D /* EAGLView.mm */,
 				2DD439141BDA35CD004F1B8D /* AppDelegate.h */,
@@ -122,6 +139,7 @@
 		2DD439101BDA35CD004F1B8D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2D3F20641BF322C60089F1E9 /* ReadMe.md */,
 				2DD43A0B1BE21F73004F1B8D /* obj */,
 				2DD439111BDA35CD004F1B8D /* Info.plist */,
 				2DD439121BDA35CD004F1B8D /* main.m */,
@@ -239,6 +257,7 @@
 				2D7673C91BEC3A0A00783623 /* standard.vert in Resources */,
 				2DD4391C1BDA35CD004F1B8D /* Main.storyboard in Resources */,
 				2D7673D01BF02D9100783623 /* scene_violin.cfg in Resources */,
+				2D0715C01BF208CE002F0842 /* MBProgressHUD in Resources */,
 				2DD439211BDA35CD004F1B8D /* LaunchScreen.xib in Resources */,
 				2DD43A0C1BE21F73004F1B8D /* obj in Resources */,
 				2D7673CE1BECAF5C00783623 /* scene.cfg in Resources */,
@@ -263,6 +282,8 @@
 			files = (
 				2DD439191BDA35CD004F1B8D /* ViewController.m in Sources */,
 				2DD439161BDA35CD004F1B8D /* AppDelegate.m in Sources */,
+				2D3F20651BF322C60089F1E9 /* ReadMe.md in Sources */,
+				2D0715C51BF20B78002F0842 /* MBProgressHUD.m in Sources */,
 				2DD439131BDA35CD004F1B8D /* main.m in Sources */,
 				2DD43A0A1BE1FC30004F1B8D /* EAGLView.mm in Sources */,
 			);
@@ -399,6 +420,7 @@
 					/Users/charlyzhang/Git/OBJViewer/src,
 				);
 				INFOPLIST_FILE = objViewer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -413,20 +435,21 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: LI Leichuan (YK29UXBS4P)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Founder Electronics Co Ltd";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/Users/charlyzhang/Git/OBJViewer/src,
 				);
 				INFOPLIST_FILE = objViewer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/charlyzhang/Git/OBJViewer/ios/Application3D/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "35cdd2d2-bb8c-483f-94fa-19e6ce115a97";
+				PROVISIONING_PROFILE = "28abf002-1468-45cb-8216-781c62329697";
 			};
 			name = Release;
 		};
@@ -443,6 +466,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = objViewerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/objViewer.app/objViewer";
@@ -458,6 +482,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = objViewerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/objViewer.app/objViewer";

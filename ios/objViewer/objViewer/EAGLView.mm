@@ -23,6 +23,7 @@
 @implementation EAGLView
 {
     Application3D app3d;
+    NSArray *models;
 }
 
 @synthesize context;
@@ -56,18 +57,22 @@
         return nil;
     }
 
-//    NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/中提琴/zhongtiqin.obj"];
-//    NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/小提琴/xiaotiqin.obj"];
-//    NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/低音提琴/diyintiqing.obj"];
-    NSString *bundlePath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/大提琴/datiqing.obj"];
-
-    NSString *configPath = [[[NSBundle mainBundle]bundlePath]stringByAppendingPathComponent:@"scene.cfg"];
+//    NSString *model0 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/中提琴/zhongtiqin.obj"];
+//    NSString *model1 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/LL/xiaotiqing.obj"];
+//    NSString *model2 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/低音提琴/diyintiqing.obj"];
+//    NSString *model3 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/大提琴/datiqing.obj"];
+    NSString *model0 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DaTiQin/DaTiQin.obj"];
+    NSString *model1 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DiYinTiQin/DiYinTiqin.obj"];
+    NSString *model2 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/XiaoTiQin/XiaoTiQin.obj"];
+    NSString *model3 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/ZhongTiQin/ZhongTiQin.obj"];
+    NSString *configPath = [[[NSBundle mainBundle]bundlePath]stringByAppendingPathComponent:@"scene_violin.cfg"];
     NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
+    models = [NSArray arrayWithObjects:model0, model1, model2, model3,nil];
+    app3d.setGLSLDirectory([[[[NSBundle mainBundle]bundlePath] stringByAppendingString:@"/"] UTF8String]);
     app3d.init([configPath UTF8String]);
     app3d.setDocDirectory([docPath UTF8String]);
-    app3d.loadObjModel([bundlePath UTF8String]);
-    app3d.scale(3);
+    app3d.loadObjModel([model0 UTF8String]);
     
     return self;
 }// We have to implement this method
@@ -226,6 +231,47 @@
 - (void) scale:(float)s
 {
     app3d.scale(s);
+    [self drawFrame];
+}
+
+// for debug
+- (BOOL) loadModel:(NSUInteger) modelIdx
+{
+    if (modelIdx > 3) {
+        NSLog(@"modelIdx is out of range");
+        return NO;
+    }
+    
+    BOOL result = NO;
+    if (context != nil)
+    {
+        [EAGLContext setCurrentContext:context];
+    
+        result = app3d.loadObjModel([[models objectAtIndex:modelIdx] UTF8String]);
+    }
+    
+    //[self drawFrame];
+    return result;
+}
+
+- (void) setCameraPositionWithX:(float)x Y:(float)y Z:(float) z
+{
+    app3d.setCameraPosition(x, y, z);
+    [self drawFrame];
+}
+- (void) setLigthDirectionWithX:(float)x Y:(float)y Z:(float) z
+{
+    app3d.setLigthDirection(x, y, z);
+    [self drawFrame];
+}
+- (void) setAmbientColorWithX:(unsigned char)x Y:(unsigned char)y Z:(unsigned char) z
+{
+    app3d.setAmbientColor(x, y, z);
+    [self drawFrame];
+}
+- (void) setDiffuseColorWithX:(unsigned char)x Y:(unsigned char)y Z:(unsigned char) z
+{
+    app3d.setDiffuseColor(x, y, z);
     [self drawFrame];
 }
 

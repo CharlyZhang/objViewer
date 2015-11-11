@@ -14,25 +14,25 @@ bool CZObjFileParser::load(const string& path)
 
 	curDirPath = path.substr(0, path.find_last_of('/'));
 
-	const int fileSize = ifs.tellg();
+    size_t fileSize = (size_t)ifs.tellg();
 	ifs.seekg(0, ios::beg);
 
 	//	explain what's going on
-	LOG_INFO("Parsing file %s  (size = %d bytes)...\n", path.c_str(), fileSize);
+	LOG_INFO("Parsing file %s  (size = %ld bytes)...\n", path.c_str(), fileSize);
 
 	// and go.
-	static int lastPercent = 0;
-	int percent = 10;	//	progress indicator
+	static size_t lastPercent = 0;
+	size_t percent = 10;	//	progress indicator
 	while (skipCommentLine(ifs))
 	{
 		// show progress for files larger than one Mo
 		if ((fileSize > 1024 * 1024) && (100 * ifs.tellg() / fileSize >= percent)) {
-			percent = 100 * ifs.tellg() / fileSize;
+			percent = 100 * (size_t)ifs.tellg() / fileSize;
 			percent = (percent / 10) * 10;
 
 			if (lastPercent != percent)
 			{
-				LOG_INFO("processing£º%d%%\n", percent);
+				LOG_INFO("processing %ld%%\n", percent);
 				lastPercent = percent;
 			}
 		}
@@ -51,7 +51,7 @@ bool CZObjFileParser::load(const char *filename)
 {
 	if(filename == NULL)
 	{
-		LOG_ERROR("filename is NULL\n");
+		LOG_WARN("filename is NULL\n");
 		return false;
 	}
 	

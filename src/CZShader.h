@@ -19,6 +19,8 @@
 class CZShader
 {
 public:
+    static std::string glslDirectory;
+    
 	/// 不绑定属性和统一变量的shader
 	CZShader(const char* vertFileName, const char* fragFileName);
 	/// 绑定属性和统一变量的shader

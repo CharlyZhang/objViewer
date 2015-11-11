@@ -25,6 +25,12 @@ CZMaterial::CZMaterial()
     texId = -1;
 }
 
+CZMaterial::~CZMaterial()
+{
+    if (texId != -1) {
+        glDeleteTextures(1, &texId);
+    }
+}
 bool CZMaterial::loadTexture(const string &filename)
 {
 #if !defined(__APPLE__)
@@ -139,7 +145,7 @@ bool CZMaterial::loadTexture(const string &filename)
     //bind to the new texture ID
     glBindTexture(GL_TEXTURE_2D, texId);
     //store the texture data for OpenGL use
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)width, (GLsizei)height,
                  0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
 //    for (int i=0; i<10; i++) {
 //        printf("%d, %d, %d, %d \n",data[i*4+0],data[i*4+1],data[i*4+2],data[i*4+3]);
@@ -151,6 +157,8 @@ bool CZMaterial::loadTexture(const string &filename)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
     free(imageData);
+    
+    CFRelease(inBitmapData);
 #endif
     hasTexture = true;
     return true;

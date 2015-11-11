@@ -1,4 +1,5 @@
 #include "CZGeometry.h"
+#include <cfloat>
 
 using namespace std;
 
@@ -38,6 +39,40 @@ void CZGeometry::unpack(const vector<CZVector3D<float>> &posRawVector, \
 	positions.shrink_to_fit();
 	normals.shrink_to_fit();
 	texcoords.shrink_to_fit();
+}
+
+long CZGeometry::unpackRawData(const std::vector<CZVector3D<float> > &posRawVector,	\
+            const std::vector<CZVector3D<float> > &normRawVector,	\
+            const std::vector<CZVector3D<float> > &texCoordRawVector, \
+            std::vector<CZVector3D<float> > &outPositions, \
+            std::vector<CZVector3D<float> > &outNormals, \
+            std::vector<CZVector2D<float> > &outTexcoords)
+{
+    vertNum = 0;
+    for (vector<CZFace>::const_iterator itr = faces.begin(); itr != faces.end(); ++itr)
+    {
+        for (unsigned i = 0; i < itr->v.size(); ++i)
+        {
+            vertNum ++ ;
+            outPositions.push_back(posRawVector[itr->v[i]-1]);
+            if (hasNormal)	outNormals.push_back(normRawVector[itr->vn[i]-1]);
+            if (hasTexCoord)	outTexcoords.push_back(CZVector2D<float>(texCoordRawVector[itr->vt[i]-1].x,texCoordRawVector[itr->vt[i]-1].y));
+            else				outTexcoords.push_back(CZVector2D<float>(0, 0));
+        }
+    }
+
+    if (!hasNormal)
+    {
+        generateFaceNorm();
+        
+        for (int i=0; i<normals.size(); i++) {
+            outNormals.push_back(normals[i]);
+        }
+        
+        normals.clear();
+    }
+    
+    return vertNum;
 }
 
 //////////////////////////////////////////////////////////////////////////
