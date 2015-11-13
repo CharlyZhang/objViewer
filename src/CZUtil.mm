@@ -1,37 +1,71 @@
-#include "CZMaterial.h"
-
-#include "CZLog.h"
 #include "CZDefine.h"
+#include "CZBasic.h"
+#include "CZLog.h"
+#include <string>
 
-#if !defined(__APPLE__)
+#if defined(_WIN32)
 #   include "FreeImage.h"
-#else
+#elif defined(__APPLE__)
 #   import <Foundation/Foundation.h>
 #   import <UIKit/UIKit.h>
 #endif
 
 using namespace std;
 
-CZMaterial::CZMaterial()
+void CZCheckGLError_(const char *file, int line)
 {
-    Ns = 10;						//	shininess
-    Ka[0] = Ka[1] = Ka[2] = 0.6f;	//	ambient color
-    Ka[3] = 0;
-    Kd[0] = Kd[1] = Kd[2] = 0.6f;	// diffuse color
-    Kd[3] = 0;
-    Ks[0] = Ks[1] = Ks[2] = Ks[3] = 0;	//	specular color
-    
-    hasTexture = false;
-    texId = -1;
-}
+	int    retCode = 0;
+	GLenum glErr = glGetError();
 
-CZMaterial::~CZMaterial()
-{
-    if (texId != -1) {
-        glDeleteTextures(1, &texId);
-    }
-}
-bool CZMaterial::loadTexture(const string &filename)
+	while (glErr != GL_NO_ERROR) 
+	{
+
+#if defined USE_OPENGL
+		const GLubyte* sError = gluErrorString(glErr);
+
+		if (sError)
+			LOG_INFO("GL Error #%d (%s) in File %s at line: %d\n",glErr,gluErrorString(glErr),file,line);
+		else
+			LOG_INFO("GL Error #%d (no message available) in File %s at line: %d\n",glErr,file,line);
+
+#elif defined USE_OPENGL_ES
+		switch (glErr) {
+		case GL_INVALID_ENUM:
+			LOG_ERROR("GL Error: Enum argument is out of range\n");
+			break;
+		case GL_INVALID_VALUE:
+			LOG_ERROR("GL Error: Numeric value is out of range\n");
+			break;
+		case GL_INVALID_OPERATION:
+			LOG_ERROR("GL Error: Operation illegal in current state\n");
+			break;
+			//        case GL_STACK_OVERFLOW:
+			//            NSLog(@"GL Error: Command would cause a stack overflow");
+			//            break;
+			//        case GL_STACK_UNDERFLOW:
+			//            NSLog(@"GL Error: Command would cause a stack underflow");
+			//            break;
+		case GL_OUT_OF_MEMORY:
+			LOG_ERROR("GL Error: Not enough memory to execute command\n");
+			break;
+		case GL_NO_ERROR:
+			if (1) {
+				LOG_ERROR("No GL Error\n");
+			}
+			break;
+		default:
+			LOG_ERROR("Unknown GL Error\n");
+			break;
+		}
+#endif
+
+		retCode = 1;
+		glErr = glGetError();
+	}
+	//return retCode;
+};
+
+CZImage *CZLoadTexture(const string &filename)
 {
 #if !defined(__APPLE__)
     //image format
@@ -126,55 +160,24 @@ bool CZMaterial::loadTexture(const string &filename)
     // provider’s data.
     CFDataRef inBitmapData = CGDataProviderCopyData(inProvider);
     
+    const UInt8 *data = CFDataGetBytePtr(inBitmapData);
+    
     //宽，高，data
-    size_t width = CGImageGetWidth(img);
+    size_t width= CGImageGetWidth(img);
     size_t height = CGImageGetHeight(img);
     
-    const UInt8 *data = CFDataGetBytePtr(inBitmapData);
-    UInt8 *imageData = (UInt8*)malloc(width*height*4);
-    UInt8 *src = (UInt8*)&data[(height-1)*width*4];
-    UInt8 *dst = imageData;
-    for (int i=0; i<height; i++) {
+    CZImage *retImage = new CZImage;
+    retImage->width = (int)width;
+    retImage->height = (int)height;
+    retImage->data = (unsigned char*)malloc(width*height*4);
+    unsigned char *src = (UInt8*)&data[(height-1)*width*4];
+    UInt8 *dst = retImage->data;
+    for (int i=0; i<height; i++)
+    {
         memcpy(dst,src,width*4);
         dst += (width*4);
         src -= (width*4);
     }
-    
-    //generate an OpenGL texture ID for this texture
-    glGenTextures(1, &texId);
-    //bind to the new texture ID
-    glBindTexture(GL_TEXTURE_2D, texId);
-    //store the texture data for OpenGL use
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)width, (GLsizei)height,
-                 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
-//    for (int i=0; i<10; i++) {
-//        printf("%d, %d, %d, %d \n",data[i*4+0],data[i*4+1],data[i*4+2],data[i*4+3]);
-//    }
-    //	gluBuild2DMipmaps(GL_TEXTURE_2D, components, width, height, texFormat, GL_UNSIGNED_BYTE, bits);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
-    free(imageData);
-    
-    CFRelease(inBitmapData);
+    return retImage;
 #endif
-    hasTexture = true;
-    return true;
-}
-
-bool CZMaterial::use() const
-{
-    if (texId != -1)
-    {
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texId);
-        //glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-#if !defined(__APPLE__)
-        glEnable(GL_TEXTURE_2D);
-#endif
-        return true;
-    }
-    return false;
 }

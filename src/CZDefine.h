@@ -8,7 +8,7 @@
 //#include "CZTexture.h"
 
 #define DEFAULT_GLSL_DIR "../../src/glsl/"
-//#define _DEBUG
+#define _DEBUG
 #define SHOW_RENDER_TIME
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,8 +59,10 @@
 
 
 #include "CZLog.h"
+#include "CZBasic.h"
 
 extern void CZCheckGLError_(const char *file, int line);
+extern CZImage *CZLoadTexture(const std::string &filename);
 
 #ifdef _DEBUG
 #define CZCheckGLError()	CZCheckGLError_(__FILE__, __LINE__)

@@ -86,11 +86,40 @@ bool CZObjModel::saveAsBinary(const std::string& path)
         fwrite(&(p->vertNum), sizeof(p->vertNum), 1, fp);
     }
     
+    // data
     long totalVertNum = positions.size();
     fwrite(&(totalVertNum), sizeof(totalVertNum), 1, fp);
     fwrite(positions.data(), sizeof(CZVector3D<float>), totalVertNum, fp);
     fwrite(normals.data(), sizeof(CZVector3D<float>), totalVertNum, fp);
     fwrite(texcoords.data(), sizeof(CZVector2D<float>), totalVertNum, fp);
+    
+    // material
+    CZMaterialMap materialMap = materialLib.getAll();
+    count = materialMap.size();
+    fwrite((char*)(&count), sizeof(count), 1, fp);
+    for (CZMaterialMap::iterator itr = materialMap.begin(); itr != materialMap.end(); itr++)
+    {
+        // material name
+        string materialName = itr->first;
+        unsigned char mtlNameLen = materialName.size();
+        fwrite(&mtlNameLen, sizeof(unsigned char), 1, fp);
+        fwrite(materialName.c_str(), sizeof(char), mtlNameLen, fp);
+        // material
+        CZMaterial *pMaterial = itr->second;
+        fwrite((char*)&pMaterial->Ns, sizeof(float), 1, fp);
+        fwrite((char*)pMaterial->Ka, sizeof(float), 4, fp);
+        fwrite((char*)pMaterial->Kd, sizeof(float), 4, fp);
+        fwrite((char*)pMaterial->Ks, sizeof(float), 4, fp);
+        fwrite((char*)&pMaterial->hasTexture, sizeof(bool), 1, fp);
+        if (pMaterial->hasTexture)
+        {
+            int w = pMaterial->texImage->width;
+            int h = pMaterial->texImage->height;
+            fwrite((char*)&w, sizeof(int), 1, fp);
+            fwrite((char*)&h, sizeof(int), 1, fp);
+            fwrite((char*)pMaterial->texImage->data, sizeof(unsigned char), w*h*4, fp);
+        }
+    }
     
     fclose(fp);
     
@@ -159,6 +188,41 @@ bool CZObjModel::loadBinary(const std::string& path,const char *originalPath/*  
     fread(normals.data(), sizeof(CZVector3D<float>), totalVertNum, fp);
     fread(texcoords.data(), sizeof(CZVector2D<float>), totalVertNum, fp);
     
+    // material
+    fread((char*)(&count), sizeof(count), 1, fp);
+
+    for (int i = 0; i < count; i++)
+    {
+        // material name
+        unsigned char mtlNameLen;
+        string materialName;
+        fread(&mtlNameLen, sizeof(unsigned char), 1, fp);
+        materialName.resize(mtlNameLen);
+        fread((char*)materialName.c_str(), sizeof(char), mtlNameLen, fp);
+
+        // material
+        CZMaterial *pMaterial = new CZMaterial;
+        fread((char*)&pMaterial->Ns, sizeof(float), 1, fp);
+        fread((char*)pMaterial->Ka, sizeof(float), 4, fp);
+        fread((char*)pMaterial->Kd, sizeof(float), 4, fp);
+        fread((char*)pMaterial->Ks, sizeof(float), 4, fp);
+        fread((char*)&pMaterial->hasTexture, sizeof(bool), 1, fp);
+        if (pMaterial->hasTexture)
+        {
+            int w,h;
+            fread((char*)&w, sizeof(int), 1, fp);
+            fread((char*)&h, sizeof(int), 1, fp);
+            CZImage *texImage = new CZImage;
+            texImage->width = w;
+            texImage->height = h;
+            texImage->data = new unsigned char[w*h*4];
+            fread((char*)texImage->data, sizeof(unsigned char), w*h*4, fp);
+            pMaterial->setTextureImage(texImage);
+        }
+        
+        materialLib.setMaterial(materialName, pMaterial);
+    }
+
     fclose(fp);
     
     // transform to graphic card
@@ -190,10 +254,6 @@ bool CZObjModel::loadBinary(const std::string& path,const char *originalPath/*  
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
     
     GL_BIND_VERTEXARRAY(0);
-    CZCheckGLError();
-    
-    materialLib.load(curDirPath + "/" + mtlLibName);
-    
     CZCheckGLError();
     
     return true;

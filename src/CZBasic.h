@@ -38,4 +38,18 @@ typedef struct _CZScene {
 	CZPoint3D eyePosition;					//< eye position
 } CZScene;
 
+
+// Image
+class CZImage
+{
+public:
+    // \note
+    // rgba
+    CZImage(){ data = NULL;}
+    ~CZImage() {if(data) delete [] data;}
+
+    int width,height;
+    unsigned char *data;
+};
+
 #endif

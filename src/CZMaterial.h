@@ -3,6 +3,7 @@
 
 #include <string>
 #include "CZDefine.h"
+#include "CZBasic.h"
 
 class CZMaterial
 {
@@ -10,14 +11,15 @@ public:
 	CZMaterial();
     ~CZMaterial();
 
-	bool loadTexture(const std::string &filename);
-	bool use() const;
+    void setTextureImage(CZImage *img);
+    bool use() const;
 
 public:
 	float	Ns;		///<	shininess
 	float	Ka[4];	///<	ambient color
 	float	Kd[4];	///<	diffuse color
 	float	Ks[4];	///<	specular color
+    CZImage *texImage;
 
 	bool hasTexture;
 	unsigned int texId;

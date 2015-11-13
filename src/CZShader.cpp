@@ -127,7 +127,8 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
     GLint linkStatus;
     glLinkProgram(m_Program);
     glGetProgramiv(m_Program, GL_LINK_STATUS, &linkStatus);
-    if (linkStatus == 0) {
+    if (linkStatus == 0)
+    {
         LOG_ERROR("shader link failed!\n");
         printProgramInfoLog(m_Program);
         destroyShaders(m_Vert, m_Frag, m_Program);
