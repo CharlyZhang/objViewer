@@ -86,7 +86,7 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
     this->m_Frag = NULL;
     this->m_Vert = NULL;
     
-    char fileName[128];
+    char fileName[1024];
     strcpy(fileName,glslDirectory.c_str());
     strcat(fileName,vertFileName);
     strcat(fileName,".vert");
