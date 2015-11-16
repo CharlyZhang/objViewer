@@ -144,7 +144,7 @@ bool CZObjModel::loadBinary(const std::string& path,const char *originalPath/*  
     
     unsigned char mtlLibNameLen;
     fread((char*)&mtlLibNameLen, sizeof(unsigned char), 1, fp);
-    mtlLibName.resize(mtlLibNameLen);
+    mtlLibName.resize(mtlLibNameLen+1);
     fread((char*)mtlLibName.c_str(), sizeof(char), mtlLibNameLen, fp);
     
     
@@ -164,7 +164,7 @@ bool CZObjModel::loadBinary(const std::string& path,const char *originalPath/*  
         unsigned char mtlLibNameLen;
         
         fread(&mtlLibNameLen, sizeof(unsigned char), 1, fp);
-        pNewGeometry->materialName.resize(mtlLibNameLen);
+        pNewGeometry->materialName.resize(mtlLibNameLen+1);
         fread((char*)pNewGeometry->materialName.c_str(), sizeof(char), mtlLibNameLen, fp);
         
         // data
@@ -197,7 +197,7 @@ bool CZObjModel::loadBinary(const std::string& path,const char *originalPath/*  
         unsigned char mtlNameLen;
         string materialName;
         fread(&mtlNameLen, sizeof(unsigned char), 1, fp);
-        materialName.resize(mtlNameLen);
+        materialName.resize(mtlNameLen+1);
         fread((char*)materialName.c_str(), sizeof(char), mtlNameLen, fp);
 
         // material
@@ -314,14 +314,15 @@ void CZObjModel::clearRawData()
 	 */
 
 	m_vertRawVector.clear();
-    vector<CZVector3D<float>> temp;
-	m_vertRawVector.swap(temp);
+    vector<CZVector3D<float>> temp3D;
+    vector<CZVector2D<float>> temp2D;
+	m_vertRawVector.swap(temp3D);
 
 	m_texRawVector.clear();
-	m_texRawVector.swap(temp);
+	m_texRawVector.swap(temp2D);
 
 	m_normRawVector.clear();
-	m_texRawVector.swap(temp);
+	m_normRawVector.swap(temp3D);
 }
 
 void CZObjModel::unpackRawData()
@@ -429,11 +430,11 @@ void CZObjModel::parseVertexNormal(std::ifstream &ifs)
 
 void CZObjModel::parseVertexTexCoord(std::ifstream &ifs)
 {
-	float x, y, z;
-	ifs >> x >> y >> z;
+	float x, y;
+	ifs >> x >> y;
 	ifs.clear();                           // is z (i.e. w) is not available, have to clear error flag.
 
-	m_texRawVector.push_back(CZVector3D<float>(x, y, z));
+	m_texRawVector.push_back(CZVector2D<float>(x, y));
 }
 
 void CZObjModel::parseFace(std::ifstream &ifs)

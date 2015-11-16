@@ -6,6 +6,21 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		2D8160F51BF5D7FE00E65E09 /* create_lib */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 2D8160F81BF5D7FF00E65E09 /* Build configuration list for PBXAggregateTarget "create_lib" */;
+			buildPhases = (
+				2D8160F91BF5D80D00E65E09 /* ShellScript */,
+			);
+			dependencies = (
+				2D8160FB1BF5D91A00E65E09 /* PBXTargetDependency */,
+			);
+			name = create_lib;
+			productName = create_lib;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		2D7673491BE7527800783623 /* libApplication3D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D76733D1BE7527800783623 /* libApplication3D.a */; };
 		2D7673771BE752AD00783623 /* Application3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673581BE752AC00783623 /* Application3D.cpp */; };
@@ -22,6 +37,13 @@
 
 /* Begin PBXContainerItemProxy section */
 		2D76734A1BE7527800783623 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D7673351BE7527800783623 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2D76733C1BE7527800783623;
+			remoteInfo = Application3D;
+		};
+		2D8160FA1BF5D91A00E65E09 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2D7673351BE7527800783623 /* Project object */;
 			proxyType = 1;
@@ -206,6 +228,9 @@
 					2D7673471BE7527800783623 = {
 						CreatedOnToolsVersion = 6.4;
 					};
+					2D8160F51BF5D7FE00E65E09 = {
+						CreatedOnToolsVersion = 6.4;
+					};
 				};
 			};
 			buildConfigurationList = 2D7673381BE7527800783623 /* Build configuration list for PBXProject "Application3D" */;
@@ -222,6 +247,7 @@
 			targets = (
 				2D76733C1BE7527800783623 /* Application3D */,
 				2D7673471BE7527800783623 /* Application3DTests */,
+				2D8160F51BF5D7FE00E65E09 /* create_lib */,
 			);
 		};
 /* End PBXProject section */
@@ -235,6 +261,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2D8160F91BF5D80D00E65E09 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Sets the target folders and the final framework product.\nFMK_NAME=\"libApplicaiton3D\"\n# Install dir will be the final output to the framework.\n# The following line create it in the root folder of the current project.\nINSTALL_DIR=${SRCROOT}/Products\n# Working dir will be deleted after the framework creation.\nWRK_DIR=build\nDEVICE_DIR=${WRK_DIR}/Release-iphoneos\nSIMULATOR_DIR=${WRK_DIR}/Release-iphonesimulator\n# -configuration ${CONFIGURATION}\n# Clean and Building both architectures.\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphoneos clean build\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphonesimulator clean build\npwd\n# Cleaning the oldest.\nif [ -d \"${INSTALL_DIR}\" ]\nthen\nrm -rf \"${INSTALL_DIR}\"\nfi\nmkdir -p \"${INSTALL_DIR}/include\"\ncp -R \"${SRC_ROOT}/../../src/*.h\" \"${INSTALL_DIR}/include/\"\nmkdir -p \"${INSTALL_DIR}/glsl\"\ncp -R \"${SRC_ROOT}/../../src/glsl/\" \"${INSTALL_DIR}/glsl/\"\n# Uses the Lipo Tool to merge both binary files (i386 + armv6/armv7) into one Universal final product.\nlipo -create \"${DEVICE_DIR}/${FMK_NAME}\" \"${SIMULATOR_DIR}/${FMK_NAME}\" -output \"${INSTALL_DIR}/${FMK_NAME}\"\nrm -r \"${WRK_DIR}\"\n\n#ditto \"${BUILT_PRODUCTS_DIR}/${FMK_NAME}.bundle\" \\\n# \"${SRCROOT}/Products/${FMK_NAME}.bundle\"\n\nopen \"${INSTALL_DIR}\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2D7673391BE7527800783623 /* Sources */ = {
@@ -267,6 +309,11 @@
 			isa = PBXTargetDependency;
 			target = 2D76733C1BE7527800783623 /* Application3D */;
 			targetProxy = 2D76734A1BE7527800783623 /* PBXContainerItemProxy */;
+		};
+		2D8160FB1BF5D91A00E65E09 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2D76733C1BE7527800783623 /* Application3D */;
+			targetProxy = 2D8160FA1BF5D91A00E65E09 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -402,6 +449,20 @@
 			};
 			name = Release;
 		};
+		2D8160F61BF5D7FF00E65E09 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2D8160F71BF5D7FF00E65E09 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -431,6 +492,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		2D8160F81BF5D7FF00E65E09 /* Build configuration list for PBXAggregateTarget "create_lib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D8160F61BF5D7FF00E65E09 /* Debug */,
+				2D8160F71BF5D7FF00E65E09 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

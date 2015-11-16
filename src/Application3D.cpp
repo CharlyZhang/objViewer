@@ -168,6 +168,7 @@ void Application3D::frame()
 		return;
 	}
 	pShader->begin();
+    CZCheckGLError();
     
 	// common uniforms
 	glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, mvpMat);

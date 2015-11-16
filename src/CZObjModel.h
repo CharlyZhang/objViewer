@@ -49,8 +49,8 @@ private:
 
 	// raw data
 	std::vector<CZVector3D<float>> m_vertRawVector;
-	std::vector<CZVector3D<float>> m_texRawVector;
 	std::vector<CZVector3D<float>> m_normRawVector;
+    std::vector<CZVector2D<float>> m_texRawVector;
     
     std::vector<CZVector3D<float> > positions;
     std::vector<CZVector3D<float> > normals;

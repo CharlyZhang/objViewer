@@ -14,7 +14,7 @@
 #include "Application3D.h"
 
 #define USE_DEPTH_BUFFER 1
-#define SHOW_RENDER_TIME
+//#define SHOW_RENDER_TIME
 //declare private methods, so they can be used everywhere in this file
 @interface EAGLView (PrivateMethods)
 - (void)createFramebuffer;
