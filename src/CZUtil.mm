@@ -1,6 +1,5 @@
 #include "CZDefine.h"
 #include "CZBasic.h"
-#include "CZLog.h"
 #include <string>
 
 #if defined(_WIN32)
@@ -24,20 +23,20 @@ void CZCheckGLError_(const char *file, int line)
 		const GLubyte* sError = gluErrorString(glErr);
 
 		if (sError)
-			LOG_INFO("GL Error #%d (%s) in File %s at line: %d\n",glErr,gluErrorString(glErr),file,line);
+			printf("GL Error #%d (%s) in File %s at line: %d\n",glErr,gluErrorString(glErr),file,line);
 		else
-			LOG_INFO("GL Error #%d (no message available) in File %s at line: %d\n",glErr,file,line);
+			printf("GL Error #%d (no message available) in File %s at line: %d\n",glErr,file,line);
 
 #elif defined USE_OPENGL_ES
 		switch (glErr) {
 		case GL_INVALID_ENUM:
-			LOG_ERROR("GL Error: Enum argument is out of range\n");
+			printf("(%s): %d - GL Error: Enum argument is out of range\n",file,line);
 			break;
 		case GL_INVALID_VALUE:
-			LOG_ERROR("GL Error: Numeric value is out of range\n");
+			printf("(%s): %d - GL Error: Numeric value is out of range\n",file,line);
 			break;
 		case GL_INVALID_OPERATION:
-			LOG_ERROR("GL Error: Operation illegal in current state\n");
+			printf("(%s): %d - GL Error: Operation illegal in current state\n",file,line);
 			break;
 			//        case GL_STACK_OVERFLOW:
 			//            NSLog(@"GL Error: Command would cause a stack overflow");
@@ -46,15 +45,15 @@ void CZCheckGLError_(const char *file, int line)
 			//            NSLog(@"GL Error: Command would cause a stack underflow");
 			//            break;
 		case GL_OUT_OF_MEMORY:
-			LOG_ERROR("GL Error: Not enough memory to execute command\n");
+			printf("(%s): %d - GL Error: Not enough memory to execute command\n",file,line);
 			break;
 		case GL_NO_ERROR:
 			if (1) {
-				LOG_ERROR("No GL Error\n");
+				printf("No GL Error\n");
 			}
 			break;
 		default:
-			LOG_ERROR("Unknown GL Error\n");
+			printf("(%s): %d - Unknown GL Error\n",file,line);
 			break;
 		}
 #endif
