@@ -60,7 +60,7 @@ void main()
     
     gl_FragColor = vec4(ambient + diffuse, 1.0);
     
-//	gl_FragColor = vec4(surfaceColor.rgb,1.0);
+	gl_FragColor = vec4(surfaceColor.rgb,1.0);
 //	gl_FragColor = vec4(fragNormal,1);
 //	gl_FragColor = vec4(fragTexCoord,0.5,1);
 }

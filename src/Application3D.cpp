@@ -278,6 +278,7 @@ void Application3D::scale(float s)
 // custom config
 void Application3D::setBackgroundColor(float r, float g, float b, float a)
 {
+    scene.bgColor = CZColor(r,g,b,a);
 	glClearColor(r, g, b, a);
 }
 void Application3D::setModelColor(float r, float g, float b, float a)

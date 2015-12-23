@@ -24,7 +24,7 @@
 @implementation EAGLView
 {
     Application3D app3d;
-    NSArray *models;
+    NSString *modelPath;
 }
 
 @synthesize context;
@@ -37,6 +37,7 @@
     if (!self) {
         return nil;
     }
+    
     CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
     
     //we don't want a transparent surface
@@ -57,25 +58,15 @@
        // [self release];
         return nil;
     }
-
-//    NSString *model0 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/中提琴/zhongtiqin.obj"];
-//    NSString *model1 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/LL/xiaotiqing.obj"];
-//    NSString *model2 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/低音提琴/diyintiqing.obj"];
-//    NSString *model3 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/大提琴/datiqing.obj"];
-    NSString *model0 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DaTiQin/DaTiQin.obj"];
-    NSString *model1 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DiYinTiQin/DiYinTiqin.obj"];
-    NSString *model2 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/XiaoTiQin/XiaoTiQin.obj"];
-    NSString *model3 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/ZhongTiQin/ZhongTiQin.obj"];
-    NSString *model4 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/11.obj"];
-    NSString *model5 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/22.obj"];
+    
     NSString *configPath = [[[NSBundle mainBundle]bundlePath]stringByAppendingPathComponent:@"scene_violin.cfg"];
+
     NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
-    models = [NSArray arrayWithObjects:model4, model5, model2, model3,nil];
     app3d.setGLSLDirectory([[[[NSBundle mainBundle]bundlePath] stringByAppendingString:@"/"] UTF8String]);
     app3d.init([configPath UTF8String]);
     app3d.setDocDirectory([docPath UTF8String]);
-    app3d.loadObjModel([model4 UTF8String]);
+    app3d.setBackgroundColor(1, 1, 1, 1);
     
     return self;
 }// We have to implement this method
@@ -240,20 +231,23 @@
     [self drawFrame];
 }
 
-// for debug
-- (BOOL) loadModel:(NSUInteger) modelIdx
+- (void) reset
 {
-    if (modelIdx > 3) {
-        NSLog(@"modelIdx is out of range");
-        return NO;
-    }
-    
+    app3d.reset();
+    [self drawFrame];
+}
+
+// for debug
+- (BOOL) loadModel:(NSString*)path
+{
     BOOL result = NO;
+    modelPath = path;
+    
     if (context != nil)
     {
         [EAGLContext setCurrentContext:context];
     
-        result = app3d.loadObjModel([[models objectAtIndex:modelIdx] UTF8String]);
+        result = app3d.loadObjModel([path UTF8String]);
     }
     
     //[self drawFrame];

@@ -13,7 +13,9 @@
 {
     EAGLView *glView;
     NSArray *modelName;
+    NSArray *modelPath;
     NSUInteger selectedModel;
+    UIView *displayView;
     
     MBProgressHUD *hud;
 }
@@ -25,6 +27,10 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *ambientItensity;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickView;
+
+- (void)cleanTemp;
+- (void)loadModels;
+
 @end
 
 @implementation ViewController
@@ -32,33 +38,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    glView = [[EAGLView alloc]initWithFrame:self.view.bounds];
-    [self.view insertSubview:glView atIndex:0];
-    modelName = [NSArray arrayWithObjects:@"大提琴",@"低音提琴",@"小提琴",@"中提琴",nil];
-    selectedModel = 0;
     
     [self.view setUserInteractionEnabled:YES];
     
-    UIPanGestureRecognizer *rot = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];
-    [rot setMinimumNumberOfTouches:1];
-    [rot setMaximumNumberOfTouches:1];
-    [self.view addGestureRecognizer:rot];
+    // navigation bar
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle:@"3D模型展示"];
+    UIBarButtonItem *cleanButton = [[UIBarButtonItem alloc]initWithTitle:@"清除缓存" style:UIBarButtonItemStylePlain target:self action:@selector(cleanTemp)];
+    UIBarButtonItem *loadButton = [[UIBarButtonItem alloc]initWithTitle:@"载入模型" style:UIBarButtonItemStylePlain target:self action:@selector(loadModels)];
+    navItem.leftBarButtonItem = cleanButton;
+    navItem.rightBarButtonItem = loadButton;
+    [self.navigationController.navigationBar pushNavigationItem:navItem animated:NO];
     
-    UIPanGestureRecognizer *mov = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-    [mov setMinimumNumberOfTouches:2];
-    [mov setMaximumNumberOfTouches:2];
-    [self.view addGestureRecognizer:mov];
-    
-    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scale:)];
-    [self.view addGestureRecognizer:pinch];
-    
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    hud.delegate = self;
-    [self.view addSubview:hud];
-
-    hud.labelText = @"正在载入模型...";
-    
-    [glView startRenderLoop];
+    [self.pickView setHidden:YES];
 }
 
 - (void)dealloc {
@@ -69,6 +60,108 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)cleanTemp
+{
+    // search Documents directory
+    NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    BOOL res = YES;
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray *files = [[fm contentsOfDirectoryAtPath:docPath error:nil] pathsMatchingExtensions:[NSArray arrayWithObjects:@"b",nil]];
+    for (NSString *filename in files)
+    {
+        NSString *filePath = [docPath stringByAppendingPathComponent:filename];
+        res = [fm removeItemAtPath:filePath error:nil];
+        if (!res)
+        {
+            NSLog(@"remove items failed");
+            break;
+        }
+    }
+    
+    if (res) NSLog(@"temporary files removed successfully!");
+}
+
+- (void)loadModels
+{
+    // create model names and paths
+    modelName = [[NSArray alloc]init];
+    modelPath = [[NSArray alloc]init];
+    
+    // search Documents directory
+    NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray *files = [fm contentsOfDirectoryAtPath:docPath error:nil];
+    for (NSString* filename in files)
+    {
+        NSString *filePath = [docPath stringByAppendingPathComponent:filename];
+        BOOL isDirectory;
+        BOOL isExist = [fm fileExistsAtPath:filePath isDirectory:&isDirectory];
+        if (isExist && isDirectory)
+        {
+            NSArray *modelFiles = [[fm contentsOfDirectoryAtPath:filePath error:nil] pathsMatchingExtensions:[NSArray arrayWithObjects:@"obj",nil]];
+            if (modelFiles.count)
+            {
+                modelName = [modelName arrayByAddingObject:[[modelFiles lastObject]stringByDeletingPathExtension]];
+                modelPath = [modelPath arrayByAddingObject:[filePath stringByAppendingPathComponent:[modelFiles lastObject]]];
+            }
+        }
+    }
+    
+    [self.pickView setHidden:NO];
+    [self.pickView reloadAllComponents];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+
+    
+    //    NSString *model0 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/中提琴/zhongtiqin.obj"];
+    //    NSString *model1 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/LL/xiaotiqing.obj"];
+    //    NSString *model2 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/低音提琴/diyintiqing.obj"];
+    //    NSString *model3 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/大提琴/datiqing.obj"];
+//    NSString *model0 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DaTiQin/DaTiQin.obj"];
+//    NSString *model1 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DiYinTiQin/DiYinTiqin.obj"];
+//    NSString *model2 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/XiaoTiQin/XiaoTiQin.obj"];
+//    NSString *model3 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/ZhongTiQin/ZhongTiQin.obj"];
+//    NSString *model4 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/11.obj"];
+//    NSString *model5 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/22.obj"];
+//    NSString *model6 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/白塔1/baita.obj"];
+    //    NSString *model6 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/花灯1/huadeng.obj"];
+    
+    glView = [[EAGLView alloc]initWithFrame:self.view.bounds];
+    [self.view insertSubview:glView atIndex:0];
+    
+    UIPanGestureRecognizer *rot = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];
+    [rot setMinimumNumberOfTouches:1];
+    [rot setMaximumNumberOfTouches:1];
+    [glView addGestureRecognizer:rot];
+    
+    UIPanGestureRecognizer *mov = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+    [mov setMinimumNumberOfTouches:2];
+    [mov setMaximumNumberOfTouches:2];
+    [glView addGestureRecognizer:mov];
+    
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scale:)];
+    [glView addGestureRecognizer:pinch];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    tap.numberOfTouchesRequired = 2;
+    tap.numberOfTapsRequired = 2;
+    [glView addGestureRecognizer:tap];
+    
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    hud.delegate = self;
+    [self.view addSubview:hud];
+    
+    hud.labelText = @"正在载入模型...";
+    
+    [glView startRenderLoop];
+    
+    [self loadModel:0];
+
+}
+
+#pragma mark -
 
 -(void)rotate:(id)sender {
     NSLog(@"rotate");
@@ -101,6 +194,12 @@
     if (pinch.state == UIGestureRecognizerStateChanged) {
         [glView scale:pinch.scale];
         pinch.scale = 1;
+    }
+}
+
+- (void)tap:(UITapGestureRecognizer*) tap{
+    if (tap.state == UIGestureRecognizerStateEnded) {
+        [glView reset];
     }
 }
 
@@ -145,6 +244,27 @@
     }
 }
 
+- (void)loadModel:(NSInteger) modelIdx
+{
+    if (modelIdx < 0 || modelIdx >= modelName.count) {
+        NSLog(@"modelIdx is out of range");
+        return;
+    }
+    
+    selectedModel = modelIdx;
+    
+    [self.view setUserInteractionEnabled:NO];
+    [glView stopRenderLoop];
+    __block EAGLView *blockGlView = glView;
+    [hud showAnimated:YES whileExecutingBlock:^{
+        [blockGlView loadModel:[modelPath objectAtIndex:modelIdx]];
+    } completionBlock:^ {
+        [self.view setUserInteractionEnabled:YES];
+        [blockGlView drawFrame];
+        [blockGlView startRenderLoop];
+    }];
+    
+}
 # pragma mark - Picker View
 // returns the number of 'columns' to display.
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -163,21 +283,11 @@
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    NSLog(@"selected instruments %d",row);
+    NSLog(@"selected instruments %ld",(long)row);
     if (selectedModel == row) {
         NSLog(@"same model");
         return;
     }
-    selectedModel = row;
-    [self.view setUserInteractionEnabled:NO];
-    [glView stopRenderLoop];
-    __block EAGLView *blockGlView = glView;
-    [hud showAnimated:YES whileExecutingBlock:^{
-        [blockGlView loadModel:row];
-    } completionBlock:^ {
-        [self.view setUserInteractionEnabled:YES];
-        [blockGlView drawFrame];
-        [blockGlView startRenderLoop];
-    }];
+    [self loadModel:row];
 }
 @end
