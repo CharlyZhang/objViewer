@@ -13,6 +13,8 @@ CZGeometry::CZGeometry(): aabbMin(CZVector3D<float>(FLT_MAX, FLT_MAX, FLT_MAX)),
 CZGeometry::~CZGeometry()
 {
 	faces.clear();
+    vector<CZFace> temp;
+    faces.swap(temp);
 }
 
 long CZGeometry::unpackRawData(const std::vector<CZVector3D<float> > &posRawVector,	\
@@ -42,6 +44,8 @@ long CZGeometry::unpackRawData(const std::vector<CZVector3D<float> > &posRawVect
         generateFaceNorm(tempPositions,outNormals);
         
         tempPositions.clear();
+        vector<CZVector3D<float> > temp;
+        tempPositions.swap(temp); 
     }
     
     return vertNum;

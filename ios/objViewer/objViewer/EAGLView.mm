@@ -66,14 +66,16 @@
     NSString *model1 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DiYinTiQin/DiYinTiqin.obj"];
     NSString *model2 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/XiaoTiQin/XiaoTiQin.obj"];
     NSString *model3 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/ZhongTiQin/ZhongTiQin.obj"];
+    NSString *model4 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/11.obj"];
+    NSString *model5 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/22.obj"];
     NSString *configPath = [[[NSBundle mainBundle]bundlePath]stringByAppendingPathComponent:@"scene_violin.cfg"];
     NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
-    models = [NSArray arrayWithObjects:model0, model1, model2, model3,nil];
+    models = [NSArray arrayWithObjects:model4, model5, model2, model3,nil];
     app3d.setGLSLDirectory([[[[NSBundle mainBundle]bundlePath] stringByAppendingString:@"/"] UTF8String]);
     app3d.init([configPath UTF8String]);
     app3d.setDocDirectory([docPath UTF8String]);
-    app3d.loadObjModel([model0 UTF8String]);
+    app3d.loadObjModel([model4 UTF8String]);
     
     return self;
 }// We have to implement this method

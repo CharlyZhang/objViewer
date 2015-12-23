@@ -36,6 +36,9 @@ typedef struct _CZScene {
 	CZAmbientLight ambientLight;			//< ambient light
 	CZDirectionalLight directionalLight;	//< diretional light
 	CZPoint3D eyePosition;					//< eye position
+    float     cameraFov;                    //< camera fov
+    float     cameraNearPlane;
+    float     camearFarPlane;
 } CZScene;
 
 

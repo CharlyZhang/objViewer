@@ -19,6 +19,8 @@ CZObjModel::~CZObjModel()
 		delete *itr;
 	}
 	geometries.clear();
+    vector<CZGeometry*> temp;
+    geometries.swap(temp);
 
 	clearRawData();
     vector<CZVector3D<float>> temp1;
@@ -237,6 +239,7 @@ bool CZObjModel::loadBinary(const std::string& path,const char *originalPath/*  
     glBufferData(GL_ARRAY_BUFFER,positions.size() * 3 * sizeof(GLfloat), positions.data(), GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    CZCheckGLError();
     
     // normal
     glGenBuffers(1, &m_vboNorm);
@@ -244,11 +247,13 @@ bool CZObjModel::loadBinary(const std::string& path,const char *originalPath/*  
     glBufferData(GL_ARRAY_BUFFER, normals.size() * 3 * sizeof(GLfloat), normals.data(), GL_STATIC_DRAW);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    CZCheckGLError();
     
     // texcoord
     glGenBuffers(1, &m_vboTexCoord);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboTexCoord);
     glBufferData(GL_ARRAY_BUFFER, texcoords.size() * 2 * sizeof(GLfloat), texcoords.data(), GL_STATIC_DRAW);
+    CZCheckGLError();
     
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
@@ -353,6 +358,7 @@ void CZObjModel::unpackRawData()
     glBufferData(GL_ARRAY_BUFFER,positions.size() * 3 * sizeof(GLfloat), positions.data(), GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    CZCheckGLError();
     
     // normal
     glGenBuffers(1, &m_vboNorm);
@@ -360,14 +366,15 @@ void CZObjModel::unpackRawData()
     glBufferData(GL_ARRAY_BUFFER, normals.size() * 3 * sizeof(GLfloat), normals.data(), GL_STATIC_DRAW);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    CZCheckGLError();
     
     // texcoord
     glGenBuffers(1, &m_vboTexCoord);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboTexCoord);
     glBufferData(GL_ARRAY_BUFFER, texcoords.size() * 2 * sizeof(GLfloat), texcoords.data(), GL_STATIC_DRAW);
-    
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    CZCheckGLError();
     
     GL_BIND_VERTEXARRAY(0);
 }

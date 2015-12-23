@@ -177,6 +177,9 @@ CZImage *CZLoadTexture(const string &filename)
         dst += (width*4);
         src -= (width*4);
     }
+    
+    CFRelease(inBitmapData);
+    
     return retImage;
 #endif
 }

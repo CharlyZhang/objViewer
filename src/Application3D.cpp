@@ -27,7 +27,7 @@ Application3D::~Application3D()
 		delete itr->second;
 	}
 	shaders.clear();
-    if(documentDirectory)   delete documentDirectory;
+    if(documentDirectory)   delete [] documentDirectory;
 }
 
 bool Application3D::init(const char* sceneFilename /* = NULL */ )
@@ -67,6 +67,8 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 	if(!load(sceneFilename))
 	{
 		scene.eyePosition = CZPoint3D(0, 0, 95);
+        scene.cameraNearPlane = 0.5f;
+        scene.camearFarPlane = 500.f;
 		scene.light.position = CZPoint3D(0, 0, -120);
 		scene.light.intensity = CZPoint3D(1, 1, 1);
 		scene.ambientLight.intensity = CZPoint3D(0.2,0.2,0.2);
@@ -127,14 +129,15 @@ bool Application3D::setRenderBufferSize(int w, int h)
 #if !defined(__APPLE__)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.5f, 500.0f);
+	gluPerspective(scene.cameraFov,(GLfloat)width/(GLfloat)height, scene.cameraNearPlane, scene.camearFarPlane);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 # endif
     
-    projMat.SetPerspective(60.0,(GLfloat)width/(GLfloat)height, 0.5f, 500.0f);
+//    projMat.SetPerspective(60.0,(GLfloat)width/(GLfloat)height, 0.5f, 500.0f);
+    projMat.SetPerspective(scene.cameraFov,(GLfloat)width/(GLfloat)height, scene.cameraNearPlane, scene.camearFarPlane);
     
 	return true;
 }
@@ -347,6 +350,12 @@ void Application3D::parseLine(ifstream& ifs, const string& ele_id)
     int r,g,b;
 	if ("camera_position" == ele_id)
 		parseEyePosition(ifs);
+    else if ("camera_fov" == ele_id)
+        parseCameraFov(ifs);
+    else if ("camera_near_clip" == ele_id)
+        parseCameraNearPlane(ifs);
+    else if ("camera_far_clip" == ele_id)
+        parseCameraFarPlane(ifs);
 
 	else if ("pl" == ele_id)
 		parsePointLight(ifs);
@@ -401,6 +410,21 @@ void Application3D::parseEyePosition(ifstream& ifs)
     float x, y, z;
     ifs >> x >> y >> z;
     scene.eyePosition = CZPoint3D(x,z,-y);
+}
+
+void Application3D::parseCameraFov(ifstream& ifs)
+{
+    ifs >> scene.cameraFov;
+}
+
+void Application3D::parseCameraNearPlane(ifstream& ifs)
+{
+    ifs >> scene.cameraNearPlane;
+}
+
+void Application3D::parseCameraFarPlane(ifstream& ifs)
+{
+    ifs >> scene.camearFarPlane;
 }
 
 void Application3D::parsePointLight(ifstream& ifs)

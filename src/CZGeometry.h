@@ -16,7 +16,7 @@ public:
 		vn.reserve(3);
 	}
 
-	~CZFace() {	v.clear(); vt.clear(); vn.clear();}
+    ~CZFace() {	std::vector<int> temp; v.clear(); vt.clear(); vn.clear(); v.swap(temp); vt.swap(temp); vn.swap(temp); }
 
 	void addVertTexNorm(int vi, int ti, int ni)
 	{

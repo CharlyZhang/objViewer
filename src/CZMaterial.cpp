@@ -24,6 +24,7 @@ CZMaterial::~CZMaterial()
     if (texImage)   delete texImage;
     if (texId != -1) glDeleteTextures(1, &texId);
 }
+
 void CZMaterial::setTextureImage(CZImage *img)
 {
     if(img == NULL || img->data == NULL)

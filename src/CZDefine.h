@@ -9,7 +9,6 @@
 
 #define DEFAULT_GLSL_DIR "../../src/glsl/"
 #define _DEBUG
-#define SHOW_RENDER_TIME
 
 //////////////////////////////////////////////////////////////////////////
 //	OpenGL definition
