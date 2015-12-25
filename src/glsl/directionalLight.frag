@@ -42,7 +42,14 @@ uniform struct Material
 
 void main()
 {
-    vec4 surfaceColor = TEXTURE(tex, fragTexCoord);
+    float texU = fragTexCoord.x;
+    float texV = fragTexCoord.y;
+    while (texU < 0.0) texU += 1.0;
+    while (texU > 1.0) texU -= 1.0;
+    while (texV < 0.0) texV += 1.0;
+    while (texV > 1.0) texV -= 1.0;
+
+    vec4 surfaceColor = TEXTURE(tex, vec2(texU,texV));
     if(hasTex == 0) surfaceColor = vec4(1,1,1,1);
     
     // ambient
@@ -56,10 +63,10 @@ void main()
     float brightness = -dot(normal, lightDirection);
     brightness = clamp(brightness, 0.0, 1.0);
     
-    vec3 diffuse = brightness * material.kd * directionalLight.intensities * surfaceColor.rgb;
-    
+//    vec3 diffuse = brightness * material.kd * directionalLight.intensities * surfaceColor.rgb;
+    vec3 diffuse = brightness * surfaceColor.rgb;
     gl_FragColor = vec4(ambient + diffuse, 1.0);
-    
+//    gl_FragColor.rgb = fragNormal;
 	gl_FragColor = vec4(surfaceColor.rgb,1.0);
 //	gl_FragColor = vec4(fragNormal,1);
 //	gl_FragColor = vec4(fragTexCoord,0.5,1);

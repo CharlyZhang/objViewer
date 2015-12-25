@@ -9,6 +9,9 @@
 #import "ViewController.h"
 #import "EAGLView.h"
 #include "MBProgressHUD/MBProgressHUD.h"
+
+#define MODEL_FROM_BUNDLE 1
+
 @interface ViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,MBProgressHUDDelegate>
 {
     EAGLView *glView;
@@ -88,6 +91,25 @@
     // create model names and paths
     modelName = [[NSArray alloc]init];
     modelPath = [[NSArray alloc]init];
+   
+#if MODEL_FROM_BUNDLE
+    
+//    NSString *model0 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/中提琴/zhongtiqin.obj"];
+//    NSString *model1 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/LL/xiaotiqing.obj"];
+//    NSString *model2 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/低音提琴/diyintiqing.obj"];
+//    NSString *model3 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/大提琴/datiqing.obj"];
+    NSString *model4 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DaTiQin/DaTiQin.obj"];
+//    NSString *model5 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DiYinTiQin/DiYinTiqin.obj"];
+//    NSString *model6 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/XiaoTiQin/XiaoTiQin.obj"];
+//    NSString *model7 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/ZhongTiQin/ZhongTiQin.obj"];
+//    NSString *model8 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/11.obj"];
+//    NSString *model9 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/22.obj"];
+    NSString *model10 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/oo.obj"];
+//    NSString *model11 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/花灯1/huadeng.obj"];
+    modelName = [modelName arrayByAddingObject:@"白塔"];
+    modelPath = [modelPath arrayByAddingObject:model10];
+    
+#else
     
     // search Documents directory
     NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -109,24 +131,12 @@
             }
         }
     }
+#endif
     
     [self.pickView setHidden:NO];
     [self.pickView reloadAllComponents];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 
-    
-    //    NSString *model0 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/中提琴/zhongtiqin.obj"];
-    //    NSString *model1 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/LL/xiaotiqing.obj"];
-    //    NSString *model2 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/低音提琴/diyintiqing.obj"];
-    //    NSString *model3 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/大提琴/datiqing.obj"];
-//    NSString *model0 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DaTiQin/DaTiQin.obj"];
-//    NSString *model1 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DiYinTiQin/DiYinTiqin.obj"];
-//    NSString *model2 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/XiaoTiQin/XiaoTiQin.obj"];
-//    NSString *model3 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/ZhongTiQin/ZhongTiQin.obj"];
-//    NSString *model4 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/11.obj"];
-//    NSString *model5 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/22.obj"];
-//    NSString *model6 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/白塔1/baita.obj"];
-    //    NSString *model6 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/花灯1/huadeng.obj"];
     
     glView = [[EAGLView alloc]initWithFrame:self.view.bounds];
     [self.view insertSubview:glView atIndex:0];

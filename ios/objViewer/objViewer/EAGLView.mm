@@ -25,6 +25,7 @@
 {
     Application3D app3d;
     NSString *modelPath;
+    BOOL modelLoaded;
 }
 
 @synthesize context;
@@ -67,6 +68,8 @@
     app3d.init([configPath UTF8String]);
     app3d.setDocDirectory([docPath UTF8String]);
     app3d.setBackgroundColor(1, 1, 1, 1);
+    
+    modelLoaded = NO;
     
     return self;
 }// We have to implement this method
@@ -251,6 +254,8 @@
     }
     
     //[self drawFrame];
+    
+    modelLoaded = result;
     return result;
 }
 
@@ -280,7 +285,7 @@
     [EAGLContext setCurrentContext:context];
     [self deleteFramebuffer];
     [self createFramebuffer];
-    [self drawFrame];
+    if(modelLoaded) [self drawFrame];
 }
 
 //cleanup our view
