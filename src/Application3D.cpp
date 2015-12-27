@@ -157,10 +157,11 @@ void Application3D::frame()
 	gluLookAt(scene.eyePosition.x,scene.eyePosition.y,scene.eyePosition.z, 0,0,0,0,1,0);
 #endif
     
-	CZMat4 mvpMat,modelMat;
+	CZMat4 mvpMat,modelMat, modelInverseTransposeMat;
 	modelMat = translateMat * scaleMat * rotateMat;
 	mvpMat.SetLookAt(scene.eyePosition.x, scene.eyePosition.y, scene.eyePosition.z, 0, 0, 0, 0, 1, 0);
 	mvpMat = projMat * mvpMat * modelMat;
+    modelInverseTransposeMat = modelMat.GetInverseTranspose();
 
 	/// »æÖÆ
 	CZShader *pShader = getShader(kDirectionalLightShading);
@@ -175,16 +176,19 @@ void Application3D::frame()
     
 	// common uniforms
 	glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, mvpMat);
-	glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
+    glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
+    glUniformMatrix4fv(pShader->getUniformLocation("modelInverseTransposeMat"), 1, GL_FALSE, modelInverseTransposeMat);
+    
 	glUniform3f(pShader->getUniformLocation("ambientLight.intensities"),
 		scene.ambientLight.intensity.x,
 		scene.ambientLight.intensity.y,
 		scene.ambientLight.intensity.z);
+    
 	glUniform3f(pShader->getUniformLocation("directionalLight.direction"),
-		scene.directionalLight.direction.x,
-		scene.directionalLight.direction.y, 
-		scene.directionalLight.direction.z);
-
+                scene.directionalLight.direction.x,scene.directionalLight.direction.y,scene.directionalLight.direction.z);
+    
+    glUniform3f(pShader->getUniformLocation("eyePosition"),scene.eyePosition.x,scene.eyePosition.y,scene.eyePosition.z);
+    
 	glUniform3f(pShader->getUniformLocation("directionalLight.intensities"),
 		scene.directionalLight.intensity.x,
 		scene.directionalLight.intensity.y, 
@@ -320,15 +324,19 @@ bool Application3D::loadShaders()
 	attributes.push_back("vertTexCoord");
 	vector<string> uniforms;
 	uniforms.push_back("mvpMat");
-	uniforms.push_back("modelMat");
-	uniforms.push_back("ambientLight.direction");
+    uniforms.push_back("modelMat");
+    uniforms.push_back("modelInverseTransposeMat");
 	uniforms.push_back("ambientLight.intensities");
 	uniforms.push_back("directionalLight.direction");
 	uniforms.push_back("directionalLight.intensities");
+    uniforms.push_back("eyePosition");
 	uniforms.push_back("tex");
 	uniforms.push_back("hasTex");
 	uniforms.push_back("material.kd");
 	uniforms.push_back("material.ka");
+    uniforms.push_back("material.ke");
+    uniforms.push_back("material.ks");
+    uniforms.push_back("material.Ns");
 
 	CZShader *pShader = new CZShader("standard","directionalLight",attributes,uniforms);
 	shaders.insert(make_pair(kDirectionalLightShading,pShader));

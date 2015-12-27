@@ -10,6 +10,7 @@ CZObjModel::CZObjModel()
 	pCurGeometry = NULL;
     m_vao = -1;
     m_vboPos = m_vboNorm = m_vboNorm = -1;
+    mtlLibName = "Not Set";
 }
 CZObjModel::~CZObjModel()
 {
@@ -43,13 +44,13 @@ CZObjModel::~CZObjModel()
 bool CZObjModel::load(const string& path)
 {
 	LOG_INFO("Parsing %s ...\n", path.c_str());
-
+    
 	if(CZObjFileParser::load(path) == false) return false;
     
     unpackRawData();
     
-	/// load material lib
-	materialLib.load(curDirPath + "/" + mtlLibName);
+    /// load material lib
+    materialLib.load(curDirPath + "/" + mtlLibName);
 
 	clearRawData();
 
@@ -274,27 +275,42 @@ void CZObjModel::draw(CZShader* pShader)
     
     GL_BIND_VERTEXARRAY(m_vao);
 
+    int n = 0;
     for (vector<CZGeometry*>::iterator itr = geometries.begin(); itr != geometries.end(); itr++)
     {
         CZGeometry *pGeometry = *itr;
         CZMaterial *pMaterial = materialLib.get(pGeometry->materialName);
         
-        float ka[4], kd[4];
+//        printf("%s\n",pGeometry->materialName.c_str());
+//        if(pGeometry->materialName.compare("_yinhuphongE1SG") == 0) continue;
+        
+        n++;
+        float ke[4], ka[4], kd[4], ks[4], Ns = 10.0;
         if (pMaterial == NULL)
         {
-            ka[0] = 0.2; ka[1] = 0.2; ka[2] = 0.2;
-            kd[0] = 1;   kd[1] = 1.0; kd[2] = 1.0;
+            ka[0] = 0.2;    ka[1] = 0.2;    ka[2] = 0.2;
+            kd[0] = 0.8;    kd[1] = 0.8;    kd[2] = 0.8;
+            ke[0] = 0.0;    ke[1] = 0.0;    ke[2] = 0.0;
+            ks[0] = 0.0;    ks[1] = 0.0;    ks[2] = 0.0;
+            Ns = 10.0;
             LOG_ERROR("pMaterial is NULL\n");
         }
         else
         {
-            for (int i=0; i<3; i++) {
+            for (int i=0; i<3; i++)
+            {
                 ka[i] = pMaterial->Ka[i];
                 kd[i] = pMaterial->Kd[i];
+                ke[i] = pMaterial->Ke[i];
+                ks[i] = pMaterial->Ks[i];
+                Ns = pMaterial->Ns;
             }
         }
         glUniform3f(pShader->getUniformLocation("material.ka"), ka[0], ka[1], ka[2]);
         glUniform3f(pShader->getUniformLocation("material.kd"), kd[0], kd[1], kd[2]);
+        glUniform3f(pShader->getUniformLocation("material.ke"), ke[0], ke[1], ke[2]);
+        glUniform3f(pShader->getUniformLocation("material.ks"), ks[0], ks[1], ks[2]);
+        glUniform1f(pShader->getUniformLocation("material.Ns"), Ns);
         
         int hasTex;
         if (pMaterial && pMaterial->use() && pGeometry->hasTexCoord)
@@ -308,6 +324,7 @@ void CZObjModel::draw(CZShader* pShader)
         
     }
     
+    printf("%d\n", n);
     GL_BIND_VERTEXARRAY(0);
 }
 

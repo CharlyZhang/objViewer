@@ -427,6 +427,7 @@
 					"$(inherited)",
 					"/Users/charlyzhang/Git/OBJViewer/ios/Application3D/build/Debug-iphoneos",
 				);
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -450,6 +451,7 @@
 					"$(inherited)",
 					"/Users/charlyzhang/Git/OBJViewer/ios/Application3D/build/Debug-iphoneos",
 				);
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "28abf002-1468-45cb-8216-781c62329697";
 			};

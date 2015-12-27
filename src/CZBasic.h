@@ -46,13 +46,37 @@ typedef struct _CZScene {
 class CZImage
 {
 public:
+    typedef enum _ColorSpace {
+        RGBA,
+        GRAY
+    } ColorSpace;
+    
     // \note
     // rgba
-    CZImage(){ data = NULL;}
+    CZImage(int w = 0, int h = 0, ColorSpace c = RGBA):width(w), height(h), colorSpace(c)
+    {
+        if (w != 0 && h != 0)
+        {
+            int n;
+            switch (colorSpace) {
+                case RGBA:
+                    n = 4;
+                    break;
+                case GRAY:
+                    n = 1;
+                    break;
+                default:
+                    break;
+            }
+            data = new unsigned char [w*h*n];
+        }
+        else                  data = nullptr;
+    }
     ~CZImage() {if(data) delete [] data;}
 
     int width,height;
     unsigned char *data;
+    ColorSpace colorSpace;
 };
 
 #endif

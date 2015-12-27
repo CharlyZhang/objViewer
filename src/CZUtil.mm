@@ -7,6 +7,7 @@
 #elif defined(__APPLE__)
 #   import <Foundation/Foundation.h>
 #   import <UIKit/UIKit.h>
+#   import "UIImage+Resize.h"
 #endif
 
 using namespace std;
@@ -152,12 +153,57 @@ CZImage *CZLoadTexture(const string &filename)
 #else
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithCString:filename.c_str() encoding:NSUTF8StringEncoding]];
     
+    float maxTexSize;
+    glGetFloatv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
+    CGSize imageSize = image.size;
+    if (imageSize.width > imageSize.height) {
+        if (imageSize.width > maxTexSize) {
+            imageSize.height = (imageSize.height / imageSize.width) * maxTexSize;
+            imageSize.width = maxTexSize;
+            
+            LOG_INFO("image(%f,%f) is resized to (%f,%f)\n",image.size.width,image.size.height,imageSize.width, imageSize.height);
+            image = [image resizedImage:imageSize interpolationQuality:kCGInterpolationHigh];
+        }
+    } else {
+        if (imageSize.height > maxTexSize) {
+            imageSize.width = (imageSize.width / imageSize.height) * maxTexSize;
+            imageSize.height = maxTexSize;
+            
+            LOG_INFO("image(%f,%f) is resized to (%f,%f)\n",image.size.width,image.size.height,imageSize.width, imageSize.height);
+            image = [image resizedImage:imageSize interpolationQuality:kCGInterpolationHigh];
+        }
+    }
+    
+    if (!image) {
+        LOG_ERROR("image is nil\n");
+        return nullptr;
+    }
+    
     CGImageRef img = image.CGImage;
+    
+    CGColorSpaceRef colorSpace = CGImageGetColorSpace(img);
+//    size_t componentNum = CGColorSpaceGetNumberOfComponents(colorSpace);
+    CGColorSpaceModel spaceColorModel = CGColorSpaceGetModel(colorSpace);
+    int componentNum;
+    CZImage::ColorSpace czColorSpace;
+    switch (spaceColorModel) {
+        case kCGColorSpaceModelMonochrome:
+            componentNum = 1;
+            czColorSpace = CZImage::GRAY;
+            break;
+        case kCGColorSpaceModelRGB:
+            componentNum = 4;
+            czColorSpace = CZImage::RGBA;
+            break;
+        default:
+            break;
+    }
     
     //数据源提供者
     CGDataProviderRef inProvider = CGImageGetDataProvider(img);
     // provider’s data.
     CFDataRef inBitmapData = CGDataProviderCopyData(inProvider);
+    
     
     const UInt8 *data = CFDataGetBytePtr(inBitmapData);
     
@@ -165,17 +211,14 @@ CZImage *CZLoadTexture(const string &filename)
     size_t width= CGImageGetWidth(img);
     size_t height = CGImageGetHeight(img);
     
-    CZImage *retImage = new CZImage;
-    retImage->width = (int)width;
-    retImage->height = (int)height;
-    retImage->data = (unsigned char*)malloc(width*height*4);
-    unsigned char *src = (UInt8*)&data[(height-1)*width*4];
+    CZImage *retImage = new CZImage((int)width,(int)height,czColorSpace);
+    unsigned char *src = (UInt8*)&data[(height-1)*width*componentNum];
     UInt8 *dst = retImage->data;
     for (int i=0; i<height; i++)
     {
-        memcpy(dst,src,width*4);
-        dst += (width*4);
-        src -= (width*4);
+        memcpy(dst,src,width*componentNum);
+        dst += (width*componentNum);
+        src -= (width*componentNum);
     }
     
     CFRelease(inBitmapData);

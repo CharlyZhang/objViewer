@@ -98,15 +98,21 @@
 //    NSString *model1 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/LL/xiaotiqing.obj"];
 //    NSString *model2 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/低音提琴/diyintiqing.obj"];
 //    NSString *model3 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/大提琴/datiqing.obj"];
-    NSString *model4 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DaTiQin/DaTiQin.obj"];
+//    NSString *model4 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DaTiQin/DaTiQin.obj"];
 //    NSString *model5 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DiYinTiQin/DiYinTiqin.obj"];
 //    NSString *model6 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/XiaoTiQin/XiaoTiQin.obj"];
 //    NSString *model7 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/ZhongTiQin/ZhongTiQin.obj"];
 //    NSString *model8 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/11.obj"];
-//    NSString *model9 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/22.obj"];
-    NSString *model10 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/oo.obj"];
+    NSString *model9 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/白塔1/baita.obj"];
+    NSString *model10 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/银壶1/yinhu.obj"];
 //    NSString *model11 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/花灯1/huadeng.obj"];
+    NSString *model12 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/教堂1/jiaotang.obj"];
+    
+    modelName = [modelName arrayByAddingObject:@"教堂"];
+    modelPath = [modelPath arrayByAddingObject:model12];
     modelName = [modelName arrayByAddingObject:@"白塔"];
+    modelPath = [modelPath arrayByAddingObject:model9];
+    modelName = [modelName arrayByAddingObject:@"银壶"];
     modelPath = [modelPath arrayByAddingObject:model10];
     
 #else

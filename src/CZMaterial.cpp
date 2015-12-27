@@ -8,11 +8,12 @@ using namespace std;
 CZMaterial::CZMaterial()
 {
     Ns = 10;						//	shininess
-    Ka[0] = Ka[1] = Ka[2] = 0.6f;	//	ambient color
+    Ka[0] = Ka[1] = Ka[2] = 0.2f;	//	ambient color
     Ka[3] = 0;
-    Kd[0] = Kd[1] = Kd[2] = 0.6f;	// diffuse color
+    Kd[0] = Kd[1] = Kd[2] = 0.8f;	// diffuse color
     Kd[3] = 0;
     Ks[0] = Ks[1] = Ks[2] = Ks[3] = 0;	//	specular color
+    Ke[0] = Ke[1] = Ke[2] = Ke[3] = 0;	//	specular color
     
     hasTexture = false;
     texId = -1;
@@ -44,8 +45,15 @@ void CZMaterial::setTextureImage(CZImage *img)
     //bind to the new texture ID
     glBindTexture(GL_TEXTURE_2D, texId);
     //store the texture data for OpenGL use
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)img->width , (GLsizei)img->height,
-                 0, GL_RGBA, GL_UNSIGNED_BYTE, img->data);
+    if (img->colorSpace == CZImage::RGBA) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)img->width , (GLsizei)img->height,
+                     0, GL_RGBA, GL_UNSIGNED_BYTE, img->data);
+    }
+    else {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, (GLsizei)img->width , (GLsizei)img->height,
+                     0, GL_LUMINANCE, GL_UNSIGNED_BYTE, img->data);
+    }
+    
     //	gluBuild2DMipmaps(GL_TEXTURE_2D, components, width, height, texFormat, GL_UNSIGNED_BYTE, bits);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
