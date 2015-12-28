@@ -10,7 +10,7 @@
 #import "EAGLView.h"
 #include "MBProgressHUD/MBProgressHUD.h"
 
-#define MODEL_FROM_BUNDLE 1
+#define MODEL_FROM_BUNDLE 0
 
 @interface ViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,MBProgressHUDDelegate>
 {
@@ -42,15 +42,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    NSLog(@"%@",NSHomeDirectory());
     [self.view setUserInteractionEnabled:YES];
     
     // navigation bar
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle:@"3D模型展示"];
     UIBarButtonItem *cleanButton = [[UIBarButtonItem alloc]initWithTitle:@"清除缓存" style:UIBarButtonItemStylePlain target:self action:@selector(cleanTemp)];
     UIBarButtonItem *loadButton = [[UIBarButtonItem alloc]initWithTitle:@"载入模型" style:UIBarButtonItemStylePlain target:self action:@selector(loadModels)];
-    navItem.leftBarButtonItem = cleanButton;
-    navItem.rightBarButtonItem = loadButton;
-    [self.navigationController.navigationBar pushNavigationItem:navItem animated:NO];
+    self.navigationItem.leftBarButtonItem = cleanButton;
+    self.navigationItem.rightBarButtonItem = loadButton;
+    self.title = @"3D模型展示";
+    
     
     [self.pickView setHidden:YES];
 }

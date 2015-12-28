@@ -90,5 +90,5 @@ void main()
     
 //    gl_FragColor.rgb = fragNormal;
 //	gl_FragColor.rgb = surfaceColor.rgb;
-//	gl_FragColor.rgb = vec3(fragTexCoord,0.5);
+//	gl_FragColor.rgb = vec3(fragTexCoord,0.0);
 }
