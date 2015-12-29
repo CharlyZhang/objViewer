@@ -10,7 +10,7 @@
 #import "EAGLView.h"
 #include "MBProgressHUD/MBProgressHUD.h"
 
-#define MODEL_FROM_BUNDLE 1
+#define MODEL_FROM_BUNDLE 0
 
 @interface ViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,MBProgressHUDDelegate>
 {
@@ -116,15 +116,18 @@
 //    modelName = [modelName arrayByAddingObject:@"银壶"];
 //    modelPath = [modelPath arrayByAddingObject:model10];
     
-    NSString *model13 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/南禅寺1/ww.obj"];
-    NSString *model14 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/石舫1/shifang.obj"];
+    NSString *model13 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/金龛塔1/jingheta.obj"];
+    NSString *model14 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/塔精模1/jingmota.obj"];
     NSString *model15 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/金刚宝座塔1/baota.obj"];
-    modelName = [modelName arrayByAddingObject:@"南禅寺"];
+    NSString *model16 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/南禅寺1/ww.obj"];
+    modelName = [modelName arrayByAddingObject:@"金龛塔"];
     modelPath = [modelPath arrayByAddingObject:model13];
-    modelName = [modelName arrayByAddingObject:@"石舫"];
+    modelName = [modelName arrayByAddingObject:@"塔精模"];
     modelPath = [modelPath arrayByAddingObject:model14];
     modelName = [modelName arrayByAddingObject:@"金刚宝座塔"];
     modelPath = [modelPath arrayByAddingObject:model15];
+    modelName = [modelName arrayByAddingObject:@"南禅寺"];
+    modelPath = [modelPath arrayByAddingObject:model16];
     
 #else
     

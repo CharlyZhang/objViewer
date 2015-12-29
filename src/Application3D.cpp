@@ -55,8 +55,8 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 	glEnable(GL_DEPTH_TEST);
 # endif
 
-    glCullFace(GL_BACK);                            ///< cull back face
-    glEnable(GL_CULL_FACE);
+//    glCullFace(GL_BACK);                            ///< cull back face
+//    glEnable(GL_CULL_FACE);
     
 	CZCheckGLError();
 

@@ -275,16 +275,11 @@ void CZObjModel::draw(CZShader* pShader)
     
     GL_BIND_VERTEXARRAY(m_vao);
 
-    int n = 0;
     for (vector<CZGeometry*>::iterator itr = geometries.begin(); itr != geometries.end(); itr++)
     {
         CZGeometry *pGeometry = *itr;
         CZMaterial *pMaterial = materialLib.get(pGeometry->materialName);
         
-//        printf("%s\n",pGeometry->materialName.c_str());
-//        if(pGeometry->materialName.compare("_yinhuphongE1SG") == 0) continue;
-        
-        n++;
         float ke[4], ka[4], kd[4], ks[4], Ns = 10.0;
         if (pMaterial == NULL)
         {
@@ -324,7 +319,6 @@ void CZObjModel::draw(CZShader* pShader)
         
     }
     
-    printf("%d\n", n);
     GL_BIND_VERTEXARRAY(0);
 }
 

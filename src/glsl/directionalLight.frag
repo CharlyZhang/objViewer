@@ -49,8 +49,12 @@ uniform mat4 modelInverseTransposeMat;
 
 void main()
 {
-    vec4 surfaceColor = TEXTURE(tex, fragTexCoord);
-    if(hasTex == 0) surfaceColor = vec4(1,1,1,1);
+    
+    float texU = fragTexCoord.x -floor(fragTexCoord.x);
+    float texV = fragTexCoord.y - floor(fragTexCoord.y);
+    
+    vec4 surfaceColor = TEXTURE(tex, vec2(texU,texV));
+    if(hasTex == 0) surfaceColor = vec4(1.0,1.0,1.0,1.0) ;
     
     // emissive
     vec3 emissive = material.ke;
@@ -63,8 +67,8 @@ void main()
     vec3 N = normalize(normal.xyz);
     vec3 L = normalize(-directionalLight.direction);     // lightPosition - fragVert
     float brightness = max(dot(N,L), 0.0);
-//    vec3 diffuse = material.kd * directionalLight.intensities * brightness;
     vec3 diffuse = directionalLight.intensities * brightness;
+    if (hasTex == 0) diffuse = material.kd * directionalLight.intensities * brightness;
     
     // specular
     vec3 V = normalize(eyePosition - fragVert);
