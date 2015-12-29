@@ -10,7 +10,7 @@
 #import "EAGLView.h"
 #include "MBProgressHUD/MBProgressHUD.h"
 
-#define MODEL_FROM_BUNDLE 0
+#define MODEL_FROM_BUNDLE 1
 
 @interface ViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,MBProgressHUDDelegate>
 {
@@ -104,17 +104,27 @@
 //    NSString *model6 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/XiaoTiQin/XiaoTiQin.obj"];
 //    NSString *model7 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/ZhongTiQin/ZhongTiQin.obj"];
 //    NSString *model8 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/11.obj"];
-    NSString *model9 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/白塔1/baita.obj"];
-    NSString *model10 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/银壶1/yinhu.obj"];
+//    NSString *model9 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/白塔1/baita.obj"];
+//    NSString *model10 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/银壶1/yinhu.obj"];
 //    NSString *model11 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/花灯1/huadeng.obj"];
-    NSString *model12 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/教堂1/jiaotang.obj"];
+//    NSString *model12 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/教堂1/jiaotang.obj"];
     
-    modelName = [modelName arrayByAddingObject:@"教堂"];
-    modelPath = [modelPath arrayByAddingObject:model12];
-    modelName = [modelName arrayByAddingObject:@"白塔"];
-    modelPath = [modelPath arrayByAddingObject:model9];
-    modelName = [modelName arrayByAddingObject:@"银壶"];
-    modelPath = [modelPath arrayByAddingObject:model10];
+//    modelName = [modelName arrayByAddingObject:@"教堂"];
+//    modelPath = [modelPath arrayByAddingObject:model12];
+//    modelName = [modelName arrayByAddingObject:@"白塔"];
+//    modelPath = [modelPath arrayByAddingObject:model9];
+//    modelName = [modelName arrayByAddingObject:@"银壶"];
+//    modelPath = [modelPath arrayByAddingObject:model10];
+    
+    NSString *model13 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/南禅寺1/ww.obj"];
+    NSString *model14 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/石舫1/shifang.obj"];
+    NSString *model15 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/金刚宝座塔1/baota.obj"];
+    modelName = [modelName arrayByAddingObject:@"南禅寺"];
+    modelPath = [modelPath arrayByAddingObject:model13];
+    modelName = [modelName arrayByAddingObject:@"石舫"];
+    modelPath = [modelPath arrayByAddingObject:model14];
+    modelName = [modelName arrayByAddingObject:@"金刚宝座塔"];
+    modelPath = [modelPath arrayByAddingObject:model15];
     
 #else
     

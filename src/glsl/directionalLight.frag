@@ -49,21 +49,14 @@ uniform mat4 modelInverseTransposeMat;
 
 void main()
 {
-    float texU = fragTexCoord.x;
-    float texV = fragTexCoord.y;
-    while (texU < 0.0) texU += 1.0;
-    while (texU > 1.0) texU -= 1.0;
-    while (texV < 0.0) texV += 1.0;
-    while (texV > 1.0) texV -= 1.0;
-
-    vec4 surfaceColor = TEXTURE(tex, vec2(texU,texV));
+    vec4 surfaceColor = TEXTURE(tex, fragTexCoord);
     if(hasTex == 0) surfaceColor = vec4(1,1,1,1);
     
     // emissive
     vec3 emissive = material.ke;
     // ambient
 //    vec3 ambient = material.ka * ambientLight.intensities;
-    vec3 ambient = 0.0 * ambientLight.intensities;
+    vec3 ambient = ambientLight.intensities;
     
     // diffuse
     vec4 normal = modelInverseTransposeMat * vec4(fragNormal,1.0);

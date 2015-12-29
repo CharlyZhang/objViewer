@@ -26,6 +26,9 @@ uniform mat4 modelMat;
 void main() {
     // Pass some variables to the fragment shader
     fragTexCoord = vertTexCoord;
+    fragTexCoord.x -= floor(fragTexCoord.x);
+    fragTexCoord.y -= floor(fragTexCoord.y);
+    
     fragNormal = vertNormal;
     fragVert = (modelMat * vec4(vert,1)).xyz;
 
