@@ -213,7 +213,6 @@
 #ifdef SHOW_RENDER_TIME
     [animationTimer invalidate];
 #endif
-    
 }
 
 - (void)rotateWithX:(float)x Y:(float)y

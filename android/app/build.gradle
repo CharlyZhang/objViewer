@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.android.gl2jni"
+        minSdkVersion 8
+        targetSdkVersion 8
+
+        ndk {
+            moduleName "libApplication3D"
+            stl "gnustl_static"
+            cFlags "-std=c++11"
+            ldLibs "log"
+            ldLibs "GLESv2"
+            ldLibs "android"
+//            cppFlags  += ["-Werror",  "-std=gnu++14" ]
+//            ldLibs    += ["log", "GLESv2", "android", "jnigraphics" ]
+//            stl = "gnustl_static"
+//
+//            cppFlags  += "-I${file("./../../common_includes")}".toString()
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            ndk {
+                debuggable = true
+            }
+        }
+        debug {
+            debuggable = true
+            jniDebuggable = true
+        }
+    }
+}

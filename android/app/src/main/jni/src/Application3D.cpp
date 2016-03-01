@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-#define DEFAULT_RENDER_SIZE 500					///< Ä¬ÈÏäÖÈ¾»º´æ´óÐ¡
+#define DEFAULT_RENDER_SIZE 500					///< Ä¬ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡
 #define CONFIG_FILE_PATH	"./scene.cfg"
 
 using namespace std;
@@ -35,9 +35,9 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 # ifdef _WIN32
 	/// OpenGL initialization
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	glShadeModel(GL_SMOOTH);					// Æ½»¬×ÅÉ«
+	glShadeModel(GL_SMOOTH);					// Æ½ï¿½ï¿½ï¿½ï¿½É«
 
-	glClearDepth(1.0f);							// ÉèÖÃÉî¶È»º´æ
+	glClearDepth(1.0f);							// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½
 	glEnable(GL_DEPTH_TEST);
 
 	glEnable(GL_NORMALIZE);
@@ -51,7 +51,7 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 	//glEnable(GL_TEXTURE_2D);
 # else
     
-	glClearDepthf(1.0f);							// ÉèÖÃÉî¶È»º´æ
+	glClearDepthf(1.0f);							// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½
 	glEnable(GL_DEPTH_TEST);
 # endif
 
@@ -60,13 +60,17 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
     
 	CZCheckGLError();
 
+#if	defined(__APPLE__)	|| defined(_WIN32)
 	/// load shader
     loadShaders();
+#endif
+
     
 	/// config scene
 	if(!load(sceneFilename))
 	{
 		scene.eyePosition = CZPoint3D(0, 0, 95);
+		scene.cameraFov = 45.f;
         scene.cameraNearPlane = 0.5f;
         scene.camearFarPlane = 500.f;
 		scene.light.position = CZPoint3D(0, 0, -120);
@@ -149,7 +153,7 @@ void Application3D::frame()
     start = clock();
 #endif
     
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// ÇåÀíÑÕÉ«»º³åÇø ºÍ Éî¶È»º³åÇø
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½ï¿½
 
 # ifdef _WIN32
 	glMatrixMode(GL_MODELVIEW);
@@ -163,7 +167,7 @@ void Application3D::frame()
 	mvpMat = projMat * mvpMat * modelMat;
     modelInverseTransposeMat = modelMat.GetInverseTranspose();
 
-	/// »æÖÆ
+	/// ï¿½ï¿½ï¿½ï¿½
 	CZShader *pShader = getShader(kDirectionalLightShading);
 
 	if (pShader == NULL)
@@ -225,6 +229,48 @@ void Application3D::reset()
 	/// color
 	modelColor = scene.mColor;
 	glClearColor(scene.bgColor.r, scene.bgColor.g, scene.bgColor.b, scene.bgColor.a);
+}
+
+bool Application3D::createShaders(const char* vertFile, const char* fragFile)
+{
+	if(vertFile == nullptr || fragFile == nullptr)
+	{
+		LOG_ERROR("vertFile or fragFile is NULL\n");
+		return false;
+	}
+
+	vector<string> attributes;
+	attributes.push_back("vert");
+	attributes.push_back("vertNormal");
+	attributes.push_back("vertTexCoord");
+	vector<string> uniforms;
+	uniforms.push_back("mvpMat");
+	uniforms.push_back("modelMat");
+	uniforms.push_back("modelInverseTransposeMat");
+	uniforms.push_back("ambientLight.intensities");
+	uniforms.push_back("directionalLight.direction");
+	uniforms.push_back("directionalLight.intensities");
+	uniforms.push_back("eyePosition");
+	uniforms.push_back("tex");
+	uniforms.push_back("hasTex");
+	uniforms.push_back("material.kd");
+	uniforms.push_back("material.ka");
+	uniforms.push_back("material.ke");
+	uniforms.push_back("material.ks");
+	uniforms.push_back("material.Ns");
+
+	CZShader *pShader = new CZShader(vertFile,fragFile,attributes,uniforms,true);
+	if (pShader->isReady() == false)
+	{
+		LOG_ERROR("Error: Creating Shaders failed\n");
+		return false;
+	}
+
+	shaders.insert(make_pair(kDirectionalLightShading,pShader));
+
+	CZCheckGLError();
+
+	return true;
 }
 
 // document directory

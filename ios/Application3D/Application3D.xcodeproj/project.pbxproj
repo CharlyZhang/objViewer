@@ -30,11 +30,11 @@
 		2D7673811BE752AD00783623 /* CZUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2D76736D1BE752AD00783623 /* CZUtil.mm */; };
 		2D7673891BE7709400783623 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7673881BE7709400783623 /* OpenGLES.framework */; };
 		2DC2F2471C2FB4B100FAABF3 /* ChangeLog.md in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2F2461C2FB4B100FAABF3 /* ChangeLog.md */; };
-		2DC2F24E1C2FB6DC00FAABF3 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2F24D1C2FB6DC00FAABF3 /* UIImage+Resize.m */; };
 		2DE8F1431BF2E87C004FC906 /* CZShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8F1421BF2E87C004FC906 /* CZShader.cpp */; };
 		2DE8F14A1BF2E908004FC906 /* CZGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8F1441BF2E908004FC906 /* CZGeometry.cpp */; };
 		2DE8F14B1BF2E908004FC906 /* CZMaterialLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8F1461BF2E908004FC906 /* CZMaterialLib.cpp */; };
 		2DE8F14C1BF2E908004FC906 /* CZObjFileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8F1481BF2E908004FC906 /* CZObjFileParser.cpp */; };
+		2DEB2C811C730636003864E4 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DEB2C801C730636003864E4 /* UIImage+Resize.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,8 +86,6 @@
 		2D76736E1BE752AD00783623 /* CZVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZVector.h; path = ../../../src/CZVector.h; sourceTree = "<group>"; };
 		2D7673881BE7709400783623 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		2DC2F2461C2FB4B100FAABF3 /* ChangeLog.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ChangeLog.md; path = ../ChangeLog.md; sourceTree = "<group>"; };
-		2DC2F24C1C2FB6DC00FAABF3 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Resize.h"; path = "../../../src/UIImage+Resize.h"; sourceTree = "<group>"; };
-		2DC2F24D1C2FB6DC00FAABF3 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Resize.m"; path = "../../../src/UIImage+Resize.m"; sourceTree = "<group>"; };
 		2DE8F1421BF2E87C004FC906 /* CZShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZShader.cpp; path = ../../../src/CZShader.cpp; sourceTree = "<group>"; };
 		2DE8F1441BF2E908004FC906 /* CZGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZGeometry.cpp; path = ../../../src/CZGeometry.cpp; sourceTree = "<group>"; };
 		2DE8F1451BF2E908004FC906 /* CZGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZGeometry.h; path = ../../../src/CZGeometry.h; sourceTree = "<group>"; };
@@ -95,6 +93,8 @@
 		2DE8F1471BF2E908004FC906 /* CZMaterialLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZMaterialLib.h; path = ../../../src/CZMaterialLib.h; sourceTree = "<group>"; };
 		2DE8F1481BF2E908004FC906 /* CZObjFileParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZObjFileParser.cpp; path = ../../../src/CZObjFileParser.cpp; sourceTree = "<group>"; };
 		2DE8F1491BF2E908004FC906 /* CZObjFileParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZObjFileParser.h; path = ../../../src/CZObjFileParser.h; sourceTree = "<group>"; };
+		2DEB2C7F1C730636003864E4 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Resize.h"; path = "../../../src/UIImage+Resize.h"; sourceTree = "<group>"; };
+		2DEB2C801C730636003864E4 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Resize.m"; path = "../../../src/UIImage+Resize.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,8 +140,8 @@
 		2D76733F1BE7527800783623 /* Application3D */ = {
 			isa = PBXGroup;
 			children = (
-				2DC2F24C1C2FB6DC00FAABF3 /* UIImage+Resize.h */,
-				2DC2F24D1C2FB6DC00FAABF3 /* UIImage+Resize.m */,
+				2DEB2C7F1C730636003864E4 /* UIImage+Resize.h */,
+				2DEB2C801C730636003864E4 /* UIImage+Resize.m */,
 				2D7673581BE752AC00783623 /* Application3D.cpp */,
 				2D7673591BE752AC00783623 /* Application3D.h */,
 				2D76735A1BE752AC00783623 /* CZBasic.h */,
@@ -299,7 +299,7 @@
 				2D7673771BE752AD00783623 /* Application3D.cpp in Sources */,
 				2D76737D1BE752AD00783623 /* CZObjModel.cpp in Sources */,
 				2DE8F14C1BF2E908004FC906 /* CZObjFileParser.cpp in Sources */,
-				2DC2F24E1C2FB6DC00FAABF3 /* UIImage+Resize.m in Sources */,
+				2DEB2C811C730636003864E4 /* UIImage+Resize.m in Sources */,
 				2D76737B1BE752AD00783623 /* CZMaterial.cpp in Sources */,
 				2D7673811BE752AD00783623 /* CZUtil.mm in Sources */,
 			);
