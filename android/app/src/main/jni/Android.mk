@@ -18,12 +18,21 @@ include $(CLEAR_VARS)
 
 #SRC_PATH		:= ../../../../../src
 
-SRC_PATH		:= ../../../../src
+SRC_PATH		:= ./src
 LOCAL_MODULE    := libApplication3D
-LOCAL_CFLAGS    := -Werror
+LOCAL_CFLAGS    := -Werror -std=c++11
 
-LOCAL_SRC_FILES := gl_code.cpp
+LOCAL_SRC_FILES := $(SRC_PATH)/Application3D_jni.cpp\
+                    $(SRC_PATH)/Application3D.cpp\
+                    $(SRC_PATH)/CZGeometry.cpp\
+                    $(SRC_PATH)/CZMat4.cpp\
+                    $(SRC_PATH)/CZMaterial.cpp\
+                    $(SRC_PATH)/CZMaterialLib.cpp\
+                    $(SRC_PATH)/CZObjFileParser.cpp\
+                    $(SRC_PATH)/CZObjModel.cpp\
+                    $(SRC_PATH)/CZShader.cpp\
+                    $(SRC_PATH)/CZUtil.cpp
 
-LOCAL_LDLIBS    := -llog -lGLESv2
+LOCAL_LDLIBS    := -llog -lGLESv2 -landroid -ljnigraphics
 
 include $(BUILD_SHARED_LIBRARY)

@@ -38,4 +38,10 @@ android {
             jniDebuggable = true
         }
     }
+
+    //// UNcomment code below, when linking the libs in folder `libs`
+//    sourceSets.main {
+//        jni.srcDirs = []
+//        jniLibs.srcDirs 'src/main/libs'
+//    }
 }

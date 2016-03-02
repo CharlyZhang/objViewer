@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <string>
 
-
-//#include <memory>
+#ifndef EACCES
+# define EACCES 13
+#endif
 
 static int android_read(void *cookie, char *buf, int size) {
     return AAsset_read((AAsset *) cookie, buf, size);
