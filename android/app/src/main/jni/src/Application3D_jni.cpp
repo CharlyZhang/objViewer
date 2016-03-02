@@ -7,6 +7,7 @@
 #include "Application3D.h"
 
 Application3D app3d;
+JNIEnv *jniEnv;
 
 extern "C" {
     JNIEXPORT void JNICALL Java_com_android_gl2jni_GL2JNILib_init(JNIEnv * env, jclass c,  jobject assetManager);
@@ -73,6 +74,7 @@ JNIEXPORT void JNICALL Java_com_android_gl2jni_GL2JNILib_loadObjModel(JNIEnv * e
 {
     char *file = jstringTostring(env, filename);
     bool b = quickLoad;
+    jniEnv = env;
     app3d.loadObjModel(file, b);
 }
 

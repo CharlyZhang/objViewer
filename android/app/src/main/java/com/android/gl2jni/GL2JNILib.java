@@ -19,6 +19,7 @@ package com.android.gl2jni;
 // Wrapper for native library
 
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 
 public class GL2JNILib {
 
@@ -26,7 +27,7 @@ public class GL2JNILib {
         System.loadLibrary("Application3D");
     }
 
-
+    public static native Bitmap getImage(String path);
     public static native void init(AssetManager assetManager);
     public static native void loadObjModel(String filename, boolean quickLoad);
     public static native void setRenderBufferSize(int w, int h);

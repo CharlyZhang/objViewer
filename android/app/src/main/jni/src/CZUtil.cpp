@@ -8,9 +8,33 @@
 #   import <Foundation/Foundation.h>
 #   import <UIKit/UIKit.h>
 #   import "UIImage+Resize.h"
+#else
+#include <android/bitmap.h>
+extern JNIEnv *jniEnv;
+
 #endif
 
 using namespace std;
+
+#if defined(__ANDROID__)
+
+#define RGBA_A(p) (((p) & 0xFF000000) >> 24)
+#define RGBA_R(p) (((p) & 0x00FF0000) >> 16)
+#define RGBA_G(p) (((p) & 0x0000FF00) >>  8)
+#define RGBA_B(p)  ((p) & 0x000000FF)
+
+jstring charToJstring(JNIEnv* env, const char* pat)
+{
+    return env->NewStringUTF(pat);
+//    jclass     strClass = env->FindClass("java/lang/String");
+//    jmethodID  ctorID   = env->GetMethodID(strClass, "", "([BLjava/lang/String;)V");
+//    jbyteArray bytes    = env->NewByteArray(strlen(pat));
+//    env->SetByteArrayRegion(bytes, 0, strlen(pat), (jbyte*)pat);
+//    jstring    encoding = env->NewStringUTF("UTF-8");
+//    return (jstring)env->NewObject(strClass, ctorID, bytes, encoding);
+}
+
+#endif
 
 void CZCheckGLError_(const char *file, int line)
 {
@@ -225,7 +249,61 @@ CZImage *CZLoadTexture(const string &filename)
     
     return retImage;
 #elif defined(__ANDROID__)
-    // TO DO:
-    return nullptr;
+
+
+    jclass cls = jniEnv->FindClass("com/android/gl2jni/BitmapService");
+    jmethodID mid = jniEnv->GetStaticMethodID(cls, "getImageFromSD", "(Ljava/lang/String;)Landroid/graphics/Bitmap;");
+
+    jstring path = charToJstring(jniEnv,filename.c_str());
+    jobject bitmap = jniEnv->CallStaticObjectMethod(cls,mid,path);
+
+    void *addr;
+    AndroidBitmapInfo info;
+    int errorCode;
+
+    if ((errorCode = AndroidBitmap_lockPixels(jniEnv, bitmap, &addr)) != 0) {
+        LOG_INFO("error %d", errorCode);
+    }
+
+    if ((errorCode = AndroidBitmap_getInfo(jniEnv, bitmap, &info)) != 0) {
+        LOG_INFO("error %d", errorCode);
+    }
+
+    LOG_INFO("bitmap info: %d wide, %d tall, %d ints per pixel", info.width, info.height, info.format);
+
+    int componentNum;
+    CZImage::ColorSpace czColorSpace;
+    switch (info.format) {
+        case ANDROID_BITMAP_FORMAT_A_8:
+            componentNum = 1;
+            czColorSpace = CZImage::GRAY;
+            break;
+        case ANDROID_BITMAP_FORMAT_RGBA_8888:
+            componentNum = 4;
+            czColorSpace = CZImage::RGBA;
+            break;
+        default:
+            break;
+    }
+
+    CZImage *retImage = new CZImage((int)info.width,(int)info.height,czColorSpace);
+//    unsigned char *src = (unsigned  char*)&data[(info.height-1)*info.width*componentNum];
+//    unsigned char *dst = retImage->data;
+//    for (int i=0; i<info.height; i++)
+//    {
+//        memcpy(dst,src,info.width*componentNum);
+//        dst += (info.width*componentNum);
+//        src -= (width*componentNum);
+//    }
+
+    long size = info.width * info.height * componentNum;
+    memcpy(retImage->data, addr, size * sizeof(unsigned char));
+
+    if ((errorCode = AndroidBitmap_unlockPixels(jniEnv, bitmap)) != 0) {
+        LOG_INFO("error %d", errorCode);
+    }
+
+    return retImage;
+
 #endif
 }

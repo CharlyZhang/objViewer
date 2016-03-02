@@ -346,7 +346,7 @@ class GL2JNIView extends GLSurfaceView {
             GL2JNILib.setDocDirectory(dataDiretroy);
             GL2JNILib.setBackgroundColor(1, 1, 1, 1);
 
-            GL2JNILib.loadObjModel(dataDiretroy + "/南禅寺1/ww.obj",true);
+            GL2JNILib.loadObjModel(dataDiretroy + "/南禅寺1/ww.obj",false);
         }
     }
 

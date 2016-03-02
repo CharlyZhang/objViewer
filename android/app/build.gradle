@@ -16,6 +16,7 @@ android {
             ldLibs "log"
             ldLibs "GLESv2"
             ldLibs "android"
+            ldLibs "jnigraphics"
 //            cppFlags  += ["-Werror",  "-std=gnu++14" ]
 //            ldLibs    += ["log", "GLESv2", "android", "jnigraphics" ]
 //            stl = "gnustl_static"
