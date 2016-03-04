@@ -19,4 +19,7 @@
 
 - 2015-11-11
     1. combine CZShader implemention file
+    
+- 2016-3-4
+	1. set up Android demo
 

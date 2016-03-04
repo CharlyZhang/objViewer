@@ -19,7 +19,7 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.gl2jni">
+    package="com.charlyzhang.gl2jni">
     <application
             android:label="@string/gl2jni_activity">
         <activity android:name="GL2JNIActivity"

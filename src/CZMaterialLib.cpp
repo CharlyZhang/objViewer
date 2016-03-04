@@ -2,6 +2,7 @@
 #include "CZLog.h"
 
 #include <string>
+
 using namespace std;
 
 void CZMaterialLib::parseLine(ifstream& ifs, const string& ele_id)
@@ -36,9 +37,9 @@ void CZMaterialLib::parseLine(ifstream& ifs, const string& ele_id)
 	}
 	else if ("map_Kd" == ele_id) {
 		string texImgName,texImgPath;
-		ifs >> texImgName;//ÎÆÀíÍ¼Ïà¶ÔÂ·¾¶£¨ÒÔ¸ÃmtlÎÄ¼þËùÔÚÄ¿Â¼Îª¸ù£©
+		ifs >> texImgName;//ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½mtlï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Â¼Îªï¿½ï¿½ï¿½ï¿½
 
-		texImgPath = curDirPath + "/" + texImgName;//×ª»»µ½Ïà¶ÔÓÚ³ÌÐò¸ùÄ¿Â¼µÄÏà¶ÔÂ·¾¶
+		texImgPath = curDirPath + "/" + texImgName;//×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 		CZImage *image = CZLoadTexture(texImgPath);
 		if(image)
         {
@@ -48,9 +49,9 @@ void CZMaterialLib::parseLine(ifstream& ifs, const string& ele_id)
     }
 //    else if ("map_Ka" == ele_id) {
 //        string texImgName,texImgPath;
-//        ifs >> texImgName;//ÎÆÀíÍ¼Ïà¶ÔÂ·¾¶£¨ÒÔ¸ÃmtlÎÄ¼þËùÔÚÄ¿Â¼Îª¸ù£©
+//        ifs >> texImgName;//ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½mtlï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Â¼Îªï¿½ï¿½ï¿½ï¿½
 //        
-//        texImgPath = curDirPath + "/" + texImgName;//×ª»»µ½Ïà¶ÔÓÚ³ÌÐò¸ùÄ¿Â¼µÄÏà¶ÔÂ·¾¶
+//        texImgPath = curDirPath + "/" + texImgName;//×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 //        CZImage *image = CZLoadTexture(texImgPath);
 //        if(image)
 //        {

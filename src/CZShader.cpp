@@ -34,16 +34,17 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName)
     this->m_Program = 0;
     this->m_Frag = 0;
     this->m_Vert = 0;
+    m_ready = false;
     
     if(!textFileRead(vertFileName,m_VertexShader))	return;
     if(!textFileRead(fragFileName,m_FragmentShader))return;
     
     
-    //´´½¨shader¶ÔÏó
+    //ï¿½ï¿½ï¿½ï¿½shaderï¿½ï¿½ï¿½ï¿½
     m_Vert = glCreateShader(GL_VERTEX_SHADER);
     m_Frag = glCreateShader(GL_FRAGMENT_SHADER);
     
-    //´´½¨³ÌÐò¶ÔÏó
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     m_Program = glCreateProgram();
     
     if(!compile())
@@ -54,11 +55,11 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName)
         return;
     }
     
-    //°ó¶¨shaderµ½³ÌÐò¶ÔÏó
+    //ï¿½ï¿½shaderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     glAttachShader(m_Program,m_Vert);
     glAttachShader(m_Program,m_Frag);
     
-    //Á´½Ó³ÌÐò
+    //ï¿½ï¿½ï¿½Ó³ï¿½ï¿½ï¿½
     glLinkProgram(m_Program);
     printProgramInfoLog(m_Program);
     
@@ -73,10 +74,12 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName)
         glDeleteShader(m_Frag);
         m_Frag = 0;
     }
+
+    m_ready = true;
 }
 
 CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
-                   vector<string>& attributes, vector<string>& uniforms)
+                   vector<string>& attributes, vector<string>& uniforms,bool contentDirectly /* = false*/)
 {
     initOpenGLExtensions();
     
@@ -85,24 +88,47 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
     this->m_Program = 0;
     this->m_Frag = 0;
     this->m_Vert = 0;
-    
-    char fileName[1024];
-    strcpy(fileName,glslDirectory.c_str());
-    strcat(fileName,vertFileName);
-    strcat(fileName,".vert");
-    if(!textFileRead(fileName,m_VertexShader))	return;
-    
-    strcpy(fileName,glslDirectory.c_str());
-    strcat(fileName,fragFileName);
-    strcat(fileName,".frag");
-    if(!textFileRead(fileName,m_FragmentShader))return;
+    m_ready = false;
+
+    if (contentDirectly)
+    {
+        if(vertFileName == nullptr ||  fragFileName == nullptr)
+        {
+            LOG_ERROR("Error: vertFile or fragFile is empty!\n");
+            return;
+        }
+
+        size_t len = strlen(vertFileName);
+        m_VertexShader = new char[len+1];
+        strcpy(m_VertexShader,vertFileName);
+        m_VertexShader[len] = '\0';
+
+        len = strlen(fragFileName);
+        m_FragmentShader = new char[len+1];
+        strcpy(m_FragmentShader,fragFileName);
+        m_FragmentShader[len] = '\0';
+    }
+    else
+    {
+        char fileName[1024];
+        strcpy(fileName,glslDirectory.c_str());
+        strcat(fileName,vertFileName);
+        strcat(fileName,".vert");
+        if(!textFileRead(fileName,m_VertexShader))	return;
+
+        strcpy(fileName,glslDirectory.c_str());
+        strcat(fileName,fragFileName);
+        strcat(fileName,".frag");
+        if(!textFileRead(fileName,m_FragmentShader))return;
+    }
+
     CZCheckGLError();
     
-    //´´½¨shader¶ÔÏó
+    //ï¿½ï¿½ï¿½ï¿½shaderï¿½ï¿½ï¿½ï¿½
     m_Vert = glCreateShader(GL_VERTEX_SHADER);
     m_Frag = glCreateShader(GL_FRAGMENT_SHADER);
     
-    //´´½¨³ÌÐò¶ÔÏó
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     m_Program = glCreateProgram();
     
     if(!compile())
@@ -112,18 +138,18 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
         return;
     }
     
-    //°ó¶¨shaderµ½³ÌÐò¶ÔÏó
+    //ï¿½ï¿½shaderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     glAttachShader(m_Program,m_Vert);
     glAttachShader(m_Program,m_Frag);
     
-    //°ó¶¨ÊôÐÔÃû
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     for(unsigned int i=0; i<attributes.size(); i++)
     {
         glBindAttribLocation(m_Program, (GLuint) i, (const GLchar*) attributes[i].c_str());
         CZCheckGLError();
     }
     
-    //Á´½Ó³ÌÐò
+    //ï¿½ï¿½ï¿½Ó³ï¿½ï¿½ï¿½
     GLint linkStatus;
     glLinkProgram(m_Program);
     glGetProgramiv(m_Program, GL_LINK_STATUS, &linkStatus);
@@ -135,7 +161,7 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
         return;
     }
     
-    //°ó¶¨uniform¶ÔÏó
+    //ï¿½ï¿½uniformï¿½ï¿½ï¿½ï¿½
     for(unsigned int i=0; i<uniforms.size(); i++)
     {
         GLuint location = glGetUniformLocation(m_Program, uniforms[i].c_str());
@@ -158,6 +184,7 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
     }
     
     CZCheckGLError();
+    m_ready = true;
 }
 
 CZShader::~CZShader()
@@ -167,11 +194,11 @@ CZShader::~CZShader()
     if(NULL != m_FragmentShader)
         delete[] m_FragmentShader;
     
-    //É¾³ýprogram
+    //É¾ï¿½ï¿½program
     glDeleteProgram(m_Program);
 }
 
-/// Ïú»Ù×ÅÉ«Æ÷
+/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½
 void CZShader::destroyShaders(GLuint vertShader,GLuint fragShader, GLuint prog)
 {
     if(vertShader) { glDeleteShader(vertShader); vertShader = 0;};
@@ -194,11 +221,11 @@ bool CZShader::textFileRead(const char *_fn, GLchar *&_shader)
         return false;
     }
     
-    // ½«ÎÄ¼þÖ¸ÕëÖ¸ÏòÎÄ¼þÁ÷Ä©Î²
+    // ï¿½ï¿½ï¿½Ä¼ï¿½Ö¸ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ä©Î²
     fseek(fp,0,SEEK_END);
-    // ¼ÆËãÎÄ¼þÎ²Ïà¶ÔÎÄ¼þÍ·µÄÆ«ÒÆÁ¿£¨ÎÄ¼þ³¤¶È£©
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Î²ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Í·ï¿½ï¿½Æ«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½È£ï¿½
     count = ftell(fp);
-    // °ÑÎÄ¼þÖ¸ÕëÖØÐÂÖ¸ÏòÎÄ¼þÁ÷Í·²¿
+    // ï¿½ï¿½ï¿½Ä¼ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Í·ï¿½ï¿½
     rewind(fp);
     
     if(count<=0)
@@ -211,7 +238,7 @@ bool CZShader::textFileRead(const char *_fn, GLchar *&_shader)
     return true;
 }
 
-/// ³õÊ¼»¯OpenGLÀ©Õ¹
+/// ï¿½ï¿½Ê¼ï¿½ï¿½OpenGLï¿½ï¿½Õ¹
 bool CZShader::initOpenGLExtensions()
 {
 #if USE_OPENGL
@@ -233,7 +260,7 @@ bool CZShader::initOpenGLExtensions()
     return true;
 }
 
-/// ÊÇ·ñÖ§³ÖGLSL
+/// ï¿½Ç·ï¿½Ö§ï¿½ï¿½GLSL
 bool CZShader::hasGLSLSupport()
 {
 #if USE_OPENGL
@@ -379,7 +406,7 @@ void printProgramInfoLog(GLuint obj)
 }
 
 
-/// ±àÒë³ÌÐò
+/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 bool CZShader::compile()
 {
     if (!useGLSL) return false;
@@ -398,11 +425,11 @@ bool CZShader::compile()
     GLint	vertLen = (GLint) strlen((const char*)vv);
     GLint	fragLen = (GLint) strlen((const char*)ff);
     
-    //Ìí¼Óshader
+    //ï¿½ï¿½ï¿½shader
     glShaderSource(m_Vert,1,&vv, &vertLen);
     glShaderSource(m_Frag,1,&ff, &fragLen);
     
-    //±àÒëshader
+    //ï¿½ï¿½ï¿½ï¿½shader
     glCompileShader(m_Vert);
     glGetShaderiv(m_Vert, GL_COMPILE_STATUS, &compiled);
     if (compiled)       isCompiled = true;

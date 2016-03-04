@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.gl2jni;
+package com.charlyzhang.gl2jni;
 
 import android.app.Activity;
 import android.content.res.AssetManager;

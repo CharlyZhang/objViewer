@@ -21,33 +21,36 @@ class CZShader
 public:
     static std::string glslDirectory;
     
-	/// ²»°ó¶¨ÊôÐÔºÍÍ³Ò»±äÁ¿µÄshader
+	/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½Í³Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½shader
 	CZShader(const char* vertFileName, const char* fragFileName);
-	/// °ó¶¨ÊôÐÔºÍÍ³Ò»±äÁ¿µÄshader
+	/// ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½Í³Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½shader
 	CZShader(const char* vertFileName, const char* fragFileName, \
-		std::vector<std::string>& atrributes, std::vector<std::string>& uniforms);
+		std::vector<std::string>& atrributes, std::vector<std::string>& uniforms, bool contentDirectly = false);
+
 	~CZShader();
 	void begin();
 	void end();
 	unsigned int getAttributeLocation(const char* atrrName);
 	unsigned int getUniformLocation(const std::string& str);
+	bool isReady(){ return m_ready;}
+
 private:
-	/// Ïú»Ù×ÅÉ«Æ÷
+	/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½
 	void destroyShaders(unsigned int vertShader,unsigned int fragShader, unsigned int prog);
-	/// ¶ÁÈ¡×ÅÉ«Æ÷³ÌÐò
+	/// ï¿½ï¿½È¡ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	bool textFileRead(const char *_fn, char *&_shader);
-	/// ³õÊ¼»¯OpenGLÀ©Õ¹
-	///		\note °üº¬glewµÄ³õÊ¼»¯£¬Ó¦¸ÃÔÚOpenGLºÍglutµÄ³õÊ¼»¯Ö®ºó
+	/// ï¿½ï¿½Ê¼ï¿½ï¿½OpenGLï¿½ï¿½Õ¹
+	///		\note ï¿½ï¿½ï¿½ï¿½glewï¿½Ä³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½OpenGLï¿½ï¿½glutï¿½Ä³ï¿½Ê¼ï¿½ï¿½Ö®ï¿½ï¿½
 	static bool initOpenGLExtensions();
-	/// ÊÇ·ñÖ§³ÖGLSL
+	/// ï¿½Ç·ï¿½Ö§ï¿½ï¿½GLSL
 	static bool hasGLSLSupport();
-	/// ±àÒë³ÌÐò
+	/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	bool compile();
 
-	static bool extensionsInit;			///< ÊÇ·ñ³õÊ¼»¯GLÀ©Õ¹
-	static bool useGLSL;				///< GLSLÊÇ·ñÒÑ¾­×¼±¸
-	static bool bGeometryShader;		///< ÊÇ·ñÖ§³ÖG-Shader
-	static bool bGPUShader4;			///< ÊÇ·ñÖ§³ÖShader4
+	static bool extensionsInit;			///< ï¿½Ç·ï¿½ï¿½Ê¼ï¿½ï¿½GLï¿½ï¿½Õ¹
+	static bool useGLSL;				///< GLSLï¿½Ç·ï¿½ï¿½Ñ¾ï¿½×¼ï¿½ï¿½
+	static bool bGeometryShader;		///< ï¿½Ç·ï¿½Ö§ï¿½ï¿½G-Shader
+	static bool bGPUShader4;			///< ï¿½Ç·ï¿½Ö§ï¿½ï¿½Shader4
 
 	char *m_VertexShader;
 	char *m_FragmentShader;
@@ -55,7 +58,8 @@ private:
 	unsigned int m_Program;
 	unsigned int m_Vert,m_Frag;
 
-	bool isCompiled;					///< ÊÇ·ñ±àÒë
+	bool isCompiled;					///< ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+	bool m_ready;
 	std::map<std::string,unsigned int> m_uniforms;
 };
 

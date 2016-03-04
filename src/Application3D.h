@@ -14,7 +14,7 @@ class Application3D : private CZObjFileParser
 public:
 	// define type
 	typedef enum _ShaderType {
-		kDirectionalLightShading		///< Æ½ÐÐ¹â¹âÕÕ
+		kDirectionalLightShading		///< Æ½ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½
 	} ShaderType;
 	typedef std::map<ShaderType,CZShader*> ShaderMap;
 
@@ -26,6 +26,10 @@ public:
 	bool setRenderBufferSize(int w, int h);
 	void frame();
 	void reset();
+
+#if	!defined(__APPLE__)	&& !defined(_WIN32)
+	bool createShaders(const char* vertFile, const char* fragFile);
+#endif
     
     // document directory
     //  /note : default as the same of model's location;

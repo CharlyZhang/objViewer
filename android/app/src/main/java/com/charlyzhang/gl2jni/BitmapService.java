@@ -1,4 +1,4 @@
-package com.android.gl2jni;
+package com.charlyzhang.gl2jni;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,7 +16,11 @@ public class BitmapService {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             File mFile = new File(path);
             if (mFile.exists()) {
-                bitmap= BitmapFactory.decodeFile(path);
+                try {
+                    bitmap = BitmapFactory.decodeFile(path);
+                } catch (Exception e) {
+
+                }
             }
         }
 
