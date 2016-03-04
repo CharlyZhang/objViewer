@@ -18,10 +18,6 @@ using namespace std;
 
 #if defined(__ANDROID__)
 
-#define RGBA_A(p) (((p) & 0xFF000000) >> 24)
-#define RGBA_R(p) (((p) & 0x00FF0000) >> 16)
-#define RGBA_G(p) (((p) & 0x0000FF00) >>  8)
-#define RGBA_B(p)  ((p) & 0x000000FF)
 
 jstring charToJstring(JNIEnv* env, const char* pat)
 {
@@ -271,6 +267,13 @@ CZImage *CZLoadTexture(const string &filename)
 
     LOG_INFO("bitmap info: %d wide, %d tall, %d ints per pixel", info.width, info.height, info.format);
 
+    if (info.width <= 0 || info.height <= 0 ||
+        (info.format != ANDROID_BITMAP_FORMAT_A_8 && info.format != ANDROID_BITMAP_FORMAT_RGBA_8888)) {
+        LOG_ERROR("invalid bitmap\n");
+        jniEnv->ThrowNew(jniEnv->FindClass("java/io/IOException"), "invalid bitmap");
+        return nullptr;
+    }
+
     int componentNum;
     CZImage::ColorSpace czColorSpace;
     switch (info.format) {
@@ -287,15 +290,6 @@ CZImage *CZLoadTexture(const string &filename)
     }
 
     CZImage *retImage = new CZImage((int)info.width,(int)info.height,czColorSpace);
-//    unsigned char *src = (unsigned  char*)&data[(info.height-1)*info.width*componentNum];
-//    unsigned char *dst = retImage->data;
-//    for (int i=0; i<info.height; i++)
-//    {
-//        memcpy(dst,src,info.width*componentNum);
-//        dst += (info.width*componentNum);
-//        src -= (width*componentNum);
-//    }
-
     long size = info.width * info.height * componentNum;
     memcpy(retImage->data, addr, size * sizeof(unsigned char));
 

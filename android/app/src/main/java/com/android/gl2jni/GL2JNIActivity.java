@@ -35,7 +35,8 @@ public class GL2JNIActivity extends Activity {
 
         assets = getAssets();
         mView = new GL2JNIView(getApplication(), assets);
-	    setContentView(mView);
+        mView.setRenderMode(GL2JNIView.RENDERMODE_WHEN_DIRTY);
+        setContentView(mView);
     }
 
     @Override protected void onPause() {

@@ -16,3 +16,4 @@ android/app/src/main/libs
 android/app/build
 android/.gradle
 android/.idea
+ios

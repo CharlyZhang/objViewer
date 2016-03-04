@@ -69,15 +69,15 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 	/// config scene
 	if(!load(sceneFilename))
 	{
-		scene.eyePosition = CZPoint3D(0, 0, 95);
+		scene.eyePosition = CZPoint3D(0, 0, 100);
 		scene.cameraFov = 45.f;
-        scene.cameraNearPlane = 0.5f;
-        scene.camearFarPlane = 500.f;
+        scene.cameraNearPlane = 1.f;
+        scene.camearFarPlane = 1000.f;
 		scene.light.position = CZPoint3D(0, 0, -120);
 		scene.light.intensity = CZPoint3D(1, 1, 1);
-		scene.ambientLight.intensity = CZPoint3D(0.2,0.2,0.2);
-		scene.directionalLight.intensity = CZPoint3D(1,1,1);
-		scene.directionalLight.direction = CZPoint3D(0,-5,10);
+		this->setAmbientColor(50*1.56, 50*1.56, 50*1.56);
+		this->setDiffuseColor(210,210,210);
+		scene.directionalLight.direction = CZPoint3D(-105.351, -86.679, -133.965);
         
         //scene.directionalLight.direction = CZPoint3D(-105.351,-86.679,-133.965);
 		scene.bgColor = CZColor(0.8f, 0.8f, 0.9f, 1.f);
