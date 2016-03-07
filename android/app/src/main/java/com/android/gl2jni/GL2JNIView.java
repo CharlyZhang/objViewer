@@ -37,10 +37,15 @@ import android.content.res.AssetManager;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Environment;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.KeyEvent;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.GestureDetector.OnDoubleTapListener;
+import android.view.GestureDetector.OnGestureListener;
+import android.view.ViewConfiguration;
+
+import com.android.gl2jni.gestures.VersionedGestureDetector;
 
 import java.io.File;
 
@@ -73,6 +78,15 @@ class GL2JNIView extends GLSurfaceView {
     private static final boolean DEBUG = true;
     static AssetManager assets;
     static String dataDiretroy;
+
+    private float density;
+
+    private boolean isScale;
+    private boolean hasSetIsScale;
+
+    // Gesture Detectors
+    private com.android.gl2jni.gestures.GestureDetector mScaleDragDetector;
+
     public GL2JNIView(Context context, AssetManager am) {
         super(context);
         init(true, 16, 0);
@@ -106,12 +120,71 @@ class GL2JNIView extends GLSurfaceView {
          * custom config chooser. See ConfigChooser class definition
          * below.
          */
-        setEGLConfigChooser( translucent ?
-                             new ConfigChooser(8, 8, 8, 8, depth, stencil) :
-                             new ConfigChooser(5, 6, 5, 0, depth, stencil) );
+        setEGLConfigChooser(translucent ?
+                new ConfigChooser(8, 8, 8, 8, depth, stencil) :
+                new ConfigChooser(5, 6, 5, 0, depth, stencil));
 
         /* Set the renderer responsible for frame rendering */
         setRenderer(new Renderer());
+
+        init();
+    }
+
+    private void init() {
+        density = getContext().getResources().getDisplayMetrics().density;
+        mScaleDragDetector = VersionedGestureDetector.newInstance(getContext(), new com.android.gl2jni.gestures.OnGestureListener() {
+
+            @Override
+            public void onScale(float scaleFactor, float focusX, float focusY) {
+                if((hasSetIsScale && isScale) || !hasSetIsScale) {
+                    GL2JNILib.scale((scaleFactor - 1) / 2 + 1);
+                }
+            }
+
+            @Override
+            public void onDrag(boolean isSingle, float dx, float dy) {
+                if(isSingle) {
+                    GL2JNILib.rotate(dx / (5*density), -dy / (5*density));
+                }
+                if(!isSingle) {
+                    if((hasSetIsScale && !isScale) || !hasSetIsScale) {
+                        GL2JNILib.translate(-dx / (10*density), dy / (10*density));
+                    }
+                }
+            }
+
+            @Override
+            public void isScale(boolean scale) {
+                if(!hasSetIsScale) {
+                    isScale = scale;
+                }
+            }
+
+            @Override
+            public void hasSetIsScale(boolean setIsScale) {
+                hasSetIsScale = setIsScale;
+            }
+
+            @Override
+            public void onDoubleTapUp() {
+                GL2JNILib.reset();
+            }
+
+        });
+
+        setOnTouchListener(new OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent ev) {
+                boolean handled = false;
+                // Try the Scale/Drag detector
+                if (null != mScaleDragDetector && mScaleDragDetector.onTouchEvent(ev)) {
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+
     }
 
     private static class ContextFactory implements GLSurfaceView.EGLContextFactory {
