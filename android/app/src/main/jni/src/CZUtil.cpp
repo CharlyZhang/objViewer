@@ -247,7 +247,7 @@ CZImage *CZLoadTexture(const string &filename)
 #elif defined(__ANDROID__)
 
 
-    jclass cls = jniEnv->FindClass("com/android/gl2jni/BitmapService");
+    jclass cls = jniEnv->FindClass("com/charlyzhang/gl2jni/BitmapService");
     jmethodID mid = jniEnv->GetStaticMethodID(cls, "getImageFromSD", "(Ljava/lang/String;)Landroid/graphics/Bitmap;");
 
     jstring path = charToJstring(jniEnv,filename.c_str());
