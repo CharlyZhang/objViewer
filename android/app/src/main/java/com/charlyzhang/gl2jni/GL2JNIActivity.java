@@ -23,29 +23,36 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-
+import android.widget.Button;
+import android.widget.FrameLayout;
 
 public class GL2JNIActivity extends Activity {
 
-    GL2JNIView mView;
-    static AssetManager assets;
+    Button addButton;
+    GL2JNIView gl2jniView;
+    FrameLayout mFrameLayout;
 
-    @Override protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        assets = getAssets();
-        mView = new GL2JNIView(getApplication(), assets);
-        mView.setRenderMode(GL2JNIView.RENDERMODE_WHEN_DIRTY);
-        setContentView(mView);
+        setContentView(R.layout.activity_main);
+        addButton = (Button) this.findViewById(R.id.main_act_btn);
+        mFrameLayout = (FrameLayout) this.findViewById(R.id.content);
+        // 初始化GL2JNIView
+        gl2jniView = new GL2JNIView(GL2JNIActivity.this);
+
+        // 设置点击监听
+        addButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // 点击按钮时将GL2JNIView添加到布局并开始加载3D
+                mFrameLayout.addView(gl2jniView);
+                gl2jniView.startGLESView();
+                gl2jniView.setRenderModeDirty();
+            }
+        });
     }
 
-    @Override protected void onPause() {
-        super.onPause();
-        mView.onPause();
-    }
-
-    @Override protected void onResume() {
-        super.onResume();
-        mView.onResume();
-    }
 }
