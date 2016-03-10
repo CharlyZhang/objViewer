@@ -11,6 +11,16 @@
 
 using namespace std;
 
+
+#if defined(__ANDROID__)
+char* GetImageClass = nullptr;
+char* GetImageMethod = nullptr;
+
+char* ModelLoadCallerClass = nullptr;
+char* ModelLoadCallerMethod = nullptr;
+
+#endif
+
 Application3D::Application3D()
 {
 	width = height = DEFAULT_RENDER_SIZE;
@@ -28,6 +38,11 @@ Application3D::~Application3D()
 	}
 	shaders.clear();
     if(documentDirectory)   delete [] documentDirectory;
+
+	if(GetImageClass)		{	delete [] GetImageClass; GetImageClass = nullptr;}
+	if(GetImageMethod)		{	delete [] GetImageMethod; GetImageMethod = nullptr;}
+	if(ModelLoadCallerClass)		{	delete [] ModelLoadCallerClass; ModelLoadCallerClass = nullptr;}
+	if(ModelLoadCallerMethod)		{	delete [] ModelLoadCallerMethod; ModelLoadCallerMethod = nullptr;}
 }
 
 bool Application3D::init(const char* sceneFilename /* = NULL */ )
@@ -121,6 +136,8 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
 	reset();
 
 	CZCheckGLError();
+
+	modelLoadingDone();
 
 	return true;
 }
@@ -272,6 +289,43 @@ bool Application3D::createShaders(const char* vertFile, const char* fragFile)
 
 	return true;
 }
+
+#if defined(__ANDROID__)
+void Application3D::setImageLoader(const char * cls, const char * method)
+{
+	if(cls == nullptr || method == nullptr)
+	{
+		LOG_ERROR("parameters contains nullptr\n");
+		return;
+	}
+
+	if(GetImageClass)	delete[] GetImageClass;
+	GetImageClass = new char[strlen(cls)+1];
+	strcpy(GetImageClass,cls);
+
+	if(GetImageMethod)	delete[] GetImageMethod;
+	GetImageMethod = new char[strlen(method)+1];
+	strcpy(GetImageMethod,method);
+}
+
+void Application3D::setModelLoadCallBack(const char * cls, const char *method)
+{
+	if(cls == nullptr || method == nullptr)
+	{
+		LOG_ERROR("parameters contains nullptr\n");
+		return;
+	}
+
+	if(ModelLoadCallerClass)	delete[] ModelLoadCallerClass;
+	ModelLoadCallerClass = new char[strlen(cls)+1];
+	strcpy(ModelLoadCallerClass,cls);
+
+	if(ModelLoadCallerMethod)	delete[] ModelLoadCallerMethod;
+	ModelLoadCallerMethod = new char[strlen(method)+1];
+	strcpy(ModelLoadCallerMethod,method);
+}
+
+#endif
 
 // document directory
 //  /note : default as the same of model's location;

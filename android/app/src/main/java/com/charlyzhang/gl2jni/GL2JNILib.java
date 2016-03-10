@@ -27,12 +27,13 @@ public class GL2JNILib {
         System.loadLibrary("Application3D");
     }
 
-    public static native Bitmap getImage(String path);
     public static native void init(AssetManager assetManager);
     public static native void loadObjModel(String filename, boolean quickLoad);
     public static native void setRenderBufferSize(int w, int h);
     public static native void frame();
     public static native void reset();
+    public static native void setImageLoader(String cls, String method);
+    public static native void setModelLoadCallBack(String cls, String method);
 
     public static native void setDocDirectory(String docDir);
 

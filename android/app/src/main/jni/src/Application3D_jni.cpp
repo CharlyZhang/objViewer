@@ -15,6 +15,8 @@ extern "C" {
     JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_setRenderBufferSize(JNIEnv * env, jclass c, jint w, jint h);
     JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_frame(JNIEnv * env, jclass c);
     JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_reset(JNIEnv * env, jclass c);
+    JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_setImageLoader(JNIEnv * env, jclass c,jstring cls,jstring mtd);
+    JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_setModelLoadCallBack(JNIEnv * env, jclass c,jstring cls,jstring mtd);
     JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_setDocDirectory(JNIEnv * env, jclass c, jstring docDir);
     JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_rotate(JNIEnv * env, jclass c, jfloat deltaX, jfloat deltaY);
     JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_translate(JNIEnv * env, jclass c, jfloat deltaX, jfloat deltaY);
@@ -91,6 +93,20 @@ JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_frame(JNIEnv * env,
 JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_reset(JNIEnv * env, jclass c)
 {
     app3d.reset();
+}
+
+JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_setImageLoader(JNIEnv * env, jclass c,jstring cls,jstring mtd)
+{
+    char *clz = jstringTostring(env, cls);
+    char *method = jstringTostring(env, mtd);
+    app3d.setImageLoader(clz,method);
+}
+
+JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_setModelLoadCallBack(JNIEnv * env, jclass c,jstring cls,jstring mtd)
+{
+    char *clz = jstringTostring(env, cls);
+    char *method = jstringTostring(env, mtd);
+    app3d.setModelLoadCallBack(clz,method);
 }
 
 JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_setDocDirectory(JNIEnv * env, jclass c, jstring docDir)

@@ -12,6 +12,12 @@
 #include <android/bitmap.h>
 extern JNIEnv *jniEnv;
 
+extern char* GetImageClass;
+extern char* GetImageMethod;
+
+extern char* ModelLoadCallerClass;
+extern char* ModelLoadCallerMethod;
+
 #endif
 
 using namespace std;
@@ -247,8 +253,10 @@ CZImage *CZLoadTexture(const string &filename)
 #elif defined(__ANDROID__)
 
 
-    jclass cls = jniEnv->FindClass("com/charlyzhang/gl2jni/BitmapService");
-    jmethodID mid = jniEnv->GetStaticMethodID(cls, "getImageFromSD", "(Ljava/lang/String;)Landroid/graphics/Bitmap;");
+    if(GetImageClass == nullptr || GetImageMethod == nullptr) return nullptr;
+
+    jclass cls = jniEnv->FindClass(GetImageClass);
+    jmethodID mid = jniEnv->GetStaticMethodID(cls, GetImageMethod, "(Ljava/lang/String;)Landroid/graphics/Bitmap;");
 
     jstring path = charToJstring(jniEnv,filename.c_str());
     jobject bitmap = jniEnv->CallStaticObjectMethod(cls,mid,path);
@@ -298,6 +306,20 @@ CZImage *CZLoadTexture(const string &filename)
     }
 
     return retImage;
+
+#endif
+}
+
+void modelLoadingDone()
+{
+#if defined(__ANDROID__)
+
+    if(ModelLoadCallerClass == nullptr || ModelLoadCallerMethod == nullptr) return;
+
+    jclass cls = jniEnv->FindClass(ModelLoadCallerClass);
+    jmethodID mid = jniEnv->GetStaticMethodID(cls, ModelLoadCallerMethod, "()V");
+
+    jniEnv->CallStaticVoidMethod(cls,mid);
 
 #endif
 }
