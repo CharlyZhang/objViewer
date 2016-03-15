@@ -17,12 +17,8 @@
 package com.charlyzhang.gl2jni;
 
 import android.app.Activity;
-import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 

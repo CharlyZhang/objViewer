@@ -1,14 +1,11 @@
-package com.android.gl2jni.gestures;
+package com.charlyzhang.gl2jni.gestures;
 
 import android.content.Context;
 import android.os.SystemClock;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
-
-import java.util.Scanner;
 
 public class CupcakeGestureDetector implements GestureDetector {
 

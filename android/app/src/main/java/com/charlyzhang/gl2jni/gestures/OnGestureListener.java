@@ -1,4 +1,4 @@
-package com.android.gl2jni.gestures;
+package com.charlyzhang.gl2jni.gestures;
 
 public interface OnGestureListener {
 

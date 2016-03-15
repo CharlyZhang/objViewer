@@ -38,14 +38,10 @@ import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Environment;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.GestureDetector.OnDoubleTapListener;
-import android.view.GestureDetector.OnGestureListener;
-import android.view.ViewConfiguration;
 
-import com.android.gl2jni.gestures.VersionedGestureDetector;
+import com.charlyzhang.gl2jni.gestures.VersionedGestureDetector;
 
 import java.io.File;
 
@@ -85,7 +81,7 @@ class GL2JNIView extends GLSurfaceView {
     private boolean hasSetIsScale;
 
     // Gesture Detectors
-    private com.android.gl2jni.gestures.GestureDetector mScaleDragDetector;
+    private com.charlyzhang.gl2jni.gestures.GestureDetector mScaleDragDetector;
 
     public GL2JNIView(Context context) {
         super(context);
@@ -154,26 +150,26 @@ class GL2JNIView extends GLSurfaceView {
 
     private void init() {
         density = getContext().getResources().getDisplayMetrics().density;
-        mScaleDragDetector = VersionedGestureDetector.newInstance(getContext(), new com.android.gl2jni.gestures.OnGestureListener() {
+        mScaleDragDetector = VersionedGestureDetector.newInstance(getContext(), new com.charlyzhang.gl2jni.gestures.OnGestureListener() {
 
             @Override
             public void onScale(float scaleFactor, float focusX, float focusY) {
                 if((hasSetIsScale && isScale) || !hasSetIsScale) {
-                    requestRender();
                     GL2JNILib.scale((scaleFactor - 1) / 2 + 1);
+                    requestRender();
                 }
             }
 
             @Override
             public void onDrag(boolean isSingle, float dx, float dy) {
                 if(isSingle) {
-                    requestRender();
                     GL2JNILib.rotate(dx / (5 * density), -dy / (5*density));
+                    requestRender();
                 }
                 if(!isSingle) {
                     if((hasSetIsScale && !isScale) || !hasSetIsScale) {
-                        requestRender();
                         GL2JNILib.translate(-dx / (10 * density), dy / (10*density));
+                        requestRender();
                     }
                 }
             }
@@ -193,6 +189,7 @@ class GL2JNIView extends GLSurfaceView {
             @Override
             public void onDoubleTapUp() {
                 GL2JNILib.reset();
+                requestRender();
             }
 
         });
