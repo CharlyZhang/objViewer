@@ -45,22 +45,9 @@ void main()
     vec4 surfaceColor = TEXTURE(tex, fragTexCoord);
     if(hasTex == 0) surfaceColor = vec4(1,1,1,1);
     
-    // ambient
-    vec3 ambient = material.ka * ambientLight.intensities * surfaceColor.rgb;
+ 
     
-    // diffuse
-    vec3 lightDirection = normalize(directionalLight.direction);
-    mat3 normalMatrix = mat3(modelMat);
-     vec3 normal = normalize(normalMatrix * fragNormal);
-//    vec3 normal = normalize(modelMat * vec4(fragNormal,0.0)).xyz;
-    float brightness = -dot(normal, lightDirection);
-    brightness = clamp(brightness, 0.0, 1.0);
-    
-    vec3 diffuse = brightness * material.kd * directionalLight.intensities * surfaceColor.rgb;
-    
-    gl_FragColor = vec4(ambient + diffuse, 1.0);
-    
-//	gl_FragColor = vec4(surfaceColor.rgb,1.0);
+	gl_FragColor = vec4(surfaceColor.rgb,1.0);
 //	gl_FragColor = vec4(fragNormal,1);
 //	gl_FragColor = vec4(fragTexCoord,0.5,1);
 }

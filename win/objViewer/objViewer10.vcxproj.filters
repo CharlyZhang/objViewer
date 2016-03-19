@@ -86,21 +86,15 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\src\glsl\standard.vert">
-      <Filter>glsl</Filter>
-    </None>
-    <None Include="..\..\src\glsl\standard.frag">
-      <Filter>glsl</Filter>
-    </None>
-    <None Include="..\..\src\glsl\nonTex.frag">
-      <Filter>glsl</Filter>
-    </None>
-    <None Include="..\..\src\glsl\standardDirectional.frag">
-      <Filter>glsl</Filter>
-    </None>
     <None Include="..\..\ReadMe.md" />
     <None Include="..\..\src\scene_violin.cfg">
       <Filter>资源文件</Filter>
+    </None>
+    <None Include="..\..\src\glsl\directionalLight.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\src\glsl\standard.vert">
+      <Filter>glsl</Filter>
     </None>
   </ItemGroup>
 </Project>

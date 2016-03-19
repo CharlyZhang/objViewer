@@ -213,7 +213,7 @@ bool CZShader::textFileRead(const char *_fn, GLchar *&_shader)
 /// 初始化OpenGL扩展
 bool CZShader::initOpenGLExtensions()
 {
-#if USE_OPENGL
+#ifdef USE_OPENGL
     if (extensionsInit) return true;
     extensionsInit = true;
     
@@ -235,7 +235,7 @@ bool CZShader::initOpenGLExtensions()
 /// 是否支持GLSL
 bool CZShader::hasGLSLSupport()
 {
-#if USE_OPENGL
+#ifdef USE_OPENGL
     if (useGLSL) return true;							///< already initialized and GLSL is available
     useGLSL = true;
     
