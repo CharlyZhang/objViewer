@@ -199,13 +199,16 @@ bool CZObjModel::loadBinary(const std::string& path,const char *originalPath/*  
     return true;
 }
 
-void CZObjModel::draw(CZShader* pShader)
+void CZObjModel::draw(CZShader* pShader, CZMat4 &vpMat, CZMat4 &modelMat)
 {
     if(pShader == NULL)
     {
         LOG_ERROR("pShader is NULL!\n");
         return;
     }
+
+	glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, vpMat*modelMat);
+	glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
     
     GL_BIND_VERTEXARRAY(m_vao);
 

@@ -24,6 +24,7 @@ Application3D::~Application3D()
 		delete models[i];
 	}
 	models.clear();
+	transMats.clear();
 
 	for (map<ShaderType,CZShader*>::iterator itr = shaders.begin(); itr != shaders.end(); itr++)
 	{
@@ -115,6 +116,7 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
 	}
 
 	models.push_back(pModel);
+	transMats.push_back(CZMat4());
 
 	reset();
 
@@ -158,10 +160,10 @@ void Application3D::frame()
 	gluLookAt(scene.eyePosition.x,scene.eyePosition.y,scene.eyePosition.z, 0,0,0,0,1,0);
 #endif
     
-	CZMat4 mvpMat,modelMat;
-	modelMat = translateMat * scaleMat * rotateMat;
-	mvpMat.SetLookAt(scene.eyePosition.x, scene.eyePosition.y, scene.eyePosition.z, 0, 0, 0, 0, 1, 0);
-	mvpMat = projMat * mvpMat * modelMat;
+	CZMat4 viewProjModel,entireModelMat;
+	entireModelMat = translateMat * scaleMat * rotateMat;
+	viewProjModel.SetLookAt(scene.eyePosition.x, scene.eyePosition.y, scene.eyePosition.z, 0, 0, 0, 0, 1, 0);
+	viewProjModel = projMat * viewProjModel;
 
 	/// »æÖÆ
 	CZShader *pShader = getShader(kDirectionalLightShading);
@@ -174,8 +176,6 @@ void Application3D::frame()
 	pShader->begin();
     
 	// common uniforms
-	glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, mvpMat);
-	glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
 	glUniform3f(pShader->getUniformLocation("ambientLight.intensities"),
 		scene.ambientLight.intensity.x,
 		scene.ambientLight.intensity.y,
@@ -191,7 +191,7 @@ void Application3D::frame()
 		scene.directionalLight.intensity.z);
 	CZCheckGLError();
 
-	for(auto i = 0; i < models.size(); i++) models[i]->draw(pShader);
+	for(auto i = 0; i < models.size(); i++) models[i]->draw(pShader,viewProjModel,entireModelMat*transMats[i]);
 	CZCheckGLError();
 
 	pShader->end();
@@ -217,7 +217,7 @@ void Application3D::reset()
 	rotateMat.LoadIdentity();
 	translateMat.LoadIdentity();
 	scaleMat.LoadIdentity();
-    
+    for(auto i=0; i<transMats.size(); i++) transMats[i].LoadIdentity();
 	/// color
 	modelColor = scene.mColor;
 	glClearColor(scene.bgColor.r, scene.bgColor.g, scene.bgColor.b, scene.bgColor.a);
@@ -262,11 +262,16 @@ void Application3D::rotate(float deltaX, float deltaY)
 	tempMat.SetRotationX(-deltaY);
 	rotateMat = tempMat * rotateMat;
 }
-void Application3D::translate(float deltaX, float deltaY)
+void Application3D::translate(float deltaX, float deltaY, int modelIdx/* = -1 */)
 {
 	CZMat4 tempMat;
 	tempMat.SetTranslation(-deltaX, -deltaY, 0);
-	translateMat = tempMat * translateMat;
+	if (modelIdx < 0)
+		translateMat = tempMat * translateMat;
+	else if(modelIdx >= models.size())
+		LOG_ERROR("modelIdx is beyond range!\n");
+	else
+		transMats[modelIdx] = tempMat * transMats[modelIdx];
 }
 void Application3D::scale(float s)
 {
@@ -309,6 +314,12 @@ void Application3D::setDiffuseColor(unsigned char r, unsigned char g, unsigned c
     scene.directionalLight.intensity = CZVector3D<float>(r/255.0f,g/255.0f,b/255.0f);
 }
 
+// animation
+bool Application3D::addAnimationMove(int modelIdx, float x, float y, float z, float time)
+{
+
+	return true;
+}
 //////////////////////////////////////////////////////////////////////////
 bool Application3D::loadShaders()
 {

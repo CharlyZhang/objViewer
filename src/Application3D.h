@@ -39,7 +39,7 @@ public:
 	// control
 	//	/note : (deltaX,deltaY) is in the screen coordinate system
 	void rotate(float deltaX, float deltaY);
-	void translate(float deltaX, float deltaY);
+	void translate(float deltaX, float deltaY, int modelIdx = -1);
 	void scale(float s);
 
 	// custom config
@@ -58,6 +58,9 @@ public:
 	// texture
 	bool enableTexture(bool flag);
 
+	// animation
+	bool addAnimationMove(int modelIdx, float x, float y, float z, float time);
+
 private:
 	bool loadShaders();
 	CZShader* getShader(ShaderType type);
@@ -74,6 +77,7 @@ private:
 	ShaderMap shaders;
 	CZObjModelArray models;
 	CZMat4 projMat, rotateMat, translateMat, scaleMat;
+	std::vector<CZMat4> transMats;
 	int width, height;
 	CZColor modelColor;
     
