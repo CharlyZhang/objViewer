@@ -10,6 +10,7 @@
 #include "CZObjModel.h"
 
 typedef std::vector<CZObjModel*> CZObjModelArray;
+typedef std::vector<CZMat4> CZMat4Array;
 
 class Application3D : private CZObjFileParser
 {
@@ -38,9 +39,9 @@ public:
     
 	// control
 	//	/note : (deltaX,deltaY) is in the screen coordinate system
-	void rotate(float deltaX, float deltaY);
-	void translate(float deltaX, float deltaY);
-	void scale(float s);
+	void rotate(float deltaX, float deltaY, int modelIdx = -1);
+	void translate(float deltaX, float deltaY, int modelIdx = -1);
+	void scale(float s, int modelIdx = -1);
 
 	// custom config
 	void setBackgroundColor(float r, float g, float b, float a);
@@ -76,7 +77,9 @@ private:
 	CZScene scene;
 	ShaderMap shaders;
     CZObjModelArray models;
-	CZMat4 projMat, rotateMat, translateMat, scaleMat;
+    CZMat4Array rotateMats, translateMats, scaleMats;
+	CZMat4 projMat;
+    
 	int width, height;
 	CZColor modelColor;
     

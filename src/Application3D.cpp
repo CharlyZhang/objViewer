@@ -24,6 +24,9 @@ Application3D::~Application3D()
         delete models[i];
     }
     models.clear();
+    translateMats.clear();
+    scaleMats.clear();
+    rotateMats.clear();
 
 	for (map<ShaderType,CZShader*>::iterator itr = shaders.begin(); itr != shaders.end(); itr++)
 	{
@@ -117,6 +120,9 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
 	}
 
     models.push_back(pModel);
+    translateMats.push_back(CZMat4());
+    rotateMats.push_back(CZMat4());
+    scaleMats.push_back(CZMat4());
     
 	reset();
 
@@ -161,11 +167,8 @@ void Application3D::frame()
 	gluLookAt(scene.eyePosition.x,scene.eyePosition.y,scene.eyePosition.z, 0,0,0,0,1,0);
 #endif
     
-	CZMat4 mvpMat,modelMat, modelInverseTransposeMat;
-	modelMat = translateMat * scaleMat * rotateMat;
-	mvpMat.SetLookAt(scene.eyePosition.x, scene.eyePosition.y, scene.eyePosition.z, 0, 0, 0, 0, 1, 0);
-	mvpMat = projMat * mvpMat * modelMat;
-    modelInverseTransposeMat = modelMat.GetInverseTranspose();
+	CZMat4 viewMat,modelMat;
+	viewMat.SetLookAt(scene.eyePosition.x, scene.eyePosition.y, scene.eyePosition.z, 0, 0, 0, 0, 1, 0);
 
 	/// »æÖÆ
 	CZShader *pShader = getShader(kDirectionalLightShading);
@@ -179,10 +182,6 @@ void Application3D::frame()
     CZCheckGLError();
     
 	// common uniforms
-	glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, mvpMat);
-    glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
-    glUniformMatrix4fv(pShader->getUniformLocation("modelInverseTransposeMat"), 1, GL_FALSE, modelInverseTransposeMat);
-    
 	glUniform3f(pShader->getUniformLocation("ambientLight.intensities"),
 		scene.ambientLight.intensity.x,
 		scene.ambientLight.intensity.y,
@@ -200,6 +199,11 @@ void Application3D::frame()
 	CZCheckGLError();
 
     for (auto i = 0; i < models.size(); i++) {
+        modelMat = translateMats[i] * scaleMats[i] * rotateMats[i];
+        glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, projMat * viewMat * modelMat);
+        glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
+        glUniformMatrix4fv(pShader->getUniformLocation("modelInverseTransposeMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
+        
         CZObjModel *pModel = models[i];
         pModel->draw(pShader);
     }
@@ -225,9 +229,11 @@ void Application3D::frame()
 void Application3D::reset()
 {
 	/// model matrix
-	rotateMat.LoadIdentity();
-	translateMat.LoadIdentity();
-	scaleMat.LoadIdentity();
+    for (auto i = 0; i < models.size(); i ++) {
+        rotateMats[i].LoadIdentity();
+        translateMats[i].LoadIdentity();
+        scaleMats[i].LoadIdentity();
+    }
     
 	/// color
 	modelColor = scene.mColor;
@@ -265,25 +271,64 @@ void Application3D::setGLSLDirectory(const char* glslDir)
 }
 
 // control
-void Application3D::rotate(float deltaX, float deltaY)
+void Application3D::rotate(float deltaX, float deltaY, int modelIdx /*= -1*/)
 {
 	CZMat4 tempMat;
 	tempMat.SetRotationY(deltaX);
-	rotateMat = tempMat * rotateMat;
-	tempMat.SetRotationX(-deltaY);
-	rotateMat = tempMat * rotateMat;
+    if (modelIdx < 0)
+    {
+        for (auto i = 0; i < models.size(); i++)
+        {
+            rotateMats[i] = tempMat * rotateMats[i];
+            tempMat.SetRotationX(-deltaY);
+            rotateMats[i] = tempMat * rotateMats[i];
+        }
+    }
+    else if(modelIdx < models.size())
+    {
+        rotateMats[modelIdx] = tempMat * rotateMats[modelIdx];
+        tempMat.SetRotationX(-deltaY);
+        rotateMats[modelIdx] = tempMat * rotateMats[modelIdx];
+    }
+    else
+        LOG_ERROR("modelIdx is beyond the range!\n");
+	
 }
-void Application3D::translate(float deltaX, float deltaY)
+void Application3D::translate(float deltaX, float deltaY, int modelIdx /*= -1*/)
 {
 	CZMat4 tempMat;
 	tempMat.SetTranslation(-deltaX, -deltaY, 0);
-	translateMat = tempMat * translateMat;
+    if (modelIdx < 0)
+    {
+        for (auto i = 0; i < models.size(); i++)
+        {
+            translateMats[i] = tempMat * translateMats[i];
+        }
+    }
+    else if(modelIdx < models.size())
+    {
+        translateMats[modelIdx] = tempMat * translateMats[modelIdx];
+    }
+    else
+        LOG_ERROR("modelIdx is beyond the range!\n");
 }
-void Application3D::scale(float s)
+void Application3D::scale(float s, int modelIdx /*= -1*/)
 {
-	CZMat4 tempMat;
-	tempMat.SetScale(s);
-	scaleMat = tempMat * scaleMat;
+    CZMat4 tempMat;
+    tempMat.SetScale(s);
+    if (modelIdx < 0)
+    {
+        for (auto i = 0; i < models.size(); i++)
+        {
+            scaleMats[i] = tempMat * scaleMats[i];
+        }
+    }
+    else if(modelIdx < models.size())
+    {
+        scaleMats[modelIdx] = tempMat * scaleMats[modelIdx];
+    }
+    else
+        LOG_ERROR("modelIdx is beyond the range!\n");
 }
 
 // custom config
