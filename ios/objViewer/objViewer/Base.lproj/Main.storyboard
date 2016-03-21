@@ -35,6 +35,78 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="q5i-wA-YpN"/>
                                 </connections>
                             </pickerView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QGO-4T-KlW">
+                                <rect key="frame" x="28" y="72" width="30" height="30"/>
+                                <state key="normal" title="－"/>
+                                <connections>
+                                    <action selector="adjustTranslate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aSV-SK-cfU"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y6K-tb-cG1">
+                                <rect key="frame" x="59" y="72" width="30" height="30"/>
+                                <state key="normal" title="＋"/>
+                                <connections>
+                                    <action selector="adjustTranslate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Jo7-LU-Bgi"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="X:0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wIA-GD-fsy">
+                                <rect key="frame" x="97" y="76" width="133" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jvG-ew-P5o">
+                                <rect key="frame" x="28" y="105" width="30" height="30"/>
+                                <state key="normal" title="－"/>
+                                <connections>
+                                    <action selector="adjustTranslate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="npm-gn-xZl"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vef-cx-RNt">
+                                <rect key="frame" x="59" y="105" width="30" height="30"/>
+                                <state key="normal" title="＋"/>
+                                <connections>
+                                    <action selector="adjustTranslate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="82C-Vu-56k"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Y:0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FMc-2v-LfZ">
+                                <rect key="frame" x="97" y="109" width="133" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8RF-7L-v9Z">
+                                <rect key="frame" x="28" y="138" width="30" height="30"/>
+                                <state key="normal" title="－"/>
+                                <connections>
+                                    <action selector="adjustTranslate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oPQ-MO-qG7"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZkE-Rz-RLu">
+                                <rect key="frame" x="59" y="138" width="30" height="30"/>
+                                <state key="normal" title="＋"/>
+                                <connections>
+                                    <action selector="adjustTranslate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bs7-OR-PK3"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Z:0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XPN-Bz-MEj">
+                                <rect key="frame" x="98" y="142" width="132" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="9" translatesAutoresizingMaskIntoConstraints="NO" id="ndl-8P-fct">
+                                <rect key="frame" x="28" y="171" width="94" height="29"/>
+                                <connections>
+                                    <action selector="adjustModelIdx:" destination="BYZ-38-t0r" eventType="valueChanged" id="cyK-WR-O29"/>
+                                </connections>
+                            </stepper>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Idx: 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ojf-Jo-rle">
+                                <rect key="frame" x="144" y="179" width="56" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -44,7 +116,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="LiE-dj-3Pq"/>
                     <connections>
+                        <outlet property="idxLabel" destination="Ojf-Jo-rle" id="6bm-Iu-juO"/>
                         <outlet property="pickView" destination="vaX-Ba-ppV" id="jPG-DB-EGU"/>
+                        <outlet property="xTranslateLabel" destination="wIA-GD-fsy" id="H6o-0A-5Au"/>
+                        <outlet property="yTranslateLabel" destination="FMc-2v-LfZ" id="N9T-sS-MbB"/>
+                        <outlet property="zTranslateLabel" destination="XPN-Bz-MEj" id="0ch-Sf-w2z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

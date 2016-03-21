@@ -22,6 +22,9 @@
     UIView *displayView;
     
     MBProgressHUD *hud;
+    
+    NSInteger currentModelIdx;
+    NSMutableArray *xValues, *yValues, *zValues;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *lightDirectionX;
@@ -32,12 +35,36 @@
 @property (weak, nonatomic) IBOutlet UILabel *ambientItensity;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickView;
 
+@property (weak, nonatomic) IBOutlet UILabel *xTranslateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *yTranslateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *zTranslateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *idxLabel;
+@property (nonatomic) NSInteger adjustX;
+@property (nonatomic) NSInteger adjustY;
+@property (nonatomic) NSInteger adjustZ;
+
 - (void)cleanTemp;
 - (void)loadModels;
 
 @end
 
 @implementation ViewController
+
+- (void)setAdjustX:(NSInteger)adjustX {
+    _adjustX = adjustX;
+    self.xTranslateLabel.text = [NSString stringWithFormat:@"X:%ld",(long)_adjustX];
+}
+
+- (void)setAdjustY:(NSInteger)adjustY {
+    _adjustY = adjustY;
+    self.yTranslateLabel.text = [NSString stringWithFormat:@"Y:%ld",(long)_adjustY];
+}
+
+- (void)setAdjustZ:(NSInteger)adjustZ {
+    _adjustZ = adjustZ;
+    self.zTranslateLabel.text = [NSString stringWithFormat:@"Z:%ld",(long)_adjustZ];
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -55,6 +82,11 @@
     
     
     [self.pickView setHidden:YES];
+    
+    currentModelIdx = 0;
+    xValues = [NSMutableArray arrayWithObjects:@(0),@(0),@(0),@(0),@(0),@(0),@(0),@(0),@(0),@(0), nil];
+    yValues = [NSMutableArray arrayWithArray:xValues];
+    zValues = [NSMutableArray arrayWithArray:xValues];
 }
 
 - (void)dealloc {
@@ -235,6 +267,14 @@
 - (void)tap:(UITapGestureRecognizer*) tap{
     if (tap.state == UIGestureRecognizerStateEnded) {
         [glView reset];
+        for (int i = 0; i < xValues.count; i ++) {
+            xValues[i] = @(0);
+            yValues[i] = @(0);
+            zValues[i] = @(0);
+        }
+        self.adjustX = 0;
+        self.adjustY = 0;
+        self.adjustZ = 0;
     }
 }
 
@@ -332,4 +372,53 @@
     }
     [self loadModel:row];
 }
+
+# pragma mark - Actions
+
+- (IBAction)adjustTranslate:(UIButton *)sender {
+    switch (sender.tag) {
+        case 0:
+            [glView moveWithX:-1.f Y:0 Z:0 model:currentModelIdx];
+            self.adjustX = self.adjustX - 1.f;
+            xValues[currentModelIdx] = @(self.adjustX);
+            break;
+        case 1:
+            [glView moveWithX:1.f Y:0 Z:0 model:currentModelIdx];
+            self.adjustX = self.adjustX + 1.f;
+            xValues[currentModelIdx] = @(self.adjustX);
+            break;
+        case 2:
+            [glView moveWithX:0 Y:-1.f Z:0 model:currentModelIdx];
+            self.adjustY = self.adjustY - 1.f;
+            yValues[currentModelIdx] = @(self.adjustY);
+            break;
+        case 3:
+            [glView moveWithX:0 Y:1.f Z:0 model:currentModelIdx];
+            self.adjustY = self.adjustY + 1.f;
+            yValues[currentModelIdx] = @(self.adjustY);
+            break;
+        case 4:
+            [glView moveWithX:0 Y:0 Z:-1.f model:currentModelIdx];
+            self.adjustZ = self.adjustZ - 1.f;
+            zValues[currentModelIdx] = @(self.adjustZ);
+            break;
+        case 5:
+            [glView moveWithX:0 Y:0 Z:1.f model:currentModelIdx];
+            self.adjustZ = self.adjustZ + 1.f;
+            zValues[currentModelIdx] = @(self.adjustZ);
+            break;
+        default:
+            break;
+    }
+    
+}
+
+- (IBAction)adjustModelIdx:(UIStepper *)sender {
+    currentModelIdx = (NSInteger)sender.value;
+    self.idxLabel.text = [NSString stringWithFormat:@"Idx:%ld",currentModelIdx+1];
+    self.adjustX = [[xValues objectAtIndex:currentModelIdx] integerValue];
+    self.adjustY = [[yValues objectAtIndex:currentModelIdx] integerValue];
+    self.adjustZ = [[zValues objectAtIndex:currentModelIdx] integerValue];
+}
+
 @end

@@ -45,6 +45,8 @@
 - (void) stopRenderLoop;
 - (void) rotateWithX:(float)x Y:(float)y;
 - (void) moveWithX:(float)x Y:(float)y;
+- (void) moveWithX:(float)x Y:(float)y Z:(float)z model:(NSInteger)idx;
+
 - (void) scale:(float)s;
 
 - (void) drawFrame;

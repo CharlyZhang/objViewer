@@ -40,7 +40,7 @@ public:
 	// control
 	//	/note : (deltaX,deltaY) is in the screen coordinate system
 	void rotate(float deltaX, float deltaY, int modelIdx = -1);
-	void translate(float deltaX, float deltaY, int modelIdx = -1);
+	void translate(float deltaX, float deltaY, float deltaZ = 0.0f, int modelIdx = -1);
 	void scale(float s, int modelIdx = -1);
 
 	// custom config

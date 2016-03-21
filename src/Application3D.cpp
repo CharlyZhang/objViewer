@@ -273,12 +273,12 @@ void Application3D::setGLSLDirectory(const char* glslDir)
 // control
 void Application3D::rotate(float deltaX, float deltaY, int modelIdx /*= -1*/)
 {
-	CZMat4 tempMat;
-	tempMat.SetRotationY(deltaX);
     if (modelIdx < 0)
     {
         for (auto i = 0; i < models.size(); i++)
         {
+            CZMat4 tempMat;
+            tempMat.SetRotationY(deltaX);
             rotateMats[i] = tempMat * rotateMats[i];
             tempMat.SetRotationX(-deltaY);
             rotateMats[i] = tempMat * rotateMats[i];
@@ -286,6 +286,8 @@ void Application3D::rotate(float deltaX, float deltaY, int modelIdx /*= -1*/)
     }
     else if(modelIdx < models.size())
     {
+        CZMat4 tempMat;
+        tempMat.SetRotationY(deltaX);
         rotateMats[modelIdx] = tempMat * rotateMats[modelIdx];
         tempMat.SetRotationX(-deltaY);
         rotateMats[modelIdx] = tempMat * rotateMats[modelIdx];
@@ -294,10 +296,10 @@ void Application3D::rotate(float deltaX, float deltaY, int modelIdx /*= -1*/)
         LOG_ERROR("modelIdx is beyond the range!\n");
 	
 }
-void Application3D::translate(float deltaX, float deltaY, int modelIdx /*= -1*/)
+void Application3D::translate(float deltaX, float deltaY, float deltaZ /*= 0.0f*/, int modelIdx /*= -1*/)
 {
 	CZMat4 tempMat;
-	tempMat.SetTranslation(-deltaX, -deltaY, 0);
+	tempMat.SetTranslation(-deltaX, -deltaY, deltaZ);
     if (modelIdx < 0)
     {
         for (auto i = 0; i < models.size(); i++)

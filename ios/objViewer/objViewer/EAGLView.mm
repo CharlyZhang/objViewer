@@ -228,6 +228,12 @@
     [self drawFrame];
 }
 
+- (void) moveWithX:(float)x Y:(float)y Z:(float)z model:(NSInteger)idx
+{
+    app3d.translate(x, y, z, idx);
+    [self drawFrame];
+}
+
 - (void) scale:(float)s
 {
     app3d.scale(s);
