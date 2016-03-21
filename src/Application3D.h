@@ -9,6 +9,8 @@
 #include "CZMat4.h"
 #include "CZObjModel.h"
 
+typedef std::vector<CZObjModel*> CZObjModelArray;
+
 class Application3D : private CZObjFileParser
 {
 public:
@@ -73,7 +75,7 @@ private:
 private:
 	CZScene scene;
 	ShaderMap shaders;
-	CZObjModel *pModel;
+    CZObjModelArray models;
 	CZMat4 projMat, rotateMat, translateMat, scaleMat;
 	int width, height;
 	CZColor modelColor;

@@ -14,13 +14,16 @@ using namespace std;
 Application3D::Application3D()
 {
 	width = height = DEFAULT_RENDER_SIZE;
-	pModel = NULL;
     documentDirectory = NULL;
 }
 
 Application3D::~Application3D()
 {
-	if (pModel) { delete pModel; pModel = NULL; }
+    for (auto i = 0; i < models.size(); i ++)
+    {
+        delete models[i];
+    }
+    models.clear();
 
 	for (map<ShaderType,CZShader*>::iterator itr = shaders.begin(); itr != shaders.end(); itr++)
 	{
@@ -93,8 +96,7 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
 		return false;
 	}
 
-	if (pModel) delete pModel;
-	pModel = new CZObjModel;
+	CZObjModel *pModel = new CZObjModel;
 
     bool success = false;
     string strFileName(filename);
@@ -114,6 +116,8 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
             pModel->saveAsBinary(tempFileName);
 	}
 
+    models.push_back(pModel);
+    
 	reset();
 
 	CZCheckGLError();
@@ -195,7 +199,10 @@ void Application3D::frame()
 		scene.directionalLight.intensity.z);
 	CZCheckGLError();
 
-	if(pModel)	pModel->draw(pShader);
+    for (auto i = 0; i < models.size(); i++) {
+        CZObjModel *pModel = models[i];
+        pModel->draw(pShader);
+    }
 	CZCheckGLError();
 
 	pShader->end();
