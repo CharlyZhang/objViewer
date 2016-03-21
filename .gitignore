@@ -13,3 +13,9 @@ ios/objViewer/objViewer.xcodeproj/xcuserdata
 android/app/build
 android/.gradle/2.8/taskArtifacts
 
+android/app/src/main/obj
+android/app/src/main/libs
+android/app/build
+android/.gradle
+android/.idea
+ios

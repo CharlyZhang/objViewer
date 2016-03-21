@@ -29,6 +29,8 @@ public:
 
 #if	!defined(__APPLE__)	&& !defined(_WIN32)
 	bool createShaders(const char* vertFile, const char* fragFile);
+	void setImageLoader(const char * cls, const char * method);
+	void setModelLoadCallBack(const char * cls, const char *method);
 #endif
     
     // document directory
