@@ -62,6 +62,9 @@ private:
 
 	void parseLine(std::ifstream& ifs, const std::string& ele_id) override;
 	void parseEyePosition(std::ifstream& ifs);
+    void parseCameraFov(std::ifstream& ifs);
+    void parseCameraNearPlane(std::ifstream& ifs);
+    void parseCameraFarPlane(std::ifstream& ifs);
 	void parsePointLight(std::ifstream& ifs);
 	void parseDirectionalLight(std::ifstream& ifs);
 	void parseBackgroundColor(std::ifstream& ifs);

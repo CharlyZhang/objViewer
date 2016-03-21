@@ -21,12 +21,14 @@ varying vec3 fragNormal;
 #endif
 
 uniform mat4 mvpMat;
+uniform mat4 modelMat;
 
 void main() {
     // Pass some variables to the fragment shader
     fragTexCoord = vertTexCoord;
+    
     fragNormal = vertNormal;
-    fragVert = vert;
+    fragVert = (modelMat * vec4(vert,1)).xyz;
 
 	gl_Position = mvpMat * vec4(vert, 1);
 }

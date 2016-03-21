@@ -18,6 +18,10 @@ void CZMaterialLib::parseLine(ifstream& ifs, const string& ele_id)
 	else if ("Ns" == ele_id) {	//shininess
 		ifs >> m_pCur->Ns;
 	}
+    else if ("Ke" == ele_id) {	//ambient color
+        ifs >> m_pCur->Ke[0] >> m_pCur->Ke[1] >> m_pCur->Ke[2];
+        ifs.clear();
+    }
 	else if ("Ka" == ele_id) {	//ambient color
 		ifs >> m_pCur->Ka[0] >> m_pCur->Ka[1] >> m_pCur->Ka[2];
 		ifs.clear();
@@ -35,9 +39,25 @@ void CZMaterialLib::parseLine(ifstream& ifs, const string& ele_id)
 		ifs >> texImgName;//纹理图相对路径（以该mtl文件所在目录为根）
 
 		texImgPath = curDirPath + "/" + texImgName;//转换到相对于程序根目录的相对路径
-		bool success = m_pCur->loadTexture(texImgPath.c_str());
-		if(success)	LOG_INFO(" texture(%s) loaded successfully\n",texImgName.c_str());
-	}
+		CZImage *image = CZLoadTexture(texImgPath);
+		if(image)
+        {
+            LOG_INFO(" texture(%s) loaded successfully\n",texImgName.c_str());
+            m_pCur -> setTextureImage(image);
+        }
+    }
+//    else if ("map_Ka" == ele_id) {
+//        string texImgName,texImgPath;
+//        ifs >> texImgName;//纹理图相对路径（以该mtl文件所在目录为根）
+//        
+//        texImgPath = curDirPath + "/" + texImgName;//转换到相对于程序根目录的相对路径
+//        CZImage *image = CZLoadTexture(texImgPath);
+//        if(image)
+//        {
+//            LOG_INFO(" texture(%s) loaded successfully\n",texImgName.c_str());
+//            m_pCur -> setTextureImage(image);
+//        }
+//    }
 	else
 		skipLine(ifs);
 }
@@ -51,6 +71,12 @@ CZMaterial* CZMaterialLib::get(string &name)
 const map<std::string, CZMaterial*>& CZMaterialLib::getAll()
 {
 	return m_materials;
+}
+
+bool CZMaterialLib::setMaterial(std::string &mtlName, CZMaterial *pMaterial)
+{
+    m_materials[mtlName] = pMaterial;
+    return true;
 }
 
 CZMaterialLib::~CZMaterialLib()

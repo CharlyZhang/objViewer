@@ -27,7 +27,7 @@ Application3D::~Application3D()
 		delete itr->second;
 	}
 	shaders.clear();
-    if(documentDirectory)   delete documentDirectory;
+    if(documentDirectory)   delete [] documentDirectory;
 }
 
 bool Application3D::init(const char* sceneFilename /* = NULL */ )
@@ -55,8 +55,8 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 	glEnable(GL_DEPTH_TEST);
 # endif
 
-    glCullFace(GL_BACK);                            ///< cull back face
-    glEnable(GL_CULL_FACE);
+//    glCullFace(GL_BACK);                            ///< cull back face
+//    glEnable(GL_CULL_FACE);
     
 	CZCheckGLError();
 
@@ -67,6 +67,8 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 	if(!load(sceneFilename))
 	{
 		scene.eyePosition = CZPoint3D(0, 0, 95);
+        scene.cameraNearPlane = 0.5f;
+        scene.camearFarPlane = 500.f;
 		scene.light.position = CZPoint3D(0, 0, -120);
 		scene.light.intensity = CZPoint3D(1, 1, 1);
 		scene.ambientLight.intensity = CZPoint3D(0.2,0.2,0.2);
@@ -127,14 +129,15 @@ bool Application3D::setRenderBufferSize(int w, int h)
 #if !defined(__APPLE__)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60.0, (GLfloat)width/(GLfloat)height, 0.5f, 500.0f);
+	gluPerspective(scene.cameraFov,(GLfloat)width/(GLfloat)height, scene.cameraNearPlane, scene.camearFarPlane);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 # endif
     
-    projMat.SetPerspective(60.0,(GLfloat)width/(GLfloat)height, 0.5f, 500.0f);
+//    projMat.SetPerspective(60.0,(GLfloat)width/(GLfloat)height, 0.5f, 500.0f);
+    projMat.SetPerspective(scene.cameraFov,(GLfloat)width/(GLfloat)height, scene.cameraNearPlane, scene.camearFarPlane);
     
 	return true;
 }
@@ -154,10 +157,11 @@ void Application3D::frame()
 	gluLookAt(scene.eyePosition.x,scene.eyePosition.y,scene.eyePosition.z, 0,0,0,0,1,0);
 #endif
     
-	CZMat4 mvpMat,modelMat;
+	CZMat4 mvpMat,modelMat, modelInverseTransposeMat;
 	modelMat = translateMat * scaleMat * rotateMat;
 	mvpMat.SetLookAt(scene.eyePosition.x, scene.eyePosition.y, scene.eyePosition.z, 0, 0, 0, 0, 1, 0);
 	mvpMat = projMat * mvpMat * modelMat;
+    modelInverseTransposeMat = modelMat.GetInverseTranspose();
 
 	/// »æÖÆ
 	CZShader *pShader = getShader(kDirectionalLightShading);
@@ -168,19 +172,23 @@ void Application3D::frame()
 		return;
 	}
 	pShader->begin();
+    CZCheckGLError();
     
 	// common uniforms
 	glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, mvpMat);
-	glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
+    glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
+    glUniformMatrix4fv(pShader->getUniformLocation("modelInverseTransposeMat"), 1, GL_FALSE, modelInverseTransposeMat);
+    
 	glUniform3f(pShader->getUniformLocation("ambientLight.intensities"),
 		scene.ambientLight.intensity.x,
 		scene.ambientLight.intensity.y,
 		scene.ambientLight.intensity.z);
+    
 	glUniform3f(pShader->getUniformLocation("directionalLight.direction"),
-		scene.directionalLight.direction.x,
-		scene.directionalLight.direction.y, 
-		scene.directionalLight.direction.z);
-
+                scene.directionalLight.direction.x,scene.directionalLight.direction.y,scene.directionalLight.direction.z);
+    
+    glUniform3f(pShader->getUniformLocation("eyePosition"),scene.eyePosition.x,scene.eyePosition.y,scene.eyePosition.z);
+    
 	glUniform3f(pShader->getUniformLocation("directionalLight.intensities"),
 		scene.directionalLight.intensity.x,
 		scene.directionalLight.intensity.y, 
@@ -274,6 +282,7 @@ void Application3D::scale(float s)
 // custom config
 void Application3D::setBackgroundColor(float r, float g, float b, float a)
 {
+    scene.bgColor = CZColor(r,g,b,a);
 	glClearColor(r, g, b, a);
 }
 void Application3D::setModelColor(float r, float g, float b, float a)
@@ -315,15 +324,19 @@ bool Application3D::loadShaders()
 	attributes.push_back("vertTexCoord");
 	vector<string> uniforms;
 	uniforms.push_back("mvpMat");
-	uniforms.push_back("modelMat");
-	uniforms.push_back("ambientLight.direction");
+    uniforms.push_back("modelMat");
+    uniforms.push_back("modelInverseTransposeMat");
 	uniforms.push_back("ambientLight.intensities");
 	uniforms.push_back("directionalLight.direction");
 	uniforms.push_back("directionalLight.intensities");
+    uniforms.push_back("eyePosition");
 	uniforms.push_back("tex");
 	uniforms.push_back("hasTex");
 	uniforms.push_back("material.kd");
 	uniforms.push_back("material.ka");
+    uniforms.push_back("material.ke");
+    uniforms.push_back("material.ks");
+    uniforms.push_back("material.Ns");
 
 	CZShader *pShader = new CZShader("standard","directionalLight",attributes,uniforms);
 	shaders.insert(make_pair(kDirectionalLightShading,pShader));
@@ -346,6 +359,12 @@ void Application3D::parseLine(ifstream& ifs, const string& ele_id)
     int r,g,b;
 	if ("camera_position" == ele_id)
 		parseEyePosition(ifs);
+    else if ("camera_fov" == ele_id)
+        parseCameraFov(ifs);
+    else if ("camera_near_clip" == ele_id)
+        parseCameraNearPlane(ifs);
+    else if ("camera_far_clip" == ele_id)
+        parseCameraFarPlane(ifs);
 
 	else if ("pl" == ele_id)
 		parsePointLight(ifs);
@@ -400,6 +419,21 @@ void Application3D::parseEyePosition(ifstream& ifs)
     float x, y, z;
     ifs >> x >> y >> z;
     scene.eyePosition = CZPoint3D(x,z,-y);
+}
+
+void Application3D::parseCameraFov(ifstream& ifs)
+{
+    ifs >> scene.cameraFov;
+}
+
+void Application3D::parseCameraNearPlane(ifstream& ifs)
+{
+    ifs >> scene.cameraNearPlane;
+}
+
+void Application3D::parseCameraFarPlane(ifstream& ifs)
+{
+    ifs >> scene.camearFarPlane;
 }
 
 void Application3D::parsePointLight(ifstream& ifs)

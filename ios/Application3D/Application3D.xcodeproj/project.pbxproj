@@ -6,14 +6,31 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		2D8160F51BF5D7FE00E65E09 /* create_lib */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 2D8160F81BF5D7FF00E65E09 /* Build configuration list for PBXAggregateTarget "create_lib" */;
+			buildPhases = (
+				2D8160F91BF5D80D00E65E09 /* ShellScript */,
+			);
+			dependencies = (
+				2D8160FB1BF5D91A00E65E09 /* PBXTargetDependency */,
+			);
+			name = create_lib;
+			productName = create_lib;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		2D7673491BE7527800783623 /* libApplication3D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D76733D1BE7527800783623 /* libApplication3D.a */; };
 		2D7673771BE752AD00783623 /* Application3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673581BE752AC00783623 /* Application3D.cpp */; };
 		2D7673791BE752AD00783623 /* CZMat4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D76735F1BE752AD00783623 /* CZMat4.cpp */; };
-		2D76737B1BE752AD00783623 /* CZMaterial.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673631BE752AD00783623 /* CZMaterial.mm */; };
+		2D76737B1BE752AD00783623 /* CZMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673631BE752AD00783623 /* CZMaterial.cpp */; };
 		2D76737D1BE752AD00783623 /* CZObjModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673661BE752AD00783623 /* CZObjModel.cpp */; };
-		2D7673811BE752AD00783623 /* CZUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D76736D1BE752AD00783623 /* CZUtil.cpp */; };
+		2D7673811BE752AD00783623 /* CZUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2D76736D1BE752AD00783623 /* CZUtil.mm */; };
 		2D7673891BE7709400783623 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7673881BE7709400783623 /* OpenGLES.framework */; };
+		2DC2F2471C2FB4B100FAABF3 /* ChangeLog.md in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2F2461C2FB4B100FAABF3 /* ChangeLog.md */; };
+		2DC2F24E1C2FB6DC00FAABF3 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2F24D1C2FB6DC00FAABF3 /* UIImage+Resize.m */; };
 		2DE8F1431BF2E87C004FC906 /* CZShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8F1421BF2E87C004FC906 /* CZShader.cpp */; };
 		2DE8F14A1BF2E908004FC906 /* CZGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8F1441BF2E908004FC906 /* CZGeometry.cpp */; };
 		2DE8F14B1BF2E908004FC906 /* CZMaterialLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8F1461BF2E908004FC906 /* CZMaterialLib.cpp */; };
@@ -22,6 +39,13 @@
 
 /* Begin PBXContainerItemProxy section */
 		2D76734A1BE7527800783623 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D7673351BE7527800783623 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2D76733C1BE7527800783623;
+			remoteInfo = Application3D;
+		};
+		2D8160FA1BF5D91A00E65E09 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2D7673351BE7527800783623 /* Project object */;
 			proxyType = 1;
@@ -54,13 +78,16 @@
 		2D76735F1BE752AD00783623 /* CZMat4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZMat4.cpp; path = ../../../src/CZMat4.cpp; sourceTree = "<group>"; };
 		2D7673601BE752AD00783623 /* CZMat4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZMat4.h; path = ../../../src/CZMat4.h; sourceTree = "<group>"; };
 		2D7673621BE752AD00783623 /* CZMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZMaterial.h; path = ../../../src/CZMaterial.h; sourceTree = "<group>"; };
-		2D7673631BE752AD00783623 /* CZMaterial.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CZMaterial.mm; path = ../../../src/CZMaterial.mm; sourceTree = "<group>"; };
+		2D7673631BE752AD00783623 /* CZMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZMaterial.cpp; path = ../../../src/CZMaterial.cpp; sourceTree = "<group>"; };
 		2D7673661BE752AD00783623 /* CZObjModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZObjModel.cpp; path = ../../../src/CZObjModel.cpp; sourceTree = "<group>"; };
 		2D7673671BE752AD00783623 /* CZObjModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZObjModel.h; path = ../../../src/CZObjModel.h; sourceTree = "<group>"; };
 		2D7673691BE752AD00783623 /* CZShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZShader.h; path = ../../../src/CZShader.h; sourceTree = "<group>"; };
-		2D76736D1BE752AD00783623 /* CZUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZUtil.cpp; path = ../../../src/CZUtil.cpp; sourceTree = "<group>"; };
+		2D76736D1BE752AD00783623 /* CZUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CZUtil.mm; path = ../../../src/CZUtil.mm; sourceTree = "<group>"; };
 		2D76736E1BE752AD00783623 /* CZVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZVector.h; path = ../../../src/CZVector.h; sourceTree = "<group>"; };
 		2D7673881BE7709400783623 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		2DC2F2461C2FB4B100FAABF3 /* ChangeLog.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ChangeLog.md; path = ../ChangeLog.md; sourceTree = "<group>"; };
+		2DC2F24C1C2FB6DC00FAABF3 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Resize.h"; path = "../../../src/UIImage+Resize.h"; sourceTree = "<group>"; };
+		2DC2F24D1C2FB6DC00FAABF3 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Resize.m"; path = "../../../src/UIImage+Resize.m"; sourceTree = "<group>"; };
 		2DE8F1421BF2E87C004FC906 /* CZShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZShader.cpp; path = ../../../src/CZShader.cpp; sourceTree = "<group>"; };
 		2DE8F1441BF2E908004FC906 /* CZGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZGeometry.cpp; path = ../../../src/CZGeometry.cpp; sourceTree = "<group>"; };
 		2DE8F1451BF2E908004FC906 /* CZGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZGeometry.h; path = ../../../src/CZGeometry.h; sourceTree = "<group>"; };
@@ -93,6 +120,7 @@
 		2D7673341BE7527800783623 = {
 			isa = PBXGroup;
 			children = (
+				2DC2F2461C2FB4B100FAABF3 /* ChangeLog.md */,
 				2D7673881BE7709400783623 /* OpenGLES.framework */,
 				2D76733F1BE7527800783623 /* Application3D */,
 				2D76734C1BE7527800783623 /* Application3DTests */,
@@ -112,6 +140,8 @@
 		2D76733F1BE7527800783623 /* Application3D */ = {
 			isa = PBXGroup;
 			children = (
+				2DC2F24C1C2FB6DC00FAABF3 /* UIImage+Resize.h */,
+				2DC2F24D1C2FB6DC00FAABF3 /* UIImage+Resize.m */,
 				2D7673581BE752AC00783623 /* Application3D.cpp */,
 				2D7673591BE752AC00783623 /* Application3D.h */,
 				2D76735A1BE752AC00783623 /* CZBasic.h */,
@@ -126,12 +156,12 @@
 				2D76735F1BE752AD00783623 /* CZMat4.cpp */,
 				2D7673601BE752AD00783623 /* CZMat4.h */,
 				2D7673621BE752AD00783623 /* CZMaterial.h */,
-				2D7673631BE752AD00783623 /* CZMaterial.mm */,
+				2D7673631BE752AD00783623 /* CZMaterial.cpp */,
 				2D7673661BE752AD00783623 /* CZObjModel.cpp */,
 				2D7673671BE752AD00783623 /* CZObjModel.h */,
 				2D7673691BE752AD00783623 /* CZShader.h */,
 				2DE8F1421BF2E87C004FC906 /* CZShader.cpp */,
-				2D76736D1BE752AD00783623 /* CZUtil.cpp */,
+				2D76736D1BE752AD00783623 /* CZUtil.mm */,
 				2D76736E1BE752AD00783623 /* CZVector.h */,
 			);
 			path = Application3D;
@@ -206,6 +236,9 @@
 					2D7673471BE7527800783623 = {
 						CreatedOnToolsVersion = 6.4;
 					};
+					2D8160F51BF5D7FE00E65E09 = {
+						CreatedOnToolsVersion = 6.4;
+					};
 				};
 			};
 			buildConfigurationList = 2D7673381BE7527800783623 /* Build configuration list for PBXProject "Application3D" */;
@@ -222,6 +255,7 @@
 			targets = (
 				2D76733C1BE7527800783623 /* Application3D */,
 				2D7673471BE7527800783623 /* Application3DTests */,
+				2D8160F51BF5D7FE00E65E09 /* create_lib */,
 			);
 		};
 /* End PBXProject section */
@@ -236,20 +270,38 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2D8160F91BF5D80D00E65E09 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Sets the target folders and the final framework product.\nFMK_NAME=\"libApplicaiton3D\"\n# Install dir will be the final output to the framework.\n# The following line create it in the root folder of the current project.\nINSTALL_DIR=${SRCROOT}/Products\n# Working dir will be deleted after the framework creation.\nWRK_DIR=build\nDEVICE_DIR=${WRK_DIR}/Release-iphoneos\nSIMULATOR_DIR=${WRK_DIR}/Release-iphonesimulator\n# -configuration ${CONFIGURATION}\n# Clean and Building both architectures.\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphoneos clean build\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphonesimulator clean build\npwd\n# Cleaning the oldest.\nif [ -d \"${INSTALL_DIR}\" ]\nthen\nrm -rf \"${INSTALL_DIR}\"\nfi\nmkdir -p \"${INSTALL_DIR}/include\"\ncp -R \"${SRC_ROOT}/../../src/*.h\" \"${INSTALL_DIR}/include/\"\nmkdir -p \"${INSTALL_DIR}/glsl\"\ncp -R \"${SRC_ROOT}/../../src/glsl/\" \"${INSTALL_DIR}/glsl/\"\n# Uses the Lipo Tool to merge both binary files (i386 + armv6/armv7) into one Universal final product.\nlipo -create \"${DEVICE_DIR}/${FMK_NAME}\" \"${SIMULATOR_DIR}/${FMK_NAME}\" -output \"${INSTALL_DIR}/${FMK_NAME}\"\nrm -r \"${WRK_DIR}\"\n\n#ditto \"${BUILT_PRODUCTS_DIR}/${FMK_NAME}.bundle\" \\\n# \"${SRCROOT}/Products/${FMK_NAME}.bundle\"\n\nopen \"${INSTALL_DIR}\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		2D7673391BE7527800783623 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				2DE8F14A1BF2E908004FC906 /* CZGeometry.cpp in Sources */,
+				2DC2F2471C2FB4B100FAABF3 /* ChangeLog.md in Sources */,
 				2DE8F1431BF2E87C004FC906 /* CZShader.cpp in Sources */,
 				2DE8F14B1BF2E908004FC906 /* CZMaterialLib.cpp in Sources */,
 				2D7673791BE752AD00783623 /* CZMat4.cpp in Sources */,
 				2D7673771BE752AD00783623 /* Application3D.cpp in Sources */,
 				2D76737D1BE752AD00783623 /* CZObjModel.cpp in Sources */,
 				2DE8F14C1BF2E908004FC906 /* CZObjFileParser.cpp in Sources */,
-				2D76737B1BE752AD00783623 /* CZMaterial.mm in Sources */,
-				2D7673811BE752AD00783623 /* CZUtil.cpp in Sources */,
+				2DC2F24E1C2FB6DC00FAABF3 /* UIImage+Resize.m in Sources */,
+				2D76737B1BE752AD00783623 /* CZMaterial.cpp in Sources */,
+				2D7673811BE752AD00783623 /* CZUtil.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +319,11 @@
 			isa = PBXTargetDependency;
 			target = 2D76733C1BE7527800783623 /* Application3D */;
 			targetProxy = 2D76734A1BE7527800783623 /* PBXContainerItemProxy */;
+		};
+		2D8160FB1BF5D91A00E65E09 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2D76733C1BE7527800783623 /* Application3D */;
+			targetProxy = 2D8160FA1BF5D91A00E65E09 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -309,6 +366,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -344,6 +402,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -402,6 +461,20 @@
 			};
 			name = Release;
 		};
+		2D8160F61BF5D7FF00E65E09 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2D8160F71BF5D7FF00E65E09 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -428,6 +501,15 @@
 			buildConfigurations = (
 				2D7673551BE7527800783623 /* Debug */,
 				2D7673561BE7527800783623 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D8160F81BF5D7FF00E65E09 /* Build configuration list for PBXAggregateTarget "create_lib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D8160F61BF5D7FF00E65E09 /* Debug */,
+				2D8160F71BF5D7FF00E65E09 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

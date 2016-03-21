@@ -16,7 +16,7 @@ public:
 		vn.reserve(3);
 	}
 
-	~CZFace() {	v.clear(); vt.clear(); vn.clear();}
+    ~CZFace() {	std::vector<int> temp; v.clear(); vt.clear(); vn.clear(); v.swap(temp); vt.swap(temp); vn.swap(temp); }
 
 	void addVertTexNorm(int vi, int ti, int ni)
 	{
@@ -48,7 +48,7 @@ public:
 	/// unpack the raw data
     long unpackRawData(const std::vector<CZVector3D<float> > &posRawVector,	\
                        const std::vector<CZVector3D<float> > &normRawVector,	\
-                       const std::vector<CZVector3D<float> > &texCoordRawVector, \
+                       const std::vector<CZVector2D<float> > &texCoordRawVector, \
                        std::vector<CZVector3D<float> > &outPositions, \
                        std::vector<CZVector3D<float> > &outNormals, \
                        std::vector<CZVector2D<float> > &outTexcoords);

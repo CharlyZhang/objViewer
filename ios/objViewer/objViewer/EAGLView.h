@@ -48,8 +48,10 @@
 - (void) scale:(float)s;
 
 - (void) drawFrame;
+- (void) reset;
+- (BOOL) loadModel:(NSString*)path;
+
 // for debug
-- (BOOL) loadModel:(NSUInteger) modelIdx;
 - (void) setCameraPositionWithX:(float)x Y:(float)y Z:(float) z;
 - (void) setLigthDirectionWithX:(float)x Y:(float)y Z:(float) z;
 - (void) setAmbientColorWithX:(unsigned char)x Y:(unsigned char)y Z:(unsigned char) z;
