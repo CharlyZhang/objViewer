@@ -199,7 +199,7 @@ void Application3D::frame()
 	CZCheckGLError();
 
     for (auto i = 0; i < models.size(); i++) {
-        modelMat = translateMats[i] * scaleMats[i] * rotateMats[i];
+        modelMat = entireTranslageMat * scaleMats[i] * rotateMats[i] * translateMats[i];
         glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, projMat * viewMat * modelMat);
         glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
         glUniformMatrix4fv(pShader->getUniformLocation("modelInverseTransposeMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
@@ -302,10 +302,11 @@ void Application3D::translate(float deltaX, float deltaY, float deltaZ /*= 0.0f*
 	tempMat.SetTranslation(-deltaX, -deltaY, deltaZ);
     if (modelIdx < 0)
     {
-        for (auto i = 0; i < models.size(); i++)
-        {
-            translateMats[i] = tempMat * translateMats[i];
-        }
+//        for (auto i = 0; i < models.size(); i++)
+//        {
+//            translateMats[i] = tempMat * translateMats[i];
+//        }
+        entireTranslageMat = tempMat * entireTranslageMat;
     }
     else if(modelIdx < models.size())
     {

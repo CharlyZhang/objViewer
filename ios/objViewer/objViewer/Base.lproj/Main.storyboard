@@ -82,7 +82,7 @@
                                     <action selector="adjustTranslate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oPQ-MO-qG7"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZkE-Rz-RLu">
+                            <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZkE-Rz-RLu">
                                 <rect key="frame" x="59" y="138" width="30" height="30"/>
                                 <state key="normal" title="＋"/>
                                 <connections>

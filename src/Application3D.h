@@ -78,7 +78,7 @@ private:
 	ShaderMap shaders;
     CZObjModelArray models;
     CZMat4Array rotateMats, translateMats, scaleMats;
-	CZMat4 projMat;
+	CZMat4 projMat,entireTranslageMat;
     
 	int width, height;
 	CZColor modelColor;
