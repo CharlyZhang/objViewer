@@ -15,6 +15,9 @@ Application3D::Application3D()
 {
 	width = height = DEFAULT_RENDER_SIZE;
     documentDirectory = NULL;
+    backgroundImage = NULL;
+    backgroundTexId = -1;
+    vao = -1;
 }
 
 Application3D::~Application3D()
@@ -34,6 +37,12 @@ Application3D::~Application3D()
 	}
 	shaders.clear();
     if(documentDirectory)   delete [] documentDirectory;
+    if (backgroundImage) {
+        delete backgroundImage;
+        backgroundImage = NULL;
+    }
+    if (backgroundTexId != -1) glDeleteTextures(1, &backgroundTexId);
+    if (vao != -1) GL_DEL_VERTEXARRAY(1, &vao);
 }
 
 bool Application3D::init(const char* sceneFilename /* = NULL */ )
@@ -167,6 +176,11 @@ void Application3D::frame()
 	gluLookAt(scene.eyePosition.x,scene.eyePosition.y,scene.eyePosition.z, 0,0,0,0,1,0);
 #endif
     
+    /// blit background image
+//    glEnable(GL_BLEND);
+    if (backgroundImage && !blitBackgroundImage()) return;
+    
+    glClear(GL_DEPTH_BUFFER_BIT);
 	CZMat4 viewMat,modelMat;
 	viewMat.SetLookAt(scene.eyePosition.x, scene.eyePosition.y, scene.eyePosition.z, 0, 0, 0, 0, 1, 0);
 
@@ -337,6 +351,69 @@ void Application3D::setBackgroundColor(float r, float g, float b, float a)
     scene.bgColor = CZColor(r,g,b,a);
 	glClearColor(r, g, b, a);
 }
+void Application3D::setBackgroundImage(CZImage *img)
+{
+    if(img == NULL || img->data == NULL)
+    {
+        LOG_WARN("img is illegal\n");
+        return ;
+    }
+    
+    // clear the old
+    if (backgroundImage) delete backgroundImage;
+    if (backgroundTexId != -1) glDeleteTextures(1, &backgroundTexId);
+    
+    backgroundImage = img;
+    
+    //generate an OpenGL texture ID for this texture
+    glGenTextures(1, &backgroundTexId);
+    //bind to the new texture ID
+    glBindTexture(GL_TEXTURE_2D, backgroundTexId);
+    //store the texture data for OpenGL use
+    if (img->colorSpace == CZImage::RGBA) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)img->width , (GLsizei)img->height,
+                     0, GL_RGBA, GL_UNSIGNED_BYTE, img->data);
+    }
+    else {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, (GLsizei)img->width , (GLsizei)img->height,
+                     0, GL_LUMINANCE, GL_UNSIGNED_BYTE, img->data);
+    }
+    
+    //	gluBuild2DMipmaps(GL_TEXTURE_2D, components, width, height, texFormat, GL_UNSIGNED_BYTE, bits);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    CZCheckGLError();
+    
+    /// build vao
+    const GLfloat vertices[] =
+    {
+        0.0, 0.0, 0.0, 0.0,
+        (GLfloat)img->width, 0.0, 1.0, 0.0,
+        0.0, (GLfloat)img->height, 0.0, 1.0,
+        (GLfloat)img->width, (GLfloat)img->height, 1.0, 1.0,
+    };
+    
+    if (vao != -1) GL_DEL_VERTEXARRAY(1, &vao);
+    GL_GEN_VERTEXARRAY(1, &vao);
+    GL_BIND_VERTEXARRAY(vao);
+    // create, bind, and populate VBO
+    glGenBuffers(1, &vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vao);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 16, vertices, GL_STATIC_DRAW);
+    
+    // set up attrib pointers
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 4, (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 4, (void*)8);
+    glEnableVertexAttribArray(1);
+    
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+    
+    GL_BIND_VERTEXARRAY(0);
+    CZCheckGLError();
+}
 void Application3D::setModelColor(float r, float g, float b, float a)
 {
 	modelColor = CZColor(r, g, b, a);
@@ -393,6 +470,18 @@ bool Application3D::loadShaders()
 	CZShader *pShader = new CZShader("standard","directionalLight",attributes,uniforms);
 	shaders.insert(make_pair(kDirectionalLightShading,pShader));
 	
+    //
+    attributes.clear();
+    attributes.push_back("inPosition");
+    attributes.push_back("inTexcoord");
+    uniforms.clear();
+    uniforms.push_back("mvpMat");
+    uniforms.push_back("texture");
+    uniforms.push_back("opacity");
+    
+    pShader = new CZShader("blit","blit",attributes,uniforms);
+    shaders.insert(make_pair(kBlitImage,pShader));
+    
 	CZCheckGLError();
 
 	return true;
@@ -533,3 +622,46 @@ void Application3D::parseMainColor(ifstream& ifs)
 		>> scene.mColor.b
 		>> scene.mColor.a;
 }
+
+bool Application3D::blitBackgroundImage()
+{
+    CZShader *pShader = getShader(kBlitImage);
+    
+    if (pShader == NULL)
+    {
+        LOG_ERROR("there's no shader for blitting background image\n");
+        return false;
+    }
+    
+    CZMat4 mvpMat;
+    mvpMat.SetOrtho(0,width,0,height,-1.0f,1.0f);
+    
+    pShader->begin();
+    
+    glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"),1,GL_FALSE,mvpMat);
+    glUniform1i(pShader->getUniformLocation("texture"), (GLuint) 0);
+    glUniform1f(pShader->getUniformLocation("opacity"), 1.0f); // fully opaque
+    
+    glActiveTexture(GL_TEXTURE0);
+    // Bind the texture to be used
+    glBindTexture(GL_TEXTURE_2D, backgroundTexId);
+    
+    // clear the buffer to get a transparent background
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT );
+    
+    // set up premultiplied normal blend
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    
+    GL_BIND_VERTEXARRAY(vao);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    
+    GL_BIND_VERTEXARRAY(0);
+    
+    pShader->end();
+  
+    CZCheckGLError();
+    
+    return true;
+}
+

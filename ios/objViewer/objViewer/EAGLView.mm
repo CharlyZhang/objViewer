@@ -11,6 +11,7 @@
 #import <OpenGLES/EAGLDrawable.h>
 
 #import "EAGLView.h"
+#include "CZDefine.h"
 #include "Application3D.h"
 
 #define USE_DEPTH_BUFFER 1
@@ -68,6 +69,12 @@
     app3d.init([configPath UTF8String]);
     app3d.setDocDirectory([docPath UTF8String]);
     app3d.setBackgroundColor(1, 1, 1, 1);
+    
+    // background image
+    NSString *backImgPath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"background.jpg"];
+    std::string cstrImagePath = std::string([backImgPath UTF8String]);
+    CZImage *backgroundImage = CZLoadTexture(cstrImagePath);
+    app3d.setBackgroundImage(backgroundImage);
     
     modelLoaded = NO;
     

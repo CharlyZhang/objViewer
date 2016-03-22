@@ -131,8 +131,8 @@
     modelPath = [modelPath arrayByAddingObject:model16];
     
 #elif MULTI_MODELS_FROM_BUNDLE
-    modelName = [modelName arrayByAddingObject:@"CXMX"];
-    NSString *models = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/CXMX/"];
+    modelName = [modelName arrayByAddingObject:@"MX"];
+    NSString *models = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/MX/"];
     modelPath = [modelPath arrayByAddingObject:models];
 #else
     

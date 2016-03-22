@@ -17,7 +17,8 @@ class Application3D : private CZObjFileParser
 public:
 	// define type
 	typedef enum _ShaderType {
-		kDirectionalLightShading		///< 平行光光照
+		kDirectionalLightShading,		///< 平行光光照
+        kBlitImage                      ///< blit image to the renderbuffer
 	} ShaderType;
 	typedef std::map<ShaderType,CZShader*> ShaderMap;
 
@@ -45,6 +46,7 @@ public:
 
 	// custom config
 	void setBackgroundColor(float r, float g, float b, float a);
+    void setBackgroundImage(CZImage *img);
 	void setModelColor(float r, float g, float b, float a);
     
     // camera
@@ -72,6 +74,8 @@ private:
 	void parseDirectionalLight(std::ifstream& ifs);
 	void parseBackgroundColor(std::ifstream& ifs);
 	void parseMainColor(std::ifstream& ifs);
+    
+    bool blitBackgroundImage();
 
 private:
 	CZScene scene;
@@ -82,7 +86,8 @@ private:
     
 	int width, height;
 	CZColor modelColor;
-    
+    CZImage *backgroundImage;
+    GLuint backgroundTexId,vao;;
     char *documentDirectory;                          ///< to store the binary data of model
 };
 
