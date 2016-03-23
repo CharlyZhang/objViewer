@@ -140,6 +140,20 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
 	return true;
 }
 
+bool Application3D::clearObjModel()
+{
+    for (auto i = 0; i < models.size(); i ++)
+    {
+        delete models[i];
+    }
+    models.clear();
+    translateMats.clear();
+    scaleMats.clear();
+    rotateMats.clear();
+    
+    return true;
+}
+
 bool Application3D::setRenderBufferSize(int w, int h)
 {
 	width = w;	height = h;

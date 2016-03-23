@@ -27,6 +27,7 @@ public:
 
 	bool init(const char* sceneFilename = NULL);
 	bool loadObjModel(const char* filename, bool quickLoad = true);
+    bool clearObjModel();
 	bool setRenderBufferSize(int w, int h);
 	void frame();
 	void reset();
