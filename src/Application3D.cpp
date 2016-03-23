@@ -158,6 +158,36 @@ bool Application3D::setRenderBufferSize(int w, int h)
 //    projMat.SetPerspective(60.0,(GLfloat)width/(GLfloat)height, 0.5f, 500.0f);
     projMat.SetPerspective(scene.cameraFov,(GLfloat)width/(GLfloat)height, scene.cameraNearPlane, scene.camearFarPlane);
     
+    if (backgroundImage) {
+        /// build vao
+        const GLfloat vertices[] =
+        {
+            0.0, 0.0, 0.0, 0.0,
+            (GLfloat)width, 0.0, 1.0, 0.0,
+            0.0, (GLfloat)height, 0.0, 1.0,
+            (GLfloat)width, (GLfloat)height, 1.0, 1.0,
+        };
+        
+        if (vao != -1) GL_DEL_VERTEXARRAY(1, &vao);
+        GL_GEN_VERTEXARRAY(1, &vao);
+        GL_BIND_VERTEXARRAY(vao);
+        // create, bind, and populate VBO
+        glGenBuffers(1, &vao);
+        glBindBuffer(GL_ARRAY_BUFFER, vao);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 16, vertices, GL_STATIC_DRAW);
+        
+        // set up attrib pointers
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 4, (void*)0);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 4, (void*)8);
+        glEnableVertexAttribArray(1);
+        
+        glBindBuffer(GL_ARRAY_BUFFER,0);
+        
+        GL_BIND_VERTEXARRAY(0);
+        CZCheckGLError();
+    }
+
 	return true;
 }
 
@@ -385,35 +415,8 @@ void Application3D::setBackgroundImage(CZImage *img)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     CZCheckGLError();
-    
-    /// build vao
-    const GLfloat vertices[] =
-    {
-        0.0, 0.0, 0.0, 0.0,
-        (GLfloat)img->width, 0.0, 1.0, 0.0,
-        0.0, (GLfloat)img->height, 0.0, 1.0,
-        (GLfloat)img->width, (GLfloat)img->height, 1.0, 1.0,
-    };
-    
-    if (vao != -1) GL_DEL_VERTEXARRAY(1, &vao);
-    GL_GEN_VERTEXARRAY(1, &vao);
-    GL_BIND_VERTEXARRAY(vao);
-    // create, bind, and populate VBO
-    glGenBuffers(1, &vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vao);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 16, vertices, GL_STATIC_DRAW);
-    
-    // set up attrib pointers
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 4, (void*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 4, (void*)8);
-    glEnableVertexAttribArray(1);
-    
-    glBindBuffer(GL_ARRAY_BUFFER,0);
-    
-    GL_BIND_VERTEXARRAY(0);
-    CZCheckGLError();
 }
+
 void Application3D::setModelColor(float r, float g, float b, float a)
 {
 	modelColor = CZColor(r, g, b, a);
