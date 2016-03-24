@@ -13,12 +13,13 @@ bool CZObjFileParser::load(const string& path)
 	}
 
 	curDirPath = path.substr(0, path.find_last_of('/'));
+    string filename = path.substr(path.find_last_of('/')+1,path.length()-path.find_last_of('/')-1);
 
     size_t fileSize = (size_t)ifs.tellg();
 	ifs.seekg(0, ios::beg);
 
 	//	explain what's going on
-	LOG_INFO("Parsing file %s  (size = %ld bytes)...\n", path.c_str(), fileSize);
+	LOG_INFO("Parsing %s  (size = %ld bytes)...\n", path.c_str(), fileSize);
 
 	// and go.
 	static size_t lastPercent = 0;
@@ -32,7 +33,7 @@ bool CZObjFileParser::load(const string& path)
 
 			if (lastPercent != percent)
 			{
-				LOG_INFO("processing %ld%%\n", percent);
+				LOG_INFO("processing \'%s\' %ld%%\n",filename.c_str(),percent);
 				lastPercent = percent;
 			}
 		}

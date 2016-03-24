@@ -5,14 +5,16 @@
 #include "CZMaterial.h"
 
 #include <map>
+typedef std::map<std::string, CZMaterial*> CZMaterialMap;
 
 /// CZMaterial library 
 class CZMaterialLib : public CZObjFileParser
 {
 public:
 	CZMaterial* get(std::string &name);
-	const std::map<std::string, CZMaterial*>& getAll();
-
+	const CZMaterialMap& getAll();
+    bool setMaterial(std::string &mtlName, CZMaterial *pMaterial);
+    
 	CZMaterialLib() {	m_pCur = NULL;	}
 	~CZMaterialLib();
 
@@ -24,7 +26,7 @@ private:
 
 	//CZMaterialLib托管这些CMaterial对象占用的内存，不要在其他地方析构它们
 	//因为有且仅有MaterialLib需要管理CMaterial对象，所以不必使用std::shared_ptr
-	std::map<std::string, CZMaterial*> m_materials;
+	CZMaterialMap m_materials;
 };
 
 #endif

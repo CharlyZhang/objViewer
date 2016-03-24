@@ -13,11 +13,13 @@ CZGeometry::CZGeometry(): aabbMin(CZVector3D<float>(FLT_MAX, FLT_MAX, FLT_MAX)),
 CZGeometry::~CZGeometry()
 {
 	faces.clear();
+    vector<CZFace> temp;
+    faces.swap(temp);
 }
 
 long CZGeometry::unpackRawData(const std::vector<CZVector3D<float> > &posRawVector,	\
             const std::vector<CZVector3D<float> > &normRawVector,	\
-            const std::vector<CZVector3D<float> > &texCoordRawVector, \
+            const std::vector<CZVector2D<float> > &texCoordRawVector, \
             std::vector<CZVector3D<float> > &outPositions, \
             std::vector<CZVector3D<float> > &outNormals, \
             std::vector<CZVector2D<float> > &outTexcoords)
@@ -32,7 +34,7 @@ long CZGeometry::unpackRawData(const std::vector<CZVector3D<float> > &posRawVect
             outPositions.push_back(posRawVector[itr->v[i]-1]);
             if (hasNormal)	outNormals.push_back(normRawVector[itr->vn[i]-1]);
             else            tempPositions.push_back(posRawVector[itr->v[i]-1]);
-            if (hasTexCoord)	outTexcoords.push_back(CZVector2D<float>(texCoordRawVector[itr->vt[i]-1].x,texCoordRawVector[itr->vt[i]-1].y));
+            if (hasTexCoord)	outTexcoords.push_back(texCoordRawVector[itr->vt[i]-1]);
             else				outTexcoords.push_back(CZVector2D<float>(0, 0));
         }
     }
@@ -42,6 +44,8 @@ long CZGeometry::unpackRawData(const std::vector<CZVector3D<float> > &posRawVect
         generateFaceNorm(tempPositions,outNormals);
         
         tempPositions.clear();
+        vector<CZVector3D<float> > temp;
+        tempPositions.swap(temp); 
     }
     
     return vertNum;

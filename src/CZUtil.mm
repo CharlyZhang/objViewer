@@ -110,41 +110,44 @@ CZImage *CZLoadTexture(const string &filename)
     FREE_IMAGE_COLOR_TYPE colorType = FreeImage_GetColorType(dib);
     
     // TO DO: inverse pixel data sequence manually
-	// TO DO: deal with FIC_RGB
-    GLint components;
-	CZImage::ColorSpace czColorSpace;
+    GLenum texFormat;	GLint internalFormat;	GLint components;
     switch (colorType)
     {
         case FIC_RGB:
             components = 3;
+            texFormat = GL_RGB;
+            internalFormat = GL_RGB;
             break;
         case FIC_RGBALPHA:
             components = 4;
-			czColorSpace = CZImage::RGBA;
+            texFormat = GL_BGRA_EXT;
+            internalFormat = GL_BGRA_EXT;
             break;
         default:
             components = 3;
+            texFormat = GL_RGB;
+            internalFormat = GL_RGB;
             LOG_WARN("the color type has not been considered\n");
             break;
     }
-   
-	CZImage *retImage = new CZImage((int)width,(int)height,czColorSpace);
-	memcpy(retImage->data,bits,width*height*components*sizeof(unsigned char));
-	/*
-	unsigned char *src = (UInt8*)&data[(height-1)*width*componentNum];
-	UInt8 *dst = retImage->data;
-	for (int i=0; i<height; i++)
-	{
-		memcpy(dst,src,width*componentNum);
-		dst += (width*componentNum);
-		src -= (width*componentNum);
-	}*/
-
-
-	//Free FreeImage's copy of the data
-	FreeImage_Unload(dib);
-
-	return retImage;
+    
+    //generate an OpenGL texture ID for this texture
+    glGenTextures(1, &gl_texId);
+    //store the texture ID mapping
+    texId = gl_texId;
+    //bind to the new texture ID
+    glBindTexture(GL_TEXTURE_2D, gl_texId);
+    //store the texture data for OpenGL use
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height,
+                 0, texFormat, GL_UNSIGNED_BYTE, bits);
+    
+    //	gluBuild2DMipmaps(GL_TEXTURE_2D, components, width, height, texFormat, GL_UNSIGNED_BYTE, bits);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    
+    //Free FreeImage's copy of the data
+    FreeImage_Unload(dib);
+    
     // TO DO: to load bmp with bpp=32
     
 #else
@@ -196,7 +199,7 @@ CZImage *CZLoadTexture(const string &filename)
             break;
     }
     
-    //数据源提供�?
+    //数据源提供耿
     CGDataProviderRef inProvider = CGImageGetDataProvider(img);
     // provider’s data.
     CFDataRef inBitmapData = CGDataProviderCopyData(inProvider);

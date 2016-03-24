@@ -19,7 +19,6 @@ varying vec3      fragVert;
 #define TEXTURE		texture2D
 #endif
 
-uniform mat4 modelMat;
 uniform sampler2D tex;
 uniform int hasTex;
 
@@ -36,33 +35,57 @@ uniform struct DirectionalLight
 
 uniform struct Material
 {
+    float Ns;
+    vec3 ke;
     vec3 ka;
     vec3 kd;
+    vec3 ks;
 } material;
+
+uniform vec3 eyePosition;
+uniform mat4 modelInverseTransposeMat;
+
+//// ignore the kd and ka of material and lock them together
 
 void main()
 {
-    vec4 surfaceColor = TEXTURE(tex, fragTexCoord);
-    if(hasTex == 0) surfaceColor = vec4(1,1,1,1);
     
+    float texU = fragTexCoord.x -floor(fragTexCoord.x);
+    float texV = fragTexCoord.y - floor(fragTexCoord.y);
+    
+    vec4 surfaceColor = TEXTURE(tex, vec2(texU,texV));
+    if(hasTex == 0) surfaceColor = vec4(1.0,1.0,1.0,1.0) ;
+    
+    // emissive
+    vec3 emissive = material.ke;
     // ambient
-    vec3 ambient = material.ka * ambientLight.intensities * surfaceColor.rgb;
- 
-    // diffuse
-    vec3 lightDirection = normalize(directionalLight.direction);
-  //  mat3 normalMatrix = mat3(modelMat);
- 
-    //   vec3 normal = normalize(normalMatrix * fragNormal);
-    vec3 normal = normalize(modelMat * vec4(fragNormal,0.0)).xyz;
-    float brightness = -dot(normal, lightDirection);
-    brightness = clamp(brightness, 0.0, 1.0);
+//    vec3 ambient = material.ka * ambientLight.intensities;
+    vec3 ambient = ambientLight.intensities;
     
-    vec3 diffuse = brightness * material.kd * directionalLight.intensities * surfaceColor.rgb;
-    diffuse = diffuse.bgr;
-    gl_FragColor = vec4(ambient + diffuse, 1.0);
-
- //   gl_FragColor = vec4(surfaceColor.bgr,1.0);
-
-//	gl_FragColor = vec4(fragNormal,1);
-//	gl_FragColor = vec4(fragTexCoord,0.5,1);
+    // diffuse
+    vec4 normal = modelInverseTransposeMat * vec4(fragNormal,1.0);
+    vec3 N = normalize(normal.xyz);
+    vec3 L = normalize(-directionalLight.direction);     // lightPosition - fragVert
+    float brightness = max(dot(N,L), 0.0);
+    vec3 diffuse = directionalLight.intensities * brightness;
+    if (hasTex == 0) diffuse = material.kd * directionalLight.intensities * brightness;
+    
+    // specular
+    vec3 V = normalize(eyePosition - fragVert);
+    vec3 H = normalize(L + V);
+    float specularLight = pow(max(dot(N,H), 0.0), material.Ns);
+    specularLight = max(specularLight, 0.0);
+    vec3 specular = material.ks * directionalLight.intensities * specularLight;
+//    vec3 specular = directionalLight.intensities * specularLight;
+    
+    gl_FragColor.rgb = emissive + ambient + diffuse + specular;
+    gl_FragColor.rgb = gl_FragColor.rgb * surfaceColor.rgb;
+    gl_FragColor.a = 1.0;
+    
+    
+    //// debug
+    
+//    gl_FragColor.rgb = fragNormal;
+//	gl_FragColor.rgb = surfaceColor.rgb;
+//	gl_FragColor.rgb = vec3(fragTexCoord,0.0);
 }
