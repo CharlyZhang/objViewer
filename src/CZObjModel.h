@@ -9,6 +9,7 @@
 #include "CZGeometry.h"
 #include "CZMaterialLib.h"
 #include "CZShader.h"
+#include "CZMat4.h"
 
 /// file type
 typedef enum _ObjFileType {
@@ -33,7 +34,7 @@ public:
 	*@side-effect 进入RENDER状态，不能再调用unpack()*/
 	void clearRaw();
 
-	void draw(CZShader *pShader);
+	void draw(CZShader *pShader, CZMat4 &mvpMat, CZMat4 &modelMat);
 
 private:
 	void parseLine(std::ifstream& ifs, const std::string& ele_id) override;
@@ -60,7 +61,7 @@ private:
 	std::vector<CZGeometry*> geometries;
 	CZMaterialLib materialLib;
 	std::string mtlLibName;							///< material lib name
-    
+	
     GLuint m_vao;
     GLuint m_vboPos;
     GLuint m_vboNorm;

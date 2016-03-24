@@ -32,7 +32,7 @@ public:
 	void frame();
 	void reset();
 
-#if	!defined(__APPLE__)	&& !defined(_WIN32)
+#ifdef	__ANDROID__
 	bool createShaders(const char* vertFile, const char* fragFile);
 #endif
     

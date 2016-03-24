@@ -49,7 +49,11 @@ void CZMaterial::setTextureImage(CZImage *img)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)img->width , (GLsizei)img->height,
                      0, GL_RGBA, GL_UNSIGNED_BYTE, img->data);
     }
-    else {
+    else if (img->colorSpace == CZImage::RGB) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, (GLsizei)img->width , (GLsizei)img->height,
+			0, GL_RGB, GL_UNSIGNED_BYTE, img->data);
+    }
+	else if (img->colorSpace == CZImage::GRAY) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, (GLsizei)img->width , (GLsizei)img->height,
                      0, GL_LUMINANCE, GL_UNSIGNED_BYTE, img->data);
     }
@@ -72,7 +76,7 @@ bool CZMaterial::use() const
         glBindTexture(GL_TEXTURE_2D, texId);
         //glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 #if !defined(__APPLE__)
-        glEnable(GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);
 #endif
         return true;
     }

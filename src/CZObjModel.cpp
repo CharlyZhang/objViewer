@@ -265,14 +265,19 @@ bool CZObjModel::loadBinary(const std::string& path,const char *originalPath/*  
     return true;
 }
 
-void CZObjModel::draw(CZShader* pShader)
+void CZObjModel::draw(CZShader* pShader, CZMat4 &vpMat, CZMat4 &modelMat)
 {
     if(pShader == NULL)
     {
         LOG_ERROR("pShader is NULL!\n");
         return;
     }
-    
+
+	glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, vpMat*modelMat);
+	glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
+	glUniformMatrix4fv(pShader->getUniformLocation("modelInverseTransposeMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
+
+
     GL_BIND_VERTEXARRAY(m_vao);
 
     for (vector<CZGeometry*>::iterator itr = geometries.begin(); itr != geometries.end(); itr++)
@@ -301,6 +306,7 @@ void CZObjModel::draw(CZShader* pShader)
                 Ns = pMaterial->Ns;
             }
         }
+		glUniform3f(pShader->getUniformLocation("material.kd"), kd[0], kd[1], kd[2]);
         glUniform3f(pShader->getUniformLocation("material.ka"), ka[0], ka[1], ka[2]);
         glUniform3f(pShader->getUniformLocation("material.kd"), kd[0], kd[1], kd[2]);
         glUniform3f(pShader->getUniformLocation("material.ke"), ke[0], ke[1], ke[2]);
@@ -315,8 +321,8 @@ void CZObjModel::draw(CZShader* pShader)
         glUniform1i(pShader->getUniformLocation("hasTex"), hasTex);
         glUniform1i(pShader->getUniformLocation("tex"), 0);
         
-        glDrawArrays(GL_TRIANGLES, (GLint)pGeometry->firstIdx, (GLsizei)pGeometry->vertNum);
-        
+		glDrawArrays(GL_TRIANGLES, (GLint)pGeometry->firstIdx, (GLsizei)pGeometry->vertNum);
+     
     }
     
     GL_BIND_VERTEXARRAY(0);

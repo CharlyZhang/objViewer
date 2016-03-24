@@ -8,10 +8,10 @@
 ///	 \author	Charly Zhang<chicboi@hotmail.com>
 ///  \date		2014-09-17
 ///  \note
+#include <cstdlib>
 #include "CZShader.h"
 #include "CZDefine.h"
 #include "CZLog.h"
-#include <cstdlib>
 
 using namespace std;
 
@@ -241,7 +241,7 @@ bool CZShader::textFileRead(const char *_fn, GLchar *&_shader)
 /// ��ʼ��OpenGL��չ
 bool CZShader::initOpenGLExtensions()
 {
-#if USE_OPENGL
+#ifdef USE_OPENGL
     if (extensionsInit) return true;
     extensionsInit = true;
     
@@ -263,7 +263,7 @@ bool CZShader::initOpenGLExtensions()
 /// �Ƿ�֧��GLSL
 bool CZShader::hasGLSLSupport()
 {
-#if USE_OPENGL
+#ifdef USE_OPENGL
     if (useGLSL) return true;							///< already initialized and GLSL is available
     useGLSL = true;
     

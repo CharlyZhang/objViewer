@@ -37,7 +37,14 @@ void Init()
 {
 	InitGL();
 	app3d.init("../../src/scene_violin.cfg");
-	app3d.loadObjModel("../../data/大提琴/大提琴.obj",true);
+	for (auto i = 10; i <= 10; i++)
+	{
+		char path[128];
+		sprintf_s(path,"../../data/CXMX/%i/%i.obj",i,i);
+		app3d.loadObjModel(path,false);
+	}
+	//app3d.loadObjModel("../../data/oo.obj",false);
+	//app3d.loadObjModel("../../data/大提琴/大提琴.obj",true);
 	//app3d.loadObjModel("../../data/plane/plane.obj",true);
 	//app3d.loadObjModel("../../data/incomplete/planeIncomplete.obj");
 	//app3d.loadObjModel("../../data/box/box.obj");
@@ -93,6 +100,13 @@ void key(unsigned char k, int x, int y)
 		break;
 	case 'k':
 		app3d.scale(1.25);
+		break;
+
+	case 'm':
+		app3d.translate(1,0,9);
+		break;
+	case ',':
+		app3d.translate(-1,0,9);
 		break;
 
 	case 'r':
