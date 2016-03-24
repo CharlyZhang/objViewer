@@ -34,7 +34,7 @@ public:
 	*@side-effect 进入RENDER状态，不能再调用unpack()*/
 	void clearRaw();
 
-	void draw(CZShader *pShader, CZMat4 &mvpMat, CZMat4 &modelMat);
+	void draw(CZShader *pShader);
 
 private:
 	void parseLine(std::ifstream& ifs, const std::string& ele_id) override;

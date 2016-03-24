@@ -22,14 +22,7 @@ Application3D::Application3D()
 
 Application3D::~Application3D()
 {
-	for (auto i = 0; i < models.size(); i ++)
-	{
-		delete models[i];
-	}
-	models.clear();
-	translateMats.clear();
-	scaleMats.clear();
-	rotateMats.clear();
+    clearObjModel();
 
 	for (map<ShaderType,CZShader*>::iterator itr = shaders.begin(); itr != shaders.end(); itr++)
 	{
@@ -380,11 +373,11 @@ void Application3D::setGLSLDirectory(const char* glslDir)
 void Application3D::rotate(float deltaX, float deltaY, int modelIdx /*= -1*/)
 {
 	CZMat4 tempMat;
-	tempMat.SetRotationY(deltaX);
 	if (modelIdx < 0)
 	{
 		for (auto i = 0; i < models.size(); i++)
 		{
+            tempMat.SetRotationY(deltaX);
 			rotateMats[i] = tempMat * rotateMats[i];
 			tempMat.SetRotationX(-deltaY);
 			rotateMats[i] = tempMat * rotateMats[i];
@@ -392,6 +385,7 @@ void Application3D::rotate(float deltaX, float deltaY, int modelIdx /*= -1*/)
 	}
 	else if(modelIdx < models.size())
 	{
+        tempMat.SetRotationY(deltaX);
 		rotateMats[modelIdx] = tempMat * rotateMats[modelIdx];
 		tempMat.SetRotationX(-deltaY);
 		rotateMats[modelIdx] = tempMat * rotateMats[modelIdx];
@@ -400,6 +394,7 @@ void Application3D::rotate(float deltaX, float deltaY, int modelIdx /*= -1*/)
 		LOG_ERROR("modelIdx is beyond the range!\n");
 
 }
+
 void Application3D::translate(float deltaX, float deltaY, int modelIdx /*= -1*/)
 {
 	CZMat4 tempMat;
