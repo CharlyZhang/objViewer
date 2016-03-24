@@ -14,6 +14,9 @@
 		2D7673CA1BEC3A0A00783623 /* directionalLight.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C41BEC3A0A00783623 /* directionalLight.frag */; };
 		2D7673CE1BECAF5C00783623 /* scene.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673CD1BECAF5C00783623 /* scene.cfg */; };
 		2D7673D01BF02D9100783623 /* scene_violin.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673CF1BF02D9100783623 /* scene_violin.cfg */; };
+		2DB3D49F1C9FCAAB002541DC /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DB3D49E1C9FCAAB002541DC /* background.jpg */; };
+		2DBACECF1C9FDD6500BB5950 /* blit.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2DBACECD1C9FDD6500BB5950 /* blit.frag */; };
+		2DBACED01C9FDD6500BB5950 /* blit.vert in Resources */ = {isa = PBXBuildFile; fileRef = 2DBACECE1C9FDD6500BB5950 /* blit.vert */; };
 		2DD439131BDA35CD004F1B8D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD439121BDA35CD004F1B8D /* main.m */; };
 		2DD439161BDA35CD004F1B8D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD439151BDA35CD004F1B8D /* AppDelegate.m */; };
 		2DD439191BDA35CD004F1B8D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD439181BDA35CD004F1B8D /* ViewController.m */; };
@@ -46,6 +49,9 @@
 		2D7673C41BEC3A0A00783623 /* directionalLight.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = directionalLight.frag; sourceTree = "<group>"; };
 		2D7673CD1BECAF5C00783623 /* scene.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = scene.cfg; path = ../../src/scene.cfg; sourceTree = "<group>"; };
 		2D7673CF1BF02D9100783623 /* scene_violin.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = scene_violin.cfg; path = ../../src/scene_violin.cfg; sourceTree = "<group>"; };
+		2DB3D49E1C9FCAAB002541DC /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
+		2DBACECD1C9FDD6500BB5950 /* blit.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blit.frag; sourceTree = "<group>"; };
+		2DBACECE1C9FDD6500BB5950 /* blit.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blit.vert; sourceTree = "<group>"; };
 		2DD4390D1BDA35CD004F1B8D /* objViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = objViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DD439111BDA35CD004F1B8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2DD439121BDA35CD004F1B8D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -139,6 +145,7 @@
 		2DD439101BDA35CD004F1B8D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2DB3D49E1C9FCAAB002541DC /* background.jpg */,
 				2D3F20641BF322C60089F1E9 /* ReadMe.md */,
 				2DD43A0B1BE21F73004F1B8D /* obj */,
 				2DD439111BDA35CD004F1B8D /* Info.plist */,
@@ -167,6 +174,8 @@
 		2DD43A231BE30008004F1B8D /* glsl */ = {
 			isa = PBXGroup;
 			children = (
+				2DBACECD1C9FDD6500BB5950 /* blit.frag */,
+				2DBACECE1C9FDD6500BB5950 /* blit.vert */,
 				2D7673C31BEC3A0A00783623 /* standard.vert */,
 				2D7673C41BEC3A0A00783623 /* directionalLight.frag */,
 			);
@@ -260,10 +269,13 @@
 				2D7673D01BF02D9100783623 /* scene_violin.cfg in Resources */,
 				2D0715C01BF208CE002F0842 /* MBProgressHUD in Resources */,
 				2DD439211BDA35CD004F1B8D /* LaunchScreen.xib in Resources */,
+				2DB3D49F1C9FCAAB002541DC /* background.jpg in Resources */,
+				2DBACECF1C9FDD6500BB5950 /* blit.frag in Resources */,
 				2DD43A0C1BE21F73004F1B8D /* obj in Resources */,
 				2D7673CE1BECAF5C00783623 /* scene.cfg in Resources */,
 				2DD4391E1BDA35CD004F1B8D /* Images.xcassets in Resources */,
 				2D7673CA1BEC3A0A00783623 /* directionalLight.frag in Resources */,
+				2DBACED01C9FDD6500BB5950 /* blit.vert in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,6 +441,7 @@
 					"/Users/charlyzhang/Git/OBJViewer/ios/Application3D/build/Debug-iphoneos",
 				);
 				OTHER_LDFLAGS = "-all_load";
+				PRODUCT_BUNDLE_IDENTIFIER = com.charlyzhang.objViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -453,6 +466,7 @@
 					"/Users/charlyzhang/Git/OBJViewer/ios/Application3D/build/Debug-iphoneos",
 				);
 				OTHER_LDFLAGS = "-all_load";
+				PRODUCT_BUNDLE_IDENTIFIER = com.charlyzhang.objViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

@@ -14,13 +14,22 @@ using namespace std;
 Application3D::Application3D()
 {
 	width = height = DEFAULT_RENDER_SIZE;
-	pModel = NULL;
     documentDirectory = NULL;
+    backgroundImage = NULL;
+    backgroundTexId = -1;
+    vao = -1;
 }
 
 Application3D::~Application3D()
 {
-	if (pModel) { delete pModel; pModel = NULL; }
+    for (auto i = 0; i < models.size(); i ++)
+    {
+        delete models[i];
+    }
+    models.clear();
+    translateMats.clear();
+    scaleMats.clear();
+    rotateMats.clear();
 
 	for (map<ShaderType,CZShader*>::iterator itr = shaders.begin(); itr != shaders.end(); itr++)
 	{
@@ -28,6 +37,12 @@ Application3D::~Application3D()
 	}
 	shaders.clear();
     if(documentDirectory)   delete [] documentDirectory;
+    if (backgroundImage) {
+        delete backgroundImage;
+        backgroundImage = NULL;
+    }
+    if (backgroundTexId != -1) glDeleteTextures(1, &backgroundTexId);
+    if (vao != -1) GL_DEL_VERTEXARRAY(1, &vao);
 }
 
 bool Application3D::init(const char* sceneFilename /* = NULL */ )
@@ -97,8 +112,7 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
 		return false;
 	}
 
-	if (pModel) delete pModel;
-	pModel = new CZObjModel;
+	CZObjModel *pModel = new CZObjModel;
 
     bool success = false;
     string strFileName(filename);
@@ -118,11 +132,30 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
             pModel->saveAsBinary(tempFileName);
 	}
 
+    models.push_back(pModel);
+    translateMats.push_back(CZMat4());
+    rotateMats.push_back(CZMat4());
+    scaleMats.push_back(CZMat4());
+    
 	reset();
 
 	CZCheckGLError();
 
 	return true;
+}
+
+bool Application3D::clearObjModel()
+{
+    for (auto i = 0; i < models.size(); i ++)
+    {
+        delete models[i];
+    }
+    models.clear();
+    translateMats.clear();
+    scaleMats.clear();
+    rotateMats.clear();
+    
+    return true;
 }
 
 bool Application3D::setRenderBufferSize(int w, int h)
@@ -143,6 +176,36 @@ bool Application3D::setRenderBufferSize(int w, int h)
 //    projMat.SetPerspective(60.0,(GLfloat)width/(GLfloat)height, 0.5f, 500.0f);
     projMat.SetPerspective(scene.cameraFov,(GLfloat)width/(GLfloat)height, scene.cameraNearPlane, scene.camearFarPlane);
     
+    if (backgroundImage) {
+        /// build vao
+        const GLfloat vertices[] =
+        {
+            0.0, 0.0, 0.0, 0.0,
+            (GLfloat)width, 0.0, 1.0, 0.0,
+            0.0, (GLfloat)height, 0.0, 1.0,
+            (GLfloat)width, (GLfloat)height, 1.0, 1.0,
+        };
+        
+        if (vao != -1) GL_DEL_VERTEXARRAY(1, &vao);
+        GL_GEN_VERTEXARRAY(1, &vao);
+        GL_BIND_VERTEXARRAY(vao);
+        // create, bind, and populate VBO
+        glGenBuffers(1, &vao);
+        glBindBuffer(GL_ARRAY_BUFFER, vao);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 16, vertices, GL_STATIC_DRAW);
+        
+        // set up attrib pointers
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 4, (void*)0);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 4, (void*)8);
+        glEnableVertexAttribArray(1);
+        
+        glBindBuffer(GL_ARRAY_BUFFER,0);
+        
+        GL_BIND_VERTEXARRAY(0);
+        CZCheckGLError();
+    }
+
 	return true;
 }
 
@@ -161,11 +224,13 @@ void Application3D::frame()
 	gluLookAt(scene.eyePosition.x,scene.eyePosition.y,scene.eyePosition.z, 0,0,0,0,1,0);
 # endif
     
-	CZMat4 mvpMat,modelMat, modelInverseTransposeMat;
-	modelMat = translateMat * scaleMat * rotateMat;
-	mvpMat.SetLookAt(scene.eyePosition.x, scene.eyePosition.y, scene.eyePosition.z, 0, 0, 0, 0, 1, 0);
-	mvpMat = projMat * mvpMat * modelMat;
-    modelInverseTransposeMat = modelMat.GetInverseTranspose();
+    /// blit background image
+//    glEnable(GL_BLEND);
+    if (backgroundImage && !blitBackgroundImage()) return;
+    
+    glClear(GL_DEPTH_BUFFER_BIT);
+	CZMat4 viewMat,modelMat;
+	viewMat.SetLookAt(scene.eyePosition.x, scene.eyePosition.y, scene.eyePosition.z, 0, 0, 0, 0, 1, 0);
 
 	/// ����
 	CZShader *pShader = getShader(kDirectionalLightShading);
@@ -179,10 +244,6 @@ void Application3D::frame()
     CZCheckGLError();
     
 	// common uniforms
-	glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, mvpMat);
-    glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
-    glUniformMatrix4fv(pShader->getUniformLocation("modelInverseTransposeMat"), 1, GL_FALSE, modelInverseTransposeMat);
-    
 	glUniform3f(pShader->getUniformLocation("ambientLight.intensities"),
 		scene.ambientLight.intensity.x,
 		scene.ambientLight.intensity.y,
@@ -199,7 +260,15 @@ void Application3D::frame()
 		scene.directionalLight.intensity.z);
 	CZCheckGLError();
 
-	if(pModel)	pModel->draw(pShader);
+    for (auto i = 0; i < models.size(); i++) {
+        modelMat = translateMats[i] * scaleMats[i] * rotateMats[i];
+        glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, projMat * viewMat * modelMat);
+        glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
+        glUniformMatrix4fv(pShader->getUniformLocation("modelInverseTransposeMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
+        
+        CZObjModel *pModel = models[i];
+        pModel->draw(pShader);
+    }
 	CZCheckGLError();
 
 	pShader->end();
@@ -222,9 +291,11 @@ void Application3D::frame()
 void Application3D::reset()
 {
 	/// model matrix
-	rotateMat.LoadIdentity();
-	translateMat.LoadIdentity();
-	scaleMat.LoadIdentity();
+    for (auto i = 0; i < models.size(); i ++) {
+        rotateMats[i].LoadIdentity();
+        translateMats[i].LoadIdentity();
+        scaleMats[i].LoadIdentity();
+    }
     
 	/// color
 	modelColor = scene.mColor;
@@ -304,25 +375,64 @@ void Application3D::setGLSLDirectory(const char* glslDir)
 }
 
 // control
-void Application3D::rotate(float deltaX, float deltaY)
+void Application3D::rotate(float deltaX, float deltaY, int modelIdx /*= -1*/)
 {
 	CZMat4 tempMat;
 	tempMat.SetRotationY(deltaX);
-	rotateMat = tempMat * rotateMat;
-	tempMat.SetRotationX(-deltaY);
-	rotateMat = tempMat * rotateMat;
+    if (modelIdx < 0)
+    {
+        for (auto i = 0; i < models.size(); i++)
+        {
+            rotateMats[i] = tempMat * rotateMats[i];
+            tempMat.SetRotationX(-deltaY);
+            rotateMats[i] = tempMat * rotateMats[i];
+        }
+    }
+    else if(modelIdx < models.size())
+    {
+        rotateMats[modelIdx] = tempMat * rotateMats[modelIdx];
+        tempMat.SetRotationX(-deltaY);
+        rotateMats[modelIdx] = tempMat * rotateMats[modelIdx];
+    }
+    else
+        LOG_ERROR("modelIdx is beyond the range!\n");
+	
 }
-void Application3D::translate(float deltaX, float deltaY)
+void Application3D::translate(float deltaX, float deltaY, int modelIdx /*= -1*/)
 {
 	CZMat4 tempMat;
 	tempMat.SetTranslation(-deltaX, -deltaY, 0);
-	translateMat = tempMat * translateMat;
+    if (modelIdx < 0)
+    {
+        for (auto i = 0; i < models.size(); i++)
+        {
+            translateMats[i] = tempMat * translateMats[i];
+        }
+    }
+    else if(modelIdx < models.size())
+    {
+        translateMats[modelIdx] = tempMat * translateMats[modelIdx];
+    }
+    else
+        LOG_ERROR("modelIdx is beyond the range!\n");
 }
-void Application3D::scale(float s)
+void Application3D::scale(float s, int modelIdx /*= -1*/)
 {
-	CZMat4 tempMat;
-	tempMat.SetScale(s);
-	scaleMat = tempMat * scaleMat;
+    CZMat4 tempMat;
+    tempMat.SetScale(s);
+    if (modelIdx < 0)
+    {
+        for (auto i = 0; i < models.size(); i++)
+        {
+            scaleMats[i] = tempMat * scaleMats[i];
+        }
+    }
+    else if(modelIdx < models.size())
+    {
+        scaleMats[modelIdx] = tempMat * scaleMats[modelIdx];
+    }
+    else
+        LOG_ERROR("modelIdx is beyond the range!\n");
 }
 
 // custom config
@@ -331,6 +441,42 @@ void Application3D::setBackgroundColor(float r, float g, float b, float a)
     scene.bgColor = CZColor(r,g,b,a);
 	glClearColor(r, g, b, a);
 }
+void Application3D::setBackgroundImage(CZImage *img)
+{
+    if(img == NULL || img->data == NULL)
+    {
+        LOG_WARN("img is illegal\n");
+        return ;
+    }
+    
+    // clear the old
+    if (backgroundImage) delete backgroundImage;
+    if (backgroundTexId != -1) glDeleteTextures(1, &backgroundTexId);
+    
+    backgroundImage = img;
+    
+    //generate an OpenGL texture ID for this texture
+    glGenTextures(1, &backgroundTexId);
+    //bind to the new texture ID
+    glBindTexture(GL_TEXTURE_2D, backgroundTexId);
+    //store the texture data for OpenGL use
+    if (img->colorSpace == CZImage::RGBA) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)img->width , (GLsizei)img->height,
+                     0, GL_RGBA, GL_UNSIGNED_BYTE, img->data);
+    }
+    else {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, (GLsizei)img->width , (GLsizei)img->height,
+                     0, GL_LUMINANCE, GL_UNSIGNED_BYTE, img->data);
+    }
+    
+    //	gluBuild2DMipmaps(GL_TEXTURE_2D, components, width, height, texFormat, GL_UNSIGNED_BYTE, bits);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    CZCheckGLError();
+}
+
 void Application3D::setModelColor(float r, float g, float b, float a)
 {
 	modelColor = CZColor(r, g, b, a);
@@ -387,6 +533,18 @@ bool Application3D::loadShaders()
 	CZShader *pShader = new CZShader("standard","directionalLight",attributes,uniforms);
 	shaders.insert(make_pair(kDirectionalLightShading,pShader));
 	
+    //
+    attributes.clear();
+    attributes.push_back("inPosition");
+    attributes.push_back("inTexcoord");
+    uniforms.clear();
+    uniforms.push_back("mvpMat");
+    uniforms.push_back("texture");
+    uniforms.push_back("opacity");
+    
+    pShader = new CZShader("blit","blit",attributes,uniforms);
+    shaders.insert(make_pair(kBlitImage,pShader));
+    
 	CZCheckGLError();
 
 	return true;
@@ -527,3 +685,46 @@ void Application3D::parseMainColor(ifstream& ifs)
 		>> scene.mColor.b
 		>> scene.mColor.a;
 }
+
+bool Application3D::blitBackgroundImage()
+{
+    CZShader *pShader = getShader(kBlitImage);
+    
+    if (pShader == NULL)
+    {
+        LOG_ERROR("there's no shader for blitting background image\n");
+        return false;
+    }
+    
+    CZMat4 mvpMat;
+    mvpMat.SetOrtho(0,width,0,height,-1.0f,1.0f);
+    
+    pShader->begin();
+    
+    glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"),1,GL_FALSE,mvpMat);
+    glUniform1i(pShader->getUniformLocation("texture"), (GLuint) 0);
+    glUniform1f(pShader->getUniformLocation("opacity"), 1.0f); // fully opaque
+    
+    glActiveTexture(GL_TEXTURE0);
+    // Bind the texture to be used
+    glBindTexture(GL_TEXTURE_2D, backgroundTexId);
+    
+    // clear the buffer to get a transparent background
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT );
+    
+    // set up premultiplied normal blend
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    
+    GL_BIND_VERTEXARRAY(vao);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    
+    GL_BIND_VERTEXARRAY(0);
+    
+    pShader->end();
+  
+    CZCheckGLError();
+    
+    return true;
+}
+

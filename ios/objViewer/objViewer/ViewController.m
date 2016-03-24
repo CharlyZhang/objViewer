@@ -11,6 +11,7 @@
 #include "MBProgressHUD/MBProgressHUD.h"
 
 #define MODEL_FROM_BUNDLE 0
+#define MULTI_MODELS_FROM_BUNDLE 1
 
 @interface ViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,MBProgressHUDDelegate>
 {
@@ -129,6 +130,10 @@
     modelName = [modelName arrayByAddingObject:@"南禅寺"];
     modelPath = [modelPath arrayByAddingObject:model16];
     
+#elif MULTI_MODELS_FROM_BUNDLE
+    modelName = [modelName arrayByAddingObject:@"MX"];
+    NSString *models = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/MX/"];
+    modelPath = [modelPath arrayByAddingObject:models];
 #else
     
     // search Documents directory
@@ -287,7 +292,14 @@
     [glView stopRenderLoop];
     __block EAGLView *blockGlView = glView;
     [hud showAnimated:YES whileExecutingBlock:^{
+#if MULTI_MODELS_FROM_BUNDLE
+        NSString *path = [modelPath objectAtIndex:modelIdx];
+        for (int i = 1; i <= 10; i ++) {
+            [blockGlView loadModel:[NSString stringWithFormat:@"%@/%i/%i.obj",path,i,i]];
+        }
+#else
         [blockGlView loadModel:[modelPath objectAtIndex:modelIdx]];
+#endif
     } completionBlock:^ {
         [self.view setUserInteractionEnabled:YES];
         [blockGlView drawFrame];
