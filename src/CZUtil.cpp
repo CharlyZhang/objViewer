@@ -1,6 +1,6 @@
-#include "CZDefine.h"
-#include "CZBasic.h"
 #include <string>
+#include "CZBasic.h"
+#include "CZDefine.h"
 
 #if defined(_WIN32)
 #   include "FreeImage.h"
@@ -110,13 +110,13 @@ CZImage *CZLoadTexture(const string &filename)
     FREE_IMAGE_COLOR_TYPE colorType = FreeImage_GetColorType(dib);
     
     // TO DO: inverse pixel data sequence manually
-	// TO DO: deal with FIC_RGB
     GLint components;
 	CZImage::ColorSpace czColorSpace;
     switch (colorType)
     {
         case FIC_RGB:
             components = 3;
+			czColorSpace = CZImage::RGB;
             break;
         case FIC_RGBALPHA:
             components = 4;
@@ -124,22 +124,22 @@ CZImage *CZLoadTexture(const string &filename)
             break;
         default:
             components = 3;
+			czColorSpace = CZImage::RGB;
             LOG_WARN("the color type has not been considered\n");
             break;
     }
    
 	CZImage *retImage = new CZImage((int)width,(int)height,czColorSpace);
-	memcpy(retImage->data,bits,width*height*components*sizeof(unsigned char));
-	/*
-	unsigned char *src = (UInt8*)&data[(height-1)*width*componentNum];
-	UInt8 *dst = retImage->data;
-	for (int i=0; i<height; i++)
+	//memcpy(retImage->data,bits,width*height*components*sizeof(unsigned char));
+	
+	unsigned char *dst = retImage->data;
+	for (int i=0; i<height*width; i++)
 	{
-		memcpy(dst,src,width*componentNum);
-		dst += (width*componentNum);
-		src -= (width*componentNum);
-	}*/
-
+		dst[i*components+0] = bits[i*components+2];
+		dst[i*components+1] = bits[i*components+1];
+		dst[i*components+2] = bits[i*components+0];
+	}
+	
 
 	//Free FreeImage's copy of the data
 	FreeImage_Unload(dib);
