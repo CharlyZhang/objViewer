@@ -95,8 +95,6 @@ CZImage *CZLoadTexture(const string &filename)
     BYTE* bits(0);
     //image width and height
     unsigned int width(0), height(0);
-    //OpenGL's image ID to map to
-    GLuint gl_texId;
     
     //check the file signature and deduce its format
     fif = FreeImage_GetFileType(filename.c_str(), 0);
@@ -152,7 +150,7 @@ CZImage *CZLoadTexture(const string &filename)
 	//memcpy(retImage->data,bits,width*height*components*sizeof(unsigned char));
 	
 	unsigned char *dst = retImage->data;
-	for (int i=0; i<height*width; i++)
+	for (unsigned int i=0; i<height*width; i++)
 	{
 		dst[i*components+0] = bits[i*components+2];
 		dst[i*components+1] = bits[i*components+1];
@@ -216,7 +214,7 @@ CZImage *CZLoadTexture(const string &filename)
             break;
     }
     
-    //数据源提供者
+    // data provider
     CGDataProviderRef inProvider = CGImageGetDataProvider(img);
     // provider’s data.
     CFDataRef inBitmapData = CGDataProviderCopyData(inProvider);
@@ -224,7 +222,7 @@ CZImage *CZLoadTexture(const string &filename)
     
     const UInt8 *data = CFDataGetBytePtr(inBitmapData);
     
-    //宽，高，data
+    //size，data
     size_t width= CGImageGetWidth(img);
     size_t height = CGImageGetHeight(img);
     

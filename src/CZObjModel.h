@@ -30,8 +30,8 @@ public:
     bool loadBinary(const std::string& path, const char *originalPath = NULL);
     bool saveAsBinary(const std::string& path);
 
-	/*清除来自obj文件的原始数据，以节约内存
-	*@side-effect 进入RENDER状态，不能再调用unpack()*/
+	/// clear raw data of obj model to save memory,
+	///    which also cause `unpack` is useless in RENDER mode.
 	void clearRaw();
 
 	void draw(CZShader *pShader);

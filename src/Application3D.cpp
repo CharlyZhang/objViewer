@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-#define DEFAULT_RENDER_SIZE 500					///< Ĭ����Ⱦ�����С
+#define DEFAULT_RENDER_SIZE 500					///< default render buffer size
 #define CONFIG_FILE_PATH	"./scene.cfg"
 
 using namespace std;
@@ -43,9 +43,9 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 # ifdef _WIN32
 	/// OpenGL initialization
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	glShadeModel(GL_SMOOTH);					// ƽ����ɫ
+	glShadeModel(GL_SMOOTH);					// smooth shade model
 
-	glClearDepth(1.0f);							// ������Ȼ���
+	glClearDepth(1.0f);							// set clear depth
 	glEnable(GL_DEPTH_TEST);
 
 	glEnable(GL_NORMALIZE);
@@ -59,7 +59,7 @@ bool Application3D::init(const char* sceneFilename /* = NULL */ )
 	//glEnable(GL_TEXTURE_2D);
 # else
 
-	glClearDepthf(1.0f);							// ������Ȼ���
+	glClearDepthf(1.0f);									// set clear depth
 	glEnable(GL_DEPTH_TEST);
 # endif
 
@@ -225,7 +225,6 @@ void Application3D::frame()
 	CZMat4 viewMat,modelMat;
 	viewMat.SetLookAt(scene.eyePosition.x, scene.eyePosition.y, scene.eyePosition.z, 0, 0, 0, 0, 1, 0);
 
-	/// ����
 	CZShader *pShader = getShader(kDirectionalLightShading);
 
 	if (pShader == NULL)

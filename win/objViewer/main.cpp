@@ -37,11 +37,11 @@ void Init()
 {
 	InitGL();
 	app3d.init("../../src/scene_violin.cfg");
-	for (auto i = 10; i <= 10; i++)
+	for (auto i = 1; i <= 10; i++)
 	{
 		char path[128];
 		sprintf_s(path,"../../data/CXMX/%i/%i.obj",i,i);
-		app3d.loadObjModel(path,false);
+		app3d.loadObjModel(path,true);
 	}
 	//app3d.loadObjModel("../../data/oo.obj",false);
 	//app3d.loadObjModel("../../data/大提琴/大提琴.obj",true);

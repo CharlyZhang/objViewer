@@ -17,7 +17,7 @@ class Application3D : private CZObjFileParser
 public:
 	// define type
 	typedef enum _ShaderType {
-		kDirectionalLightShading,		///< 平行光光照
+		kDirectionalLightShading,		///< directional light shadding mode
         kBlitImage                      ///< blit image to the renderbuffer
 	} ShaderType;
 	typedef std::map<ShaderType,CZShader*> ShaderMap;
