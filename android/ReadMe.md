@@ -1,4 +1,4 @@
-# ObjViewer for Android
+# objViewer for Android
 
 ###  Difference from other platform
 
