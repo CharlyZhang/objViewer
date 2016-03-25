@@ -1,6 +1,6 @@
-#include "CZDefine.h"
-#include "CZBasic.h"
 #include <string>
+#include "CZBasic.h"
+#include "CZDefine.h"
 
 #if defined(_WIN32)
 #   include "FreeImage.h"
@@ -102,8 +102,6 @@ CZImage *CZLoadTexture(const string &filename)
     BYTE* bits(0);
     //image width and height
     unsigned int width(0), height(0);
-    //OpenGL's image ID to map to
-    GLuint gl_texId;
     
     //check the file signature and deduce its format
     fif = FreeImage_GetFileType(filename.c_str(), 0);
@@ -136,47 +134,45 @@ CZImage *CZLoadTexture(const string &filename)
     FREE_IMAGE_COLOR_TYPE colorType = FreeImage_GetColorType(dib);
     
     // TO DO: inverse pixel data sequence manually
-    GLenum texFormat;	GLint internalFormat;	GLint components;
+    GLint components;
+	CZImage::ColorSpace czColorSpace;
     switch (colorType)
     {
         case FIC_RGB:
             components = 3;
-            texFormat = GL_RGB;
-            internalFormat = GL_RGB;
+			czColorSpace = CZImage::RGB;
             break;
         case FIC_RGBALPHA:
             components = 4;
-            texFormat = GL_BGRA_EXT;
-            internalFormat = GL_BGRA_EXT;
+			czColorSpace = CZImage::RGBA;
             break;
         default:
             components = 3;
-            texFormat = GL_RGB;
-            internalFormat = GL_RGB;
+			czColorSpace = CZImage::RGB;
             LOG_WARN("the color type has not been considered\n");
             break;
     }
-    
-    //generate an OpenGL texture ID for this texture
-    glGenTextures(1, &gl_texId);
-    //store the texture ID mapping
-    texId = gl_texId;
-    //bind to the new texture ID
-    glBindTexture(GL_TEXTURE_2D, gl_texId);
-    //store the texture data for OpenGL use
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height,
-                 0, texFormat, GL_UNSIGNED_BYTE, bits);
-    
-    //	gluBuild2DMipmaps(GL_TEXTURE_2D, components, width, height, texFormat, GL_UNSIGNED_BYTE, bits);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
-    //Free FreeImage's copy of the data
-    FreeImage_Unload(dib);
-    
+   
+	CZImage *retImage = new CZImage((int)width,(int)height,czColorSpace);
+	//memcpy(retImage->data,bits,width*height*components*sizeof(unsigned char));
+	
+	unsigned char *dst = retImage->data;
+	for (unsigned int i=0; i<height*width; i++)
+	{
+		dst[i*components+0] = bits[i*components+2];
+		dst[i*components+1] = bits[i*components+1];
+		dst[i*components+2] = bits[i*components+0];
+	}
+	
+
+	//Free FreeImage's copy of the data
+	FreeImage_Unload(dib);
+
+	return retImage;
     // TO DO: to load bmp with bpp=32
     
 #elif defined(__APPLE__)
+
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithCString:filename.c_str() encoding:NSUTF8StringEncoding]];
     
     float maxTexSize;
@@ -225,7 +221,7 @@ CZImage *CZLoadTexture(const string &filename)
             break;
     }
     
-    //数据源提供者
+    // data provider
     CGDataProviderRef inProvider = CGImageGetDataProvider(img);
     // provider’s data.
     CFDataRef inBitmapData = CGDataProviderCopyData(inProvider);
@@ -233,7 +229,7 @@ CZImage *CZLoadTexture(const string &filename)
     
     const UInt8 *data = CFDataGetBytePtr(inBitmapData);
     
-    //宽，高，data
+    //size，data
     size_t width= CGImageGetWidth(img);
     size_t height = CGImageGetHeight(img);
     

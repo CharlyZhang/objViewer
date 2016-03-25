@@ -21,9 +21,9 @@ class CZShader
 public:
     static std::string glslDirectory;
     
-	/// �������Ժ�ͳһ������shader
+	/// shader without binding `attribute` and `uniform`
 	CZShader(const char* vertFileName, const char* fragFileName);
-	/// �����Ժ�ͳһ������shader
+	/// shader with binding `attribute` and `uniform`
 	CZShader(const char* vertFileName, const char* fragFileName, \
 		std::vector<std::string>& atrributes, std::vector<std::string>& uniforms, bool contentDirectly = false);
 
@@ -35,22 +35,22 @@ public:
 	bool isReady(){ return m_ready;}
 
 private:
-	/// ������ɫ��
+	/// destroy shaders
 	void destroyShaders(unsigned int vertShader,unsigned int fragShader, unsigned int prog);
-	/// ��ȡ��ɫ������
+	/// read shader code from files
 	bool textFileRead(const char *_fn, char *&_shader);
-	/// ��ʼ��OpenGL��չ
-	///		\note ����glew�ĳ�ʼ����Ӧ����OpenGL��glut�ĳ�ʼ��֮��
+	/// init OpenGL extension
+	///		\note should be called after the initialization of `OpenGL` and `glut`
+	///				for, it contains `glew`
 	static bool initOpenGLExtensions();
-	/// �Ƿ�֧��GLSL
+	/// whether GLSL supported
 	static bool hasGLSLSupport();
-	/// �������
 	bool compile();
 
-	static bool extensionsInit;			///< �Ƿ��ʼ��GL��չ
-	static bool useGLSL;				///< GLSL�Ƿ��Ѿ�׼��
-	static bool bGeometryShader;		///< �Ƿ�֧��G-Shader
-	static bool bGPUShader4;			///< �Ƿ�֧��Shader4
+	static bool extensionsInit;			///< indicate whether GL extension initial is done
+	static bool useGLSL;				///< indicate whether GLSL is ready
+	static bool bGeometryShader;		///< indicate whether G-Shader is supported
+	static bool bGPUShader4;			///< indicate whether Shader4 is supported
 
 	char *m_VertexShader;
 	char *m_FragmentShader;
@@ -58,7 +58,7 @@ private:
 	unsigned int m_Program;
 	unsigned int m_Vert,m_Frag;
 
-	bool isCompiled;					///< �Ƿ����
+	bool isCompiled;					///< indicate whether shader compliation
 	bool m_ready;
 	std::map<std::string,unsigned int> m_uniforms;
 };

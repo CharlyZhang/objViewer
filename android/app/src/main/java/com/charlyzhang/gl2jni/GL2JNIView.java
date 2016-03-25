@@ -442,7 +442,7 @@ class GL2JNIView extends GLSurfaceView {
 
             GL2JNILib.setImageLoader("com/charlyzhang/gl2jni/BitmapService", "getImageFromSD");
             GL2JNILib.setModelLoadCallBack("com/charlyzhang/gl2jni/ObjModelUtil", "finishLoad");
-            GL2JNILib.loadObjModel(dataDiretroy + "/3D01/datiqing.obj", false);
+            GL2JNILib.loadObjModel(dataDiretroy + "/南禅寺/ww.obj",true);
         }
     }
 

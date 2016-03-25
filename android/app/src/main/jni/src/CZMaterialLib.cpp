@@ -37,9 +37,9 @@ void CZMaterialLib::parseLine(ifstream& ifs, const string& ele_id)
 	}
 	else if ("map_Kd" == ele_id) {
 		string texImgName,texImgPath;
-		ifs >> texImgName;//����ͼ���·�����Ը�mtl�ļ�����Ŀ¼Ϊ����
+		ifs >> texImgName;	
 
-		texImgPath = curDirPath + "/" + texImgName;//ת��������ڳ����Ŀ¼�����·��
+		texImgPath = curDirPath + "/" + texImgName;
 		CZImage *image = CZLoadTexture(texImgPath);
 		if(image)
         {
@@ -49,9 +49,9 @@ void CZMaterialLib::parseLine(ifstream& ifs, const string& ele_id)
     }
 //    else if ("map_Ka" == ele_id) {
 //        string texImgName,texImgPath;
-//        ifs >> texImgName;//����ͼ���·�����Ը�mtl�ļ�����Ŀ¼Ϊ����
+//        ifs >> texImgName;
 //        
-//        texImgPath = curDirPath + "/" + texImgName;//ת��������ڳ����Ŀ¼�����·��
+//        texImgPath = curDirPath + "/" + texImgName;
 //        CZImage *image = CZLoadTexture(texImgPath);
 //        if(image)
 //        {

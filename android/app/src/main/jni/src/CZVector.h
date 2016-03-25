@@ -67,12 +67,11 @@ public:
 	operator T* () const {return (T*) this;}
 	operator const T* () const {return (const T*) this;}
 
-	/// 求级数
 	T magnitude() {	return (T)sqrt(x*x + y*y + z*z);}
 	T length() { return magnitude();}
-	/// 规范化本点
+
 	void normalize() {	*this = *this / magnitude();}
-	/// 叉乘
+	
 	CZVector3D<T> cross(CZVector3D<T> vVector)
 	{
 		CZVector3D<T> vCross;                

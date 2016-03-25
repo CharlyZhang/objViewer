@@ -9,12 +9,16 @@
 #include "CZMat4.h"
 #include "CZObjModel.h"
 
+typedef std::vector<CZObjModel*> CZObjModelArray;
+typedef std::vector<CZMat4> CZMat4Array;
+
 class Application3D : private CZObjFileParser
 {
 public:
 	// define type
 	typedef enum _ShaderType {
-		kDirectionalLightShading		///< ƽ�й����
+		kDirectionalLightShading,		///< directional light shadding mode
+        kBlitImage                      ///< blit image to the renderbuffer
 	} ShaderType;
 	typedef std::map<ShaderType,CZShader*> ShaderMap;
 
@@ -23,14 +27,15 @@ public:
 
 	bool init(const char* sceneFilename = NULL);
 	bool loadObjModel(const char* filename, bool quickLoad = true);
+    bool clearObjModel();
 	bool setRenderBufferSize(int w, int h);
 	void frame();
 	void reset();
 
-#if	!defined(__APPLE__)	&& !defined(_WIN32)
-	bool createShaders(const char* vertFile, const char* fragFile);
-	void setImageLoader(const char * cls, const char * method);
-	void setModelLoadCallBack(const char * cls, const char *method);
+#ifdef	__ANDROID__
+	bool createShader(ShaderType type,const char* vertFile, const char* fragFile, std::vector<std::string> &attributes,std::vector<std::string> &uniforms);
+    void setImageLoader(const char * cls, const char * method);
+    void setModelLoadCallBack(const char * cls, const char *method);
 #endif
     
     // document directory
@@ -42,12 +47,13 @@ public:
     
 	// control
 	//	/note : (deltaX,deltaY) is in the screen coordinate system
-	void rotate(float deltaX, float deltaY);
-	void translate(float deltaX, float deltaY);
-	void scale(float s);
+	void rotate(float deltaX, float deltaY, int modelIdx = -1);
+	void translate(float deltaX, float deltaY, int modelIdx = -1);
+	void scale(float s, int modelIdx = -1);
 
 	// custom config
 	void setBackgroundColor(float r, float g, float b, float a);
+    void setBackgroundImage(CZImage *img);
 	void setModelColor(float r, float g, float b, float a);
     
     // camera
@@ -75,15 +81,20 @@ private:
 	void parseDirectionalLight(std::ifstream& ifs);
 	void parseBackgroundColor(std::ifstream& ifs);
 	void parseMainColor(std::ifstream& ifs);
+    
+    bool blitBackgroundImage();
 
 private:
 	CZScene scene;
 	ShaderMap shaders;
-	CZObjModel *pModel;
-	CZMat4 projMat, rotateMat, translateMat, scaleMat;
+    CZObjModelArray models;
+    CZMat4Array rotateMats, translateMats, scaleMats;
+	CZMat4 projMat;
+    
 	int width, height;
 	CZColor modelColor;
-    
+    CZImage *backgroundImage;
+    GLuint backgroundTexId,vao;;
     char *documentDirectory;                          ///< to store the binary data of model
 };
 

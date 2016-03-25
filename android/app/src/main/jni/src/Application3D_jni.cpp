@@ -5,6 +5,10 @@
 #include <android/asset_manager_jni.h>
 #include "../android_asset_operations.h"
 #include "Application3D.h"
+#include <vector>
+#include <string>
+
+using namespace std;
 
 Application3D app3d;
 JNIEnv *jniEnv;
@@ -54,7 +58,6 @@ char* jstringTostring(JNIEnv* env, jstring jstr)
 }
 
 /////
-
 JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_init(JNIEnv * env, jclass c,jobject assetManager)
 {
     app3d.init();
@@ -69,7 +72,46 @@ JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_init(JNIEnv * env, 
     std::string gFragmentShader = readToString(fd);
     fclose(fd);
 
-    app3d.createShaders(gVertexShader.c_str(), gFragmentShader.c_str());
+    vector<string> attributes;
+    attributes.push_back("vert");
+    attributes.push_back("vertNormal");
+    attributes.push_back("vertTexCoord");
+    vector<string> uniforms;
+    uniforms.push_back("mvpMat");
+    uniforms.push_back("modelMat");
+    uniforms.push_back("modelInverseTransposeMat");
+    uniforms.push_back("ambientLight.intensities");
+    uniforms.push_back("directionalLight.direction");
+    uniforms.push_back("directionalLight.intensities");
+    uniforms.push_back("eyePosition");
+    uniforms.push_back("tex");
+    uniforms.push_back("hasTex");
+    uniforms.push_back("material.kd");
+    uniforms.push_back("material.ka");
+    uniforms.push_back("material.ke");
+    uniforms.push_back("material.ks");
+    uniforms.push_back("material.Ns");
+
+    app3d.createShader(Application3D::kDirectionalLightShading,gVertexShader.c_str(), gFragmentShader.c_str(), \
+                           attributes,uniforms);
+
+    fd = android_fopen("blit.vert", "r", asset_manager);
+    gVertexShader = readToString(fd);
+    fclose(fd);
+    fd = android_fopen("blit.frag", "r", asset_manager);
+    gFragmentShader = readToString(fd);
+    fclose(fd);
+
+    attributes.clear();
+    attributes.push_back("inPosition");
+    attributes.push_back("inTexcoord");
+    uniforms.clear();
+    uniforms.push_back("mvpMat");
+    uniforms.push_back("texture");
+    uniforms.push_back("opacity");
+
+    app3d.createShader(Application3D::kBlitImage,gVertexShader.c_str(), gFragmentShader.c_str(), \
+                       attributes,uniforms);
 }
 
 JNIEXPORT void JNICALL Java_com_charlyzhang_gl2jni_GL2JNILib_loadObjModel(JNIEnv * env, jclass c, jstring filename, jboolean quickLoad)

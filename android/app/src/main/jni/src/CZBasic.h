@@ -47,6 +47,7 @@ class CZImage
 {
 public:
     typedef enum _ColorSpace {
+		RGB,
         RGBA,
         GRAY
     } ColorSpace;
@@ -59,6 +60,8 @@ public:
         {
             int n;
             switch (colorSpace) {
+				case RGB:
+					n = 3;
                 case RGBA:
                     n = 4;
                     break;

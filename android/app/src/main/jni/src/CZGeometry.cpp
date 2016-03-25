@@ -59,22 +59,17 @@ void CZGeometry::generateFaceNorm(vector<CZVector3D<float> > &positions,vector<C
 	long vertNum = positions.size();
 	for (long iVert = 0; iVert < vertNum; iVert += 3)
 	{
-		//一个面有3个顶点：v1、v2、v3
 		const CZVector3D<float>& v1 = positions[iVert];
 		const CZVector3D<float>& v2 = positions[iVert + 1];
 		const CZVector3D<float>& v3 = positions[iVert + 2];
 
-		//该面上有2个向量：向量v=v1->v2；向量w=v1->v3
 		CZVector3D<float> v(v2.x-v1.x, v2.y-v1.y, v2.z-v1.z);
 		CZVector3D<float> w(v3.x-v1.x, v3.y-v1.y, v3.z-v1.z);
 
-		//向量v 向 向量w 作外积，结果即法向量vn
 		CZVector3D<float> vn = v.cross(w);
 
-		//对法向量vn单位化
 		vn.normalize();
 
-		//计算结果作为这3个顶点的法向量
 		outNormals.push_back(vn);
 		outNormals.push_back(vn);
 		outNormals.push_back(vn);

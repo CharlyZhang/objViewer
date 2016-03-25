@@ -8,10 +8,10 @@
 ///	 \author	Charly Zhang<chicboi@hotmail.com>
 ///  \date		2014-09-17
 ///  \note
+#include <cstdlib>
 #include "CZShader.h"
 #include "CZDefine.h"
 #include "CZLog.h"
-#include <cstdlib>
 
 using namespace std;
 
@@ -40,11 +40,11 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName)
     if(!textFileRead(fragFileName,m_FragmentShader))return;
     
     
-    //����shader����
+    //create shader object
     m_Vert = glCreateShader(GL_VERTEX_SHADER);
     m_Frag = glCreateShader(GL_FRAGMENT_SHADER);
     
-    //�����������
+    //create program object
     m_Program = glCreateProgram();
     
     if(!compile())
@@ -55,11 +55,11 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName)
         return;
     }
     
-    //��shader���������
+    //attach shader to program
     glAttachShader(m_Program,m_Vert);
     glAttachShader(m_Program,m_Frag);
     
-    //���ӳ���
+    //link program
     glLinkProgram(m_Program);
     printProgramInfoLog(m_Program);
     
@@ -124,11 +124,11 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
 
     CZCheckGLError();
     
-    //����shader����
+    //create shader object
     m_Vert = glCreateShader(GL_VERTEX_SHADER);
     m_Frag = glCreateShader(GL_FRAGMENT_SHADER);
     
-    //�����������
+    //create program object
     m_Program = glCreateProgram();
     
     if(!compile())
@@ -138,18 +138,18 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
         return;
     }
     
-    //��shader���������
+    //attach shader to program
     glAttachShader(m_Program,m_Vert);
     glAttachShader(m_Program,m_Frag);
     
-    //��������
+    //bind attributes
     for(unsigned int i=0; i<attributes.size(); i++)
     {
         glBindAttribLocation(m_Program, (GLuint) i, (const GLchar*) attributes[i].c_str());
         CZCheckGLError();
     }
     
-    //���ӳ���
+    //link program
     GLint linkStatus;
     glLinkProgram(m_Program);
     glGetProgramiv(m_Program, GL_LINK_STATUS, &linkStatus);
@@ -161,7 +161,7 @@ CZShader::CZShader(const char* vertFileName, const char* fragFileName, \
         return;
     }
     
-    //��uniform����
+    //bind uniform objects
     for(unsigned int i=0; i<uniforms.size(); i++)
     {
         GLuint location = glGetUniformLocation(m_Program, uniforms[i].c_str());
@@ -194,11 +194,11 @@ CZShader::~CZShader()
     if(NULL != m_FragmentShader)
         delete[] m_FragmentShader;
     
-    //ɾ��program
+    //delete program
     glDeleteProgram(m_Program);
 }
 
-/// ������ɫ��
+/// destroy shaders
 void CZShader::destroyShaders(GLuint vertShader,GLuint fragShader, GLuint prog)
 {
     if(vertShader) { glDeleteShader(vertShader); vertShader = 0;};
@@ -221,11 +221,11 @@ bool CZShader::textFileRead(const char *_fn, GLchar *&_shader)
         return false;
     }
     
-    // ���ļ�ָ��ָ���ļ���ĩβ
+    // move the file pointer to the end of file stream
     fseek(fp,0,SEEK_END);
-    // �����ļ�β����ļ�ͷ��ƫ�������ļ����ȣ�
+    // count the offset from begin to end
     count = ftell(fp);
-    // ���ļ�ָ������ָ���ļ���ͷ��
+    // rewind the file pointer and set it to the begin
     rewind(fp);
     
     if(count<=0)
@@ -238,10 +238,10 @@ bool CZShader::textFileRead(const char *_fn, GLchar *&_shader)
     return true;
 }
 
-/// ��ʼ��OpenGL��չ
+/// init OpenGL extension
 bool CZShader::initOpenGLExtensions()
 {
-#if USE_OPENGL
+#ifdef USE_OPENGL
     if (extensionsInit) return true;
     extensionsInit = true;
     
@@ -260,10 +260,10 @@ bool CZShader::initOpenGLExtensions()
     return true;
 }
 
-/// �Ƿ�֧��GLSL
+/// whether GLSL supported
 bool CZShader::hasGLSLSupport()
 {
-#if USE_OPENGL
+#ifdef USE_OPENGL
     if (useGLSL) return true;							///< already initialized and GLSL is available
     useGLSL = true;
     
@@ -405,8 +405,6 @@ void printProgramInfoLog(GLuint obj)
     }
 }
 
-
-/// �������
 bool CZShader::compile()
 {
     if (!useGLSL) return false;
