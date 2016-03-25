@@ -11,6 +11,16 @@
 
 using namespace std;
 
+
+#if defined(__ANDROID__)
+char* GetImageClass = nullptr;
+char* GetImageMethod = nullptr;
+
+char* ModelLoadCallerClass = nullptr;
+char* ModelLoadCallerMethod = nullptr;
+
+#endif
+
 Application3D::Application3D()
 {
 	width = height = DEFAULT_RENDER_SIZE;
@@ -29,6 +39,14 @@ Application3D::~Application3D()
 		delete itr->second;
 	}
 	shaders.clear();
+    
+#ifdef __ANDROID__
+	if(GetImageClass)		{	delete [] GetImageClass; GetImageClass = nullptr;}
+	if(GetImageMethod)		{	delete [] GetImageMethod; GetImageMethod = nullptr;}
+	if(ModelLoadCallerClass)		{	delete [] ModelLoadCallerClass; ModelLoadCallerClass = nullptr;}
+	if(ModelLoadCallerMethod)		{	delete [] ModelLoadCallerMethod; ModelLoadCallerMethod = nullptr;}
+#endif
+    
 	if(documentDirectory)   delete [] documentDirectory;
 	if (backgroundImage) {
 		delete backgroundImage;
@@ -134,6 +152,7 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
 
 	CZCheckGLError();
 
+	modelLoadingDone();
 	return true;
 }
 
@@ -209,7 +228,7 @@ void Application3D::frame()
 	start = clock();
 #endif
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// ������ɫ������ �� ��Ȼ�����
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 
 # ifdef _WIN32
 	glMatrixMode(GL_MODELVIEW);
@@ -295,33 +314,13 @@ void Application3D::reset()
 }
 
 #ifdef	__ANDROID__
-bool Application3D::createShaders(const char* vertFile, const char* fragFile)
+bool Application3D::createShader(ShaderType type,const char* vertFile, const char* fragFile,std::vector<std::string> &attributes,std::vector<std::string> &uniforms)
 {
 	if(vertFile == nullptr || fragFile == nullptr)
 	{
 		LOG_ERROR("vertFile or fragFile is NULL\n");
 		return false;
 	}
-
-	vector<string> attributes;
-	attributes.push_back("vert");
-	attributes.push_back("vertNormal");
-	attributes.push_back("vertTexCoord");
-	vector<string> uniforms;
-	uniforms.push_back("mvpMat");
-	uniforms.push_back("modelMat");
-	uniforms.push_back("modelInverseTransposeMat");
-	uniforms.push_back("ambientLight.intensities");
-	uniforms.push_back("directionalLight.direction");
-	uniforms.push_back("directionalLight.intensities");
-	uniforms.push_back("eyePosition");
-	uniforms.push_back("tex");
-	uniforms.push_back("hasTex");
-	uniforms.push_back("material.kd");
-	uniforms.push_back("material.ka");
-	uniforms.push_back("material.ke");
-	uniforms.push_back("material.ks");
-	uniforms.push_back("material.Ns");
 
 	CZShader *pShader = new CZShader(vertFile,fragFile,attributes,uniforms,true);
 	if (pShader->isReady() == false)
@@ -330,12 +329,47 @@ bool Application3D::createShaders(const char* vertFile, const char* fragFile)
 		return false;
 	}
 
-	shaders.insert(make_pair(kDirectionalLightShading,pShader));
+	shaders.insert(make_pair(type,pShader));
 
 	CZCheckGLError();
 
 	return true;
 }
+
+void Application3D::setImageLoader(const char * cls, const char * method)
+{
+	if(cls == nullptr || method == nullptr)
+	{
+		LOG_ERROR("parameters contains nullptr\n");
+		return;
+	}
+
+	if(GetImageClass)	delete[] GetImageClass;
+	GetImageClass = new char[strlen(cls)+1];
+	strcpy(GetImageClass,cls);
+
+	if(GetImageMethod)	delete[] GetImageMethod;
+	GetImageMethod = new char[strlen(method)+1];
+	strcpy(GetImageMethod,method);
+}
+
+void Application3D::setModelLoadCallBack(const char * cls, const char *method)
+{
+	if(cls == nullptr || method == nullptr)
+	{
+		LOG_ERROR("parameters contains nullptr\n");
+		return;
+	}
+
+	if(ModelLoadCallerClass)	delete[] ModelLoadCallerClass;
+	ModelLoadCallerClass = new char[strlen(cls)+1];
+	strcpy(ModelLoadCallerClass,cls);
+
+	if(ModelLoadCallerMethod)	delete[] ModelLoadCallerMethod;
+	ModelLoadCallerMethod = new char[strlen(method)+1];
+	strcpy(ModelLoadCallerMethod,method);
+}
+
 #endif
 
 // document directory

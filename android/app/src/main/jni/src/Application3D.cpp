@@ -39,10 +39,14 @@ Application3D::~Application3D()
 		delete itr->second;
 	}
 	shaders.clear();
+    
+#ifdef __ANDROID__
 	if(GetImageClass)		{	delete [] GetImageClass; GetImageClass = nullptr;}
 	if(GetImageMethod)		{	delete [] GetImageMethod; GetImageMethod = nullptr;}
 	if(ModelLoadCallerClass)		{	delete [] ModelLoadCallerClass; ModelLoadCallerClass = nullptr;}
 	if(ModelLoadCallerMethod)		{	delete [] ModelLoadCallerMethod; ModelLoadCallerMethod = nullptr;}
+#endif
+    
 	if(documentDirectory)   delete [] documentDirectory;
 	if (backgroundImage) {
 		delete backgroundImage;

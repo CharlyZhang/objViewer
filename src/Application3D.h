@@ -33,7 +33,9 @@ public:
 	void reset();
 
 #ifdef	__ANDROID__
-	bool createShaders(const char* vertFile, const char* fragFile);
+	bool createShader(ShaderType type,const char* vertFile, const char* fragFile, std::vector<std::string> &attributes,std::vector<std::string> &uniforms);
+    void setImageLoader(const char * cls, const char * method);
+    void setModelLoadCallBack(const char * cls, const char *method);
 #endif
     
     // document directory
