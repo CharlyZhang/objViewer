@@ -120,7 +120,21 @@ bool CZObjModel::saveAsBinary(const std::string& path)
             int h = pMaterial->texImage->height;
             fwrite((char*)&w, sizeof(int), 1, fp);
             fwrite((char*)&h, sizeof(int), 1, fp);
-            fwrite((char*)pMaterial->texImage->data, sizeof(unsigned char), w*h*4, fp);
+			char colorComponentNum;
+			switch (pMaterial->texImage->colorSpace)
+			{
+			case CZImage::RGB:
+				colorComponentNum = 3;
+				break;
+			case CZImage::RGBA:
+				colorComponentNum = 4;
+				break;
+			case CZImage::GRAY:
+				colorComponentNum = 1;
+				break;
+			}
+			fwrite(&colorComponentNum, sizeof(char),1,fp);
+            fwrite((char*)pMaterial->texImage->data, sizeof(unsigned char), w*h*colorComponentNum, fp);
         }
     }
     
@@ -215,11 +229,23 @@ bool CZObjModel::loadBinary(const std::string& path,const char *originalPath/*  
             int w,h;
             fread((char*)&w, sizeof(int), 1, fp);
             fread((char*)&h, sizeof(int), 1, fp);
-            CZImage *texImage = new CZImage;
-            texImage->width = w;
-            texImage->height = h;
-            texImage->data = new unsigned char[w*h*4];
-            fread((char*)texImage->data, sizeof(unsigned char), w*h*4, fp);
+			char colorComponentNum;
+			CZImage::ColorSpace colorSpace;
+			fread(&colorComponentNum, sizeof(char), 1, fp);
+			switch (colorComponentNum)
+			{
+			case 3:
+				colorSpace = CZImage::RGB;
+				break;
+			case 4:
+				colorSpace = CZImage::RGBA;
+				break;
+			case 1:
+				colorSpace = CZImage::GRAY;
+				break;
+			}
+            CZImage *texImage = new CZImage(w,h,colorSpace);
+            fread((char*)texImage->data, sizeof(unsigned char), w*h*colorComponentNum, fp);
             pMaterial->setTextureImage(texImage);
         }
         
