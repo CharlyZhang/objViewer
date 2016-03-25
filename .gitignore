@@ -8,14 +8,13 @@ data/
 *.suo
 ios/lib
 ios/Application3D/Application3D.xcodeproj/xcuserdata
+ios/Application3D/Application3D.xcodeproj/project.xcworkspace/xcuserdata
 ios/objViewer.xcworkspace/xcuserdata
 ios/objViewer/objViewer.xcodeproj/xcuserdata
 android/app/build
 android/.gradle/2.8/taskArtifacts
-
 android/app/src/main/obj
 android/app/src/main/libs
 android/app/build
 android/.gradle
 android/.idea
-ios
