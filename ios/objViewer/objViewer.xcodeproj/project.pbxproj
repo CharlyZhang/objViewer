@@ -232,7 +232,7 @@
 				TargetAttributes = {
 					2DD4390C1BDA35CD004F1B8D = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = JWD48Y236P;
+						DevelopmentTeam = 7NC252WH29;
 					};
 					2DD439251BDA35CD004F1B8D = {
 						CreatedOnToolsVersion = 6.4;

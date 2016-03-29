@@ -11,7 +11,7 @@
 #include "MBProgressHUD/MBProgressHUD.h"
 
 #define MODEL_FROM_BUNDLE 0
-#define MULTI_MODELS_FROM_BUNDLE 1
+#define MULTI_MODELS_FROM_BUNDLE 0
 
 @interface ViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,MBProgressHUDDelegate>
 {
@@ -287,9 +287,11 @@
     }
     
     selectedModel = modelIdx;
+    [glView clearObjModel];
     
     [self.view setUserInteractionEnabled:NO];
     [glView stopRenderLoop];
+    
     __block EAGLView *blockGlView = glView;
     [hud showAnimated:YES whileExecutingBlock:^{
 #if MULTI_MODELS_FROM_BUNDLE

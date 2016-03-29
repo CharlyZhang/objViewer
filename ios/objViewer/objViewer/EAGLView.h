@@ -50,6 +50,7 @@
 - (void) drawFrame;
 - (void) reset;
 - (BOOL) loadModel:(NSString*)path;
+- (BOOL) clearObjModel;
 
 // for debug
 - (void) setCameraPositionWithX:(float)x Y:(float)y Z:(float) z;

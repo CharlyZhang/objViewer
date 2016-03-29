@@ -15,6 +15,7 @@
 #include "Application3D.h"
 
 #define USE_DEPTH_BUFFER 1
+#define USE_PIC_BACKGROUND 0
 //#define SHOW_RENDER_TIME
 //declare private methods, so they can be used everywhere in this file
 @interface EAGLView (PrivateMethods)
@@ -70,11 +71,13 @@
     app3d.setDocDirectory([docPath UTF8String]);
     app3d.setBackgroundColor(1, 1, 1, 1);
     
+#if USE_PIC_BACKGROUND
     // background image
     NSString *backImgPath = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"background.jpg"];
     std::string cstrImagePath = std::string([backImgPath UTF8String]);
     CZImage *backgroundImage = CZLoadTexture(cstrImagePath);
     app3d.setBackgroundImage(backgroundImage);
+#endif
     
     modelLoaded = NO;
     
@@ -263,6 +266,11 @@
     
     modelLoaded = result;
     return result;
+}
+
+- (BOOL) clearObjModel
+{
+    return app3d.clearObjModel();
 }
 
 - (void) setCameraPositionWithX:(float)x Y:(float)y Z:(float) z
