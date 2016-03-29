@@ -53,7 +53,6 @@
     self.navigationItem.rightBarButtonItem = loadButton;
     self.title = @"3D模型展示";
     
-    
     [self.pickView setHidden:YES];
 }
 
@@ -64,6 +63,10 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (BOOL) shouldAutorotate {
+    return NO;
 }
 
 - (void)cleanTemp
@@ -184,6 +187,13 @@
     tap.numberOfTapsRequired = 2;
     [glView addGestureRecognizer:tap];
     
+    UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleSwitcher:)];
+    tap1.numberOfTouchesRequired = 3;
+    tap1.numberOfTapsRequired = 2;
+    [glView addGestureRecognizer:tap1];
+    [tap requireGestureRecognizerToFail:tap1];
+    
+    
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     hud.delegate = self;
     [self.view addSubview:hud];
@@ -236,6 +246,11 @@
     if (tap.state == UIGestureRecognizerStateEnded) {
         [glView reset];
     }
+}
+
+
+- (void) toggleSwitcher:(UITapGestureRecognizer*) tap{
+    self.pickView.hidden = !self.pickView.hidden;
 }
 
 # pragma mark - Actions
@@ -309,6 +324,7 @@
     }];
     
 }
+
 # pragma mark - Picker View
 // returns the number of 'columns' to display.
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
