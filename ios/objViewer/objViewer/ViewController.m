@@ -98,40 +98,10 @@
     modelPath = [[NSArray alloc]init];
    
 #if MODEL_FROM_BUNDLE
-    
-//    NSString *model0 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/中提琴/zhongtiqin.obj"];
-//    NSString *model1 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/LL/xiaotiqing.obj"];
-//    NSString *model2 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/低音提琴/diyintiqing.obj"];
-//    NSString *model3 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/大提琴/datiqing.obj"];
-//    NSString *model4 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DaTiQin/DaTiQin.obj"];
-//    NSString *model5 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/DiYinTiQin/DiYinTiqin.obj"];
-//    NSString *model6 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/XiaoTiQin/XiaoTiQin.obj"];
-//    NSString *model7 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/ZhongTiQin/ZhongTiQin.obj"];
-//    NSString *model8 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/11.obj"];
-//    NSString *model9 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/白塔1/baita.obj"];
-//    NSString *model10 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/银壶1/yinhu.obj"];
-//    NSString *model11 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/花灯1/huadeng.obj"];
-//    NSString *model12 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/教堂1/jiaotang.obj"];
-    
-//    modelName = [modelName arrayByAddingObject:@"教堂"];
-//    modelPath = [modelPath arrayByAddingObject:model12];
-//    modelName = [modelName arrayByAddingObject:@"白塔"];
-//    modelPath = [modelPath arrayByAddingObject:model9];
-//    modelName = [modelName arrayByAddingObject:@"银壶"];
-//    modelPath = [modelPath arrayByAddingObject:model10];
-    
-    NSString *model13 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/金龛塔1/jingheta.obj"];
-    NSString *model14 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/塔精模1/jingmota.obj"];
-    NSString *model15 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/金刚宝座塔1/baota.obj"];
-    NSString *model16 = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"obj/南禅寺1/ww.obj"];
-    modelName = [modelName arrayByAddingObject:@"金龛塔"];
-    modelPath = [modelPath arrayByAddingObject:model13];
-    modelName = [modelName arrayByAddingObject:@"塔精模"];
-    modelPath = [modelPath arrayByAddingObject:model14];
-    modelName = [modelName arrayByAddingObject:@"金刚宝座塔"];
-    modelPath = [modelPath arrayByAddingObject:model15];
-    modelName = [modelName arrayByAddingObject:@"南禅寺"];
-    modelPath = [modelPath arrayByAddingObject:model16];
+    NSString *model = [[[NSBundle mainBundle]bundlePath] stringByAppendingPathComponent:@"data/plane/plane.obj"];
+
+    modelName = [modelName arrayByAddingObject:@"飞机"];
+    modelPath = [modelPath arrayByAddingObject:model];
     
 #elif MULTI_MODELS_FROM_BUNDLE
     modelName = [modelName arrayByAddingObject:@"MX"];

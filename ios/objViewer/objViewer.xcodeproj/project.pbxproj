@@ -9,11 +9,11 @@
 /* Begin PBXBuildFile section */
 		2D0715C01BF208CE002F0842 /* MBProgressHUD in Resources */ = {isa = PBXBuildFile; fileRef = 2D0715BF1BF208CE002F0842 /* MBProgressHUD */; };
 		2D0715C51BF20B78002F0842 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0715C41BF20B78002F0842 /* MBProgressHUD.m */; };
-		2D3F20651BF322C60089F1E9 /* ReadMe.md in Sources */ = {isa = PBXBuildFile; fileRef = 2D3F20641BF322C60089F1E9 /* ReadMe.md */; };
 		2D7673C91BEC3A0A00783623 /* standard.vert in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C31BEC3A0A00783623 /* standard.vert */; };
 		2D7673CA1BEC3A0A00783623 /* directionalLight.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C41BEC3A0A00783623 /* directionalLight.frag */; };
 		2D7673CE1BECAF5C00783623 /* scene.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673CD1BECAF5C00783623 /* scene.cfg */; };
 		2D7673D01BF02D9100783623 /* scene_violin.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673CF1BF02D9100783623 /* scene_violin.cfg */; };
+		2DA32C101D17E41B00CE05FC /* data in Resources */ = {isa = PBXBuildFile; fileRef = 2DA32C0F1D17E41B00CE05FC /* data */; };
 		2DB3D49F1C9FCAAB002541DC /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DB3D49E1C9FCAAB002541DC /* background.jpg */; };
 		2DBACECF1C9FDD6500BB5950 /* blit.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2DBACECD1C9FDD6500BB5950 /* blit.frag */; };
 		2DBACED01C9FDD6500BB5950 /* blit.vert in Resources */ = {isa = PBXBuildFile; fileRef = 2DBACECE1C9FDD6500BB5950 /* blit.vert */; };
@@ -25,7 +25,6 @@
 		2DD439211BDA35CD004F1B8D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DD4391F1BDA35CD004F1B8D /* LaunchScreen.xib */; };
 		2DD4392D1BDA35CD004F1B8D /* objViewerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4392C1BDA35CD004F1B8D /* objViewerTests.m */; };
 		2DD43A0A1BE1FC30004F1B8D /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2DD43A091BE1FC30004F1B8D /* EAGLView.mm */; };
-		2DD43A0C1BE21F73004F1B8D /* obj in Resources */ = {isa = PBXBuildFile; fileRef = 2DD43A0B1BE21F73004F1B8D /* obj */; };
 		2DD43A0E1BE2216D004F1B8D /* libApplication3D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD43A0D1BE2216D004F1B8D /* libApplication3D.a */; };
 		2DD43A291BE37BDA004F1B8D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD43A281BE37BDA004F1B8D /* UIKit.framework */; };
 /* End PBXBuildFile section */
@@ -49,6 +48,7 @@
 		2D7673C41BEC3A0A00783623 /* directionalLight.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = directionalLight.frag; sourceTree = "<group>"; };
 		2D7673CD1BECAF5C00783623 /* scene.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = scene.cfg; path = ../../src/scene.cfg; sourceTree = "<group>"; };
 		2D7673CF1BF02D9100783623 /* scene_violin.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = scene_violin.cfg; path = ../../src/scene_violin.cfg; sourceTree = "<group>"; };
+		2DA32C0F1D17E41B00CE05FC /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = ../../../data; sourceTree = "<group>"; };
 		2DB3D49E1C9FCAAB002541DC /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		2DBACECD1C9FDD6500BB5950 /* blit.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blit.frag; sourceTree = "<group>"; };
 		2DBACECE1C9FDD6500BB5950 /* blit.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blit.vert; sourceTree = "<group>"; };
@@ -67,7 +67,6 @@
 		2DD4392C1BDA35CD004F1B8D /* objViewerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = objViewerTests.m; sourceTree = "<group>"; };
 		2DD43A081BE1FC30004F1B8D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
 		2DD43A091BE1FC30004F1B8D /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
-		2DD43A0B1BE21F73004F1B8D /* obj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = obj; path = ../../../../../Desktop/obj; sourceTree = "<group>"; };
 		2DD43A0D1BE2216D004F1B8D /* libApplication3D.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libApplication3D.a; path = "../Application3D/build/Debug-iphoneos/libApplication3D.a"; sourceTree = "<group>"; };
 		2DD43A281BE37BDA004F1B8D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -127,6 +126,7 @@
 		2DD4390F1BDA35CD004F1B8D /* objViewer */ = {
 			isa = PBXGroup;
 			children = (
+				2DA32C0F1D17E41B00CE05FC /* data */,
 				2D0715C21BF20B66002F0842 /* MBProgressHUD */,
 				2DD43A081BE1FC30004F1B8D /* EAGLView.h */,
 				2DD43A091BE1FC30004F1B8D /* EAGLView.mm */,
@@ -147,7 +147,6 @@
 			children = (
 				2DB3D49E1C9FCAAB002541DC /* background.jpg */,
 				2D3F20641BF322C60089F1E9 /* ReadMe.md */,
-				2DD43A0B1BE21F73004F1B8D /* obj */,
 				2DD439111BDA35CD004F1B8D /* Info.plist */,
 				2DD439121BDA35CD004F1B8D /* main.m */,
 			);
@@ -232,7 +231,7 @@
 				TargetAttributes = {
 					2DD4390C1BDA35CD004F1B8D = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = 7NC252WH29;
+						DevelopmentTeam = JWD48Y236P;
 					};
 					2DD439251BDA35CD004F1B8D = {
 						CreatedOnToolsVersion = 6.4;
@@ -271,10 +270,10 @@
 				2DD439211BDA35CD004F1B8D /* LaunchScreen.xib in Resources */,
 				2DB3D49F1C9FCAAB002541DC /* background.jpg in Resources */,
 				2DBACECF1C9FDD6500BB5950 /* blit.frag in Resources */,
-				2DD43A0C1BE21F73004F1B8D /* obj in Resources */,
 				2D7673CE1BECAF5C00783623 /* scene.cfg in Resources */,
 				2DD4391E1BDA35CD004F1B8D /* Images.xcassets in Resources */,
 				2D7673CA1BEC3A0A00783623 /* directionalLight.frag in Resources */,
+				2DA32C101D17E41B00CE05FC /* data in Resources */,
 				2DBACED01C9FDD6500BB5950 /* blit.vert in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -295,7 +294,6 @@
 			files = (
 				2DD439191BDA35CD004F1B8D /* ViewController.m in Sources */,
 				2DD439161BDA35CD004F1B8D /* AppDelegate.m in Sources */,
-				2D3F20651BF322C60089F1E9 /* ReadMe.md in Sources */,
 				2D0715C51BF20B78002F0842 /* MBProgressHUD.m in Sources */,
 				2DD439131BDA35CD004F1B8D /* main.m in Sources */,
 				2DD43A0A1BE1FC30004F1B8D /* EAGLView.mm in Sources */,
@@ -426,8 +424,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Founder Electronics Co Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Beijing Founder Electronics Co Ltd";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -441,9 +439,9 @@
 					"/Users/charlyzhang/Git/OBJViewer/ios/Application3D/build/Debug-iphoneos",
 				);
 				OTHER_LDFLAGS = "-all_load";
-				PRODUCT_BUNDLE_IDENTIFIER = com.charlyzhang.objViewer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.founder.objViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "996d68d1-7df3-411e-93da-d9d99561950b";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -452,8 +450,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Founder Electronics Co Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Beijing Founder Electronics Co Ltd";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -467,9 +465,9 @@
 					"/Users/charlyzhang/Git/OBJViewer/ios/Application3D/build/Debug-iphoneos",
 				);
 				OTHER_LDFLAGS = "-all_load";
-				PRODUCT_BUNDLE_IDENTIFIER = com.charlyzhang.objViewer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.founder.objViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "000aceba-9908-4eab-a38e-aca833f1c3e8";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

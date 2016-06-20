@@ -29,7 +29,6 @@
 		2D76737D1BE752AD00783623 /* CZObjModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7673661BE752AD00783623 /* CZObjModel.cpp */; };
 		2D7673811BE752AD00783623 /* CZUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2D76736D1BE752AD00783623 /* CZUtil.mm */; };
 		2D7673891BE7709400783623 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7673881BE7709400783623 /* OpenGLES.framework */; };
-		2DC2F2471C2FB4B100FAABF3 /* ChangeLog.md in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2F2461C2FB4B100FAABF3 /* ChangeLog.md */; };
 		2DC2F24E1C2FB6DC00FAABF3 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2F24D1C2FB6DC00FAABF3 /* UIImage+Resize.m */; };
 		2DE8F1431BF2E87C004FC906 /* CZShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8F1421BF2E87C004FC906 /* CZShader.cpp */; };
 		2DE8F14A1BF2E908004FC906 /* CZGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE8F1441BF2E908004FC906 /* CZGeometry.cpp */; };
@@ -292,7 +291,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DE8F14A1BF2E908004FC906 /* CZGeometry.cpp in Sources */,
-				2DC2F2471C2FB4B100FAABF3 /* ChangeLog.md in Sources */,
 				2DE8F1431BF2E87C004FC906 /* CZShader.cpp in Sources */,
 				2DE8F14B1BF2E908004FC906 /* CZMaterialLib.cpp in Sources */,
 				2D7673791BE752AD00783623 /* CZMat4.cpp in Sources */,
