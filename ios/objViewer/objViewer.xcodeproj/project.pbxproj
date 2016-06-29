@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2D0715C01BF208CE002F0842 /* MBProgressHUD in Resources */ = {isa = PBXBuildFile; fileRef = 2D0715BF1BF208CE002F0842 /* MBProgressHUD */; };
 		2D0715C51BF20B78002F0842 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0715C41BF20B78002F0842 /* MBProgressHUD.m */; };
+		2D23748E1D23A11F00D71517 /* libApplication3D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D23748D1D23A11F00D71517 /* libApplication3D.a */; };
 		2D7673C91BEC3A0A00783623 /* standard.vert in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C31BEC3A0A00783623 /* standard.vert */; };
 		2D7673CA1BEC3A0A00783623 /* directionalLight.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C41BEC3A0A00783623 /* directionalLight.frag */; };
 		2D7673CE1BECAF5C00783623 /* scene.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673CD1BECAF5C00783623 /* scene.cfg */; };
@@ -25,7 +26,6 @@
 		2DD439211BDA35CD004F1B8D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DD4391F1BDA35CD004F1B8D /* LaunchScreen.xib */; };
 		2DD4392D1BDA35CD004F1B8D /* objViewerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4392C1BDA35CD004F1B8D /* objViewerTests.m */; };
 		2DD43A0A1BE1FC30004F1B8D /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2DD43A091BE1FC30004F1B8D /* EAGLView.mm */; };
-		2DD43A0E1BE2216D004F1B8D /* libApplication3D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD43A0D1BE2216D004F1B8D /* libApplication3D.a */; };
 		2DD43A291BE37BDA004F1B8D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD43A281BE37BDA004F1B8D /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +43,7 @@
 		2D0715BF1BF208CE002F0842 /* MBProgressHUD */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MBProgressHUD; path = /Users/charlyzhang/Git/OBJViewer/ios/objViewer/objViewer/MBProgressHUD; sourceTree = "<absolute>"; };
 		2D0715C31BF20B78002F0842 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = MBProgressHUD/MBProgressHUD.h; sourceTree = "<group>"; };
 		2D0715C41BF20B78002F0842 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = MBProgressHUD/MBProgressHUD.m; sourceTree = "<group>"; };
+		2D23748D1D23A11F00D71517 /* libApplication3D.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libApplication3D.a; path = "../../../../Library/Developer/Xcode/DerivedData/objViewer-cygvwknuphyoqlfhbslvazlcfpea/Build/Products/Debug-iphoneos/libApplication3D.a"; sourceTree = "<group>"; };
 		2D3F20641BF322C60089F1E9 /* ReadMe.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReadMe.md; path = /Users/charlyzhang/Git/OBJViewer/ios/Application3D/../../ReadMe.md; sourceTree = "<absolute>"; };
 		2D7673C31BEC3A0A00783623 /* standard.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = standard.vert; sourceTree = "<group>"; };
 		2D7673C41BEC3A0A00783623 /* directionalLight.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = directionalLight.frag; sourceTree = "<group>"; };
@@ -67,7 +68,6 @@
 		2DD4392C1BDA35CD004F1B8D /* objViewerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = objViewerTests.m; sourceTree = "<group>"; };
 		2DD43A081BE1FC30004F1B8D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
 		2DD43A091BE1FC30004F1B8D /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
-		2DD43A0D1BE2216D004F1B8D /* libApplication3D.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libApplication3D.a; path = "../Application3D/build/Debug-iphoneos/libApplication3D.a"; sourceTree = "<group>"; };
 		2DD43A281BE37BDA004F1B8D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -76,8 +76,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D23748E1D23A11F00D71517 /* libApplication3D.a in Frameworks */,
 				2DD43A291BE37BDA004F1B8D /* UIKit.framework in Frameworks */,
-				2DD43A0E1BE2216D004F1B8D /* libApplication3D.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,8 +105,8 @@
 			children = (
 				2D7673CF1BF02D9100783623 /* scene_violin.cfg */,
 				2D7673CD1BECAF5C00783623 /* scene.cfg */,
+				2D23748D1D23A11F00D71517 /* libApplication3D.a */,
 				2DD43A281BE37BDA004F1B8D /* UIKit.framework */,
-				2DD43A0D1BE2216D004F1B8D /* libApplication3D.a */,
 				2DD43A231BE30008004F1B8D /* glsl */,
 				2DD4390F1BDA35CD004F1B8D /* objViewer */,
 				2DD439291BDA35CD004F1B8D /* objViewerTests */,

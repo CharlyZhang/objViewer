@@ -142,11 +142,8 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
 		if(success && quickLoad)
 			pModel->saveAsBinary(tempFileName);
 	}
-
-	models.push_back(pModel);
-	translateMats.push_back(CZMat4());
-	rotateMats.push_back(CZMat4());
-	scaleMats.push_back(CZMat4());
+    
+    nodes.push_back(pModel);
 
 	reset();
 
@@ -158,14 +155,14 @@ bool Application3D::loadObjModel(const char* filename, bool quickLoad /* = true 
 
 bool Application3D::clearObjModel()
 {
-	for (auto i = 0; i < models.size(); i ++)
-	{
-		delete models[i];
-	}
-	models.clear();
-	translateMats.clear();
-	scaleMats.clear();
-	rotateMats.clear();
+    for(CZNodeArray::iterator itr = nodes.begin(); itr != nodes.end(); itr ++)
+    {
+        if((*itr)->getType() == CZNode::kObjModel)
+        {
+            delete (CZObjModel*)(*itr);
+            itr = nodes.erase(itr);
+        }
+    }
 
 	return true;
 }
@@ -271,14 +268,14 @@ void Application3D::frame()
 		scene.directionalLight.intensity.z);
 	CZCheckGLError();
 
-	for (auto i = 0; i < models.size(); i++) {
-		modelMat = translateMats[i] * scaleMats[i] * rotateMats[i];
+	for (auto i = 0; i < nodes.size(); i++) {
+		modelMat = nodes[i]->translateMat * nodes[i]->scaleMat * nodes[i]->rotateMat;
 		glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, projMat * viewMat * modelMat);
 		glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
 		glUniformMatrix4fv(pShader->getUniformLocation("modelInverseTransposeMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
 
-		CZObjModel *pModel = models[i];
-		pModel->draw(pShader);
+		CZNode *pNode = nodes[i];
+		pNode->draw(pShader);
 	}
 	CZCheckGLError();
 
@@ -302,10 +299,8 @@ void Application3D::frame()
 void Application3D::reset()
 {
 	/// model matrix
-	for (auto i = 0; i < models.size(); i ++) {
-		rotateMats[i].LoadIdentity();
-		translateMats[i].LoadIdentity();
-		scaleMats[i].LoadIdentity();
+	for (auto i = 0; i < nodes.size(); i ++) {
+        nodes[i]->resetMatrix();
 	}
 
 	/// color
@@ -403,66 +398,66 @@ void Application3D::setGLSLDirectory(const char* glslDir)
 }
 
 // control
-void Application3D::rotate(float deltaX, float deltaY, int modelIdx /*= -1*/)
+void Application3D::rotate(float deltaX, float deltaY, int nodeIdx /*= -1*/)
 {
 	CZMat4 tempMat;
-	if (modelIdx < 0)
+	if (nodeIdx < 0)    // rotate all nodes
 	{
-		for (auto i = 0; i < models.size(); i++)
+		for (auto i = 0; i < nodes.size(); i++)
 		{
             tempMat.SetRotationY(deltaX);
-			rotateMats[i] = tempMat * rotateMats[i];
+			nodes[i]->rotateMat = tempMat * nodes[i]->rotateMat;
 			tempMat.SetRotationX(-deltaY);
-			rotateMats[i] = tempMat * rotateMats[i];
+			nodes[i]->rotateMat = tempMat * nodes[i]->rotateMat;
 		}
 	}
-	else if(modelIdx < models.size())
+	else if(nodeIdx < nodes.size())
 	{
         tempMat.SetRotationY(deltaX);
-		rotateMats[modelIdx] = tempMat * rotateMats[modelIdx];
+		nodes[nodeIdx]->rotateMat = tempMat * nodes[nodeIdx]->rotateMat;
 		tempMat.SetRotationX(-deltaY);
-		rotateMats[modelIdx] = tempMat * rotateMats[modelIdx];
+		nodes[nodeIdx]->rotateMat = tempMat * nodes[nodeIdx]->rotateMat;
 	}
 	else
-		LOG_ERROR("modelIdx is beyond the range!\n");
+		LOG_ERROR("nodeIdx is beyond the range!\n");
 
 }
 
-void Application3D::translate(float deltaX, float deltaY, int modelIdx /*= -1*/)
+void Application3D::translate(float deltaX, float deltaY, int nodeIdx /*= -1*/)
 {
 	CZMat4 tempMat;
 	tempMat.SetTranslation(-deltaX, -deltaY, 0);
-	if (modelIdx < 0)
+	if (nodeIdx < 0)
 	{
-		for (auto i = 0; i < models.size(); i++)
+		for (auto i = 0; i < nodes.size(); i++)
 		{
-			translateMats[i] = tempMat * translateMats[i];
+			nodes[i]->translateMat = tempMat * nodes[i]->translateMat;
 		}
 	}
-	else if(modelIdx < models.size())
+	else if(nodeIdx < nodes.size())
 	{
-		translateMats[modelIdx] = tempMat * translateMats[modelIdx];
+		nodes[nodeIdx]->translateMat = tempMat * nodes[nodeIdx]->translateMat;
 	}
 	else
-		LOG_ERROR("modelIdx is beyond the range!\n");
+		LOG_ERROR("nodeIdx is beyond the range!\n");
 }
-void Application3D::scale(float s, int modelIdx /*= -1*/)
+void Application3D::scale(float s, int nodeIdx /*= -1*/)
 {
 	CZMat4 tempMat;
 	tempMat.SetScale(s);
-	if (modelIdx < 0)
+	if (nodeIdx < 0)
 	{
-		for (auto i = 0; i < models.size(); i++)
+		for (auto i = 0; i < nodes.size(); i++)
 		{
-			scaleMats[i] = tempMat * scaleMats[i];
+			nodes[i]->scaleMat = tempMat * nodes[i]->scaleMat;
 		}
 	}
-	else if(modelIdx < models.size())
+	else if(nodeIdx < nodes.size())
 	{
-		scaleMats[modelIdx] = tempMat * scaleMats[modelIdx];
+		nodes[nodeIdx]->scaleMat = tempMat * nodes[nodeIdx]->scaleMat;
 	}
 	else
-		LOG_ERROR("modelIdx is beyond the range!\n");
+		LOG_ERROR("nodeIdx is beyond the range!\n");
 }
 
 // custom config

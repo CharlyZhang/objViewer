@@ -10,6 +10,7 @@
 #include "CZMaterialLib.h"
 #include "CZShader.h"
 #include "CZMat4.h"
+#include "CZNode.h"
 
 /// file type
 typedef enum _ObjFileType {
@@ -20,7 +21,7 @@ typedef enum _ObjFileType {
 
 
 /// CZObjModel
-class CZObjModel : public CZObjFileParser
+class CZObjModel : public CZObjFileParser, public CZNode
 {
 public:
 	CZObjModel();
@@ -34,7 +35,7 @@ public:
 	///    which also cause `unpack` is useless in RENDER mode.
 	void clearRaw();
 
-	void draw(CZShader *pShader);
+	void draw(CZShader *pShader) override;
 
 private:
 	void parseLine(std::ifstream& ifs, const std::string& ele_id) override;

@@ -10,7 +10,7 @@
 #import "EAGLView.h"
 #include "MBProgressHUD/MBProgressHUD.h"
 
-#define MODEL_FROM_BUNDLE 0
+#define MODEL_FROM_BUNDLE 1
 #define MULTI_MODELS_FROM_BUNDLE 0
 
 @interface ViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,MBProgressHUDDelegate>

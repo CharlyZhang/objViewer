@@ -5,7 +5,7 @@
 
 using namespace std;
 
-CZObjModel::CZObjModel()
+CZObjModel::CZObjModel(): CZNode(kObjModel)
 {
 	pCurGeometry = NULL;
     m_vao = -1;

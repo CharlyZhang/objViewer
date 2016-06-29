@@ -7,10 +7,10 @@
 #include "CZObjFileParser.h"
 #include "CZShader.h"
 #include "CZMat4.h"
+#include "CZNode.h"
 #include "CZObjModel.h"
 
-typedef std::vector<CZObjModel*> CZObjModelArray;
-typedef std::vector<CZMat4> CZMat4Array;
+typedef std::vector<CZNode*> CZNodeArray;
 
 class Application3D : private CZObjFileParser
 {
@@ -31,6 +31,10 @@ public:
 	bool setRenderBufferSize(int w, int h);
 	void frame();
 	void reset();
+    
+    // shape
+    void createShape();
+    void clearShape();
 
 #ifdef	__ANDROID__
 	bool createShader(ShaderType type,const char* vertFile, const char* fragFile, std::vector<std::string> &attributes,std::vector<std::string> &uniforms);
@@ -47,9 +51,9 @@ public:
     
 	// control
 	//	/note : (deltaX,deltaY) is in the screen coordinate system
-	void rotate(float deltaX, float deltaY, int modelIdx = -1);
-	void translate(float deltaX, float deltaY, int modelIdx = -1);
-	void scale(float s, int modelIdx = -1);
+	void rotate(float deltaX, float deltaY, int nodeIdx = -1);
+	void translate(float deltaX, float deltaY, int nodeIdx = -1);
+	void scale(float s, int nodeIdx = -1);
 
 	// custom config
 	void setBackgroundColor(float r, float g, float b, float a);
@@ -87,8 +91,7 @@ private:
 private:
 	CZScene scene;
 	ShaderMap shaders;
-    CZObjModelArray models;
-    CZMat4Array rotateMats, translateMats, scaleMats;
+    CZNodeArray nodes;
 	CZMat4 projMat;
     
 	int width, height;
