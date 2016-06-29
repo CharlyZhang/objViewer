@@ -17,17 +17,18 @@ class CZNode
 public:
     // define type
     typedef enum _NodeType {
+        kEmpty,                     ///< empty
         kObjModel,                  ///< obj mode
         kShape                      ///< shape
     } NodeType;
     
-    CZNode(NodeType t): _type(t){};
+    CZNode(NodeType t = kEmpty): _type(t){};
     
     void resetMatrix();
     
     NodeType getType(){ return _type;}
     
-    virtual void draw(CZShader *pShader) = 0;
+    virtual void draw(CZShader *pShader){};
     
     //// properties
     CZMat4 rotateMat, translateMat, scaleMat;

@@ -92,6 +92,7 @@ private:
 	CZScene scene;
 	ShaderMap shaders;
     CZNodeArray nodes;
+    CZNode rootNode;
 	CZMat4 projMat;
     
 	int width, height;

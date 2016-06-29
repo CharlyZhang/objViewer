@@ -269,7 +269,9 @@ void Application3D::frame()
 	CZCheckGLError();
 
 	for (auto i = 0; i < nodes.size(); i++) {
-		modelMat = nodes[i]->translateMat * nodes[i]->scaleMat * nodes[i]->rotateMat;
+		modelMat = rootNode.translateMat * nodes[i]->translateMat *
+                    rootNode.scaleMat * nodes[i]->scaleMat *
+                    rootNode.rotateMat * nodes[i]->rotateMat;
 		glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, projMat * viewMat * modelMat);
 		glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
 		glUniformMatrix4fv(pShader->getUniformLocation("modelInverseTransposeMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
@@ -302,7 +304,8 @@ void Application3D::reset()
 	for (auto i = 0; i < nodes.size(); i ++) {
         nodes[i]->resetMatrix();
 	}
-
+    rootNode.resetMatrix();
+    
 	/// color
 	modelColor = scene.mColor;
 	glClearColor(scene.bgColor.r, scene.bgColor.g, scene.bgColor.b, scene.bgColor.a);
@@ -403,13 +406,11 @@ void Application3D::rotate(float deltaX, float deltaY, int nodeIdx /*= -1*/)
 	CZMat4 tempMat;
 	if (nodeIdx < 0)    // rotate all nodes
 	{
-		for (auto i = 0; i < nodes.size(); i++)
-		{
-            tempMat.SetRotationY(deltaX);
-			nodes[i]->rotateMat = tempMat * nodes[i]->rotateMat;
-			tempMat.SetRotationX(-deltaY);
-			nodes[i]->rotateMat = tempMat * nodes[i]->rotateMat;
-		}
+        tempMat.SetRotationY(deltaX);
+        rootNode.rotateMat = tempMat * rootNode.rotateMat;
+        tempMat.SetRotationX(-deltaY);
+        rootNode.rotateMat = tempMat * rootNode.rotateMat;
+
 	}
 	else if(nodeIdx < nodes.size())
 	{
@@ -429,10 +430,7 @@ void Application3D::translate(float deltaX, float deltaY, int nodeIdx /*= -1*/)
 	tempMat.SetTranslation(-deltaX, -deltaY, 0);
 	if (nodeIdx < 0)
 	{
-		for (auto i = 0; i < nodes.size(); i++)
-		{
-			nodes[i]->translateMat = tempMat * nodes[i]->translateMat;
-		}
+        rootNode.translateMat = tempMat * rootNode.translateMat;
 	}
 	else if(nodeIdx < nodes.size())
 	{
@@ -447,10 +445,7 @@ void Application3D::scale(float s, int nodeIdx /*= -1*/)
 	tempMat.SetScale(s);
 	if (nodeIdx < 0)
 	{
-		for (auto i = 0; i < nodes.size(); i++)
-		{
-			nodes[i]->scaleMat = tempMat * nodes[i]->scaleMat;
-		}
+        rootNode.scaleMat = tempMat * rootNode.scaleMat;
 	}
 	else if(nodeIdx < nodes.size())
 	{
