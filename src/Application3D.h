@@ -9,6 +9,7 @@
 #include "CZMat4.h"
 #include "CZNode.h"
 #include "CZObjModel.h"
+#include "animation/CZAnimaitonManager.hpp"
 
 typedef std::vector<CZNode*> CZNodeArray;
 
@@ -18,7 +19,8 @@ public:
 	// define type
 	typedef enum _ShaderType {
 		kDirectionalLightShading,		///< directional light shadding mode
-        kBlitImage                      ///< blit image to the renderbuffer
+        kBlitImage,                      ///< blit image to the renderbuffer
+        kBlitColor                      ///< blit color
 	} ShaderType;
 	typedef std::map<ShaderType,CZShader*> ShaderMap;
 
@@ -33,8 +35,9 @@ public:
 	void reset();
     
     // shape
-    void createShape();
-    void clearShape();
+    bool createShape(const char* shapeFileName, bool contentInParam = false);
+    bool clearShapes();
+    void animateShape();
 
 #ifdef	__ANDROID__
 	bool createShader(ShaderType type,const char* vertFile, const char* fragFile, std::vector<std::string> &attributes,std::vector<std::string> &uniforms);
@@ -94,6 +97,7 @@ private:
     CZNodeArray nodes;
     CZNode rootNode;
 	CZMat4 projMat;
+    CZAnimationManager animationManager;
     
 	int width, height;
 	CZColor modelColor;

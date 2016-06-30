@@ -11,6 +11,7 @@
 
 #include "CZMat4.h"
 #include "CZShader.h"
+#include "CZDefine.h"
 
 class CZNode
 {
@@ -22,7 +23,8 @@ public:
         kShape                      ///< shape
     } NodeType;
     
-    CZNode(NodeType t = kEmpty): _type(t){};
+    CZNode(NodeType t = kEmpty);
+    ~CZNode();
     
     void resetMatrix();
     
@@ -33,8 +35,13 @@ public:
     //// properties
     CZMat4 rotateMat, translateMat, scaleMat;
 
-private:
+protected:
     NodeType _type;
+    
+    GLuint m_vao;
+    GLuint m_vboPos;
+    GLuint m_vboNorm;
+    GLuint m_vboTexCoord;
 };
 
 #endif /* CZNode_h */

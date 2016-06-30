@@ -10,8 +10,9 @@
 #import "EAGLView.h"
 #include "MBProgressHUD/MBProgressHUD.h"
 
-#define MODEL_FROM_BUNDLE 1
+#define MODEL_FROM_BUNDLE 0
 #define MULTI_MODELS_FROM_BUNDLE 0
+#define CREATE_SHAPE 1
 
 @interface ViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,MBProgressHUDDelegate>
 {
@@ -49,8 +50,9 @@
     // navigation bar
     UIBarButtonItem *cleanButton = [[UIBarButtonItem alloc]initWithTitle:@"清除缓存" style:UIBarButtonItemStylePlain target:self action:@selector(cleanTemp)];
     UIBarButtonItem *loadButton = [[UIBarButtonItem alloc]initWithTitle:@"载入模型" style:UIBarButtonItemStylePlain target:self action:@selector(loadModels)];
+    UIBarButtonItem *testButton = [[UIBarButtonItem alloc]initWithTitle:@"测试Shape" style:UIBarButtonItemStylePlain target:self action:@selector(testShape)];
     self.navigationItem.leftBarButtonItem = cleanButton;
-    self.navigationItem.rightBarButtonItem = loadButton;
+    self.navigationItem.rightBarButtonItems = @[loadButton,testButton];
     self.title = @"3D模型展示";
     
     [self.pickView setHidden:YES];
@@ -133,35 +135,13 @@
     
     [self.pickView setHidden:NO];
     [self.pickView reloadAllComponents];
+    
     [self.navigationController setNavigationBarHidden:YES animated:YES];
-
     
     glView = [[EAGLView alloc]initWithFrame:self.view.bounds];
     [self.view insertSubview:glView atIndex:0];
+    [self createGuesturesForView:glView];
     
-    UIPanGestureRecognizer *rot = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];
-    [rot setMinimumNumberOfTouches:1];
-    [rot setMaximumNumberOfTouches:1];
-    [glView addGestureRecognizer:rot];
-    
-    UIPanGestureRecognizer *mov = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-    [mov setMinimumNumberOfTouches:2];
-    [mov setMaximumNumberOfTouches:2];
-    [glView addGestureRecognizer:mov];
-    
-    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scale:)];
-    [glView addGestureRecognizer:pinch];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-    tap.numberOfTouchesRequired = 2;
-    tap.numberOfTapsRequired = 2;
-    [glView addGestureRecognizer:tap];
-    
-    UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleSwitcher:)];
-    tap1.numberOfTouchesRequired = 3;
-    tap1.numberOfTapsRequired = 2;
-    [glView addGestureRecognizer:tap1];
-    [tap requireGestureRecognizerToFail:tap1];
     
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
@@ -173,6 +153,32 @@
     [glView startRenderLoop];
     
     [self loadModel:0];
+
+}
+
+- (void)testShape {
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    glView = [[EAGLView alloc]initWithFrame:self.view.bounds];
+    [self.view insertSubview:glView atIndex:0];
+    [self createGuesturesForView:glView];
+    
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    hud.delegate = self;
+    [self.view addSubview:hud];
+    
+    hud.labelText = @"正在载入模型...";
+    
+    [self.view setUserInteractionEnabled:NO];
+    
+    __block EAGLView *blockGlView = glView;
+    [hud showAnimated:YES whileExecutingBlock:^{
+        [blockGlView createShape];
+    } completionBlock:^ {
+        [self.view setUserInteractionEnabled:YES];
+        [blockGlView drawFrame];
+        [blockGlView startRenderLoop];
+    }];
 
 }
 
@@ -319,5 +325,33 @@
         return;
     }
     [self loadModel:row];
+}
+
+# pragma mark - Private
+
+- (void) createGuesturesForView:(UIView*)view {
+    UIPanGestureRecognizer *rot = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];
+    [rot setMinimumNumberOfTouches:1];
+    [rot setMaximumNumberOfTouches:1];
+    [view addGestureRecognizer:rot];
+    
+    UIPanGestureRecognizer *mov = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+    [mov setMinimumNumberOfTouches:2];
+    [mov setMaximumNumberOfTouches:2];
+    [view addGestureRecognizer:mov];
+    
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scale:)];
+    [view addGestureRecognizer:pinch];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    tap.numberOfTouchesRequired = 2;
+    tap.numberOfTapsRequired = 2;
+    [view addGestureRecognizer:tap];
+    
+    UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleSwitcher:)];
+    tap1.numberOfTouchesRequired = 3;
+    tap1.numberOfTapsRequired = 2;
+    [view addGestureRecognizer:tap1];
+    [tap requireGestureRecognizerToFail:tap1];
 }
 @end

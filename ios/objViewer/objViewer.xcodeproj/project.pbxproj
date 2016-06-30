@@ -10,6 +10,8 @@
 		2D0715C01BF208CE002F0842 /* MBProgressHUD in Resources */ = {isa = PBXBuildFile; fileRef = 2D0715BF1BF208CE002F0842 /* MBProgressHUD */; };
 		2D0715C51BF20B78002F0842 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0715C41BF20B78002F0842 /* MBProgressHUD.m */; };
 		2D23748E1D23A11F00D71517 /* libApplication3D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D23748D1D23A11F00D71517 /* libApplication3D.a */; };
+		2D5D46DD1D24DDC10083F891 /* blitColor.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D5D46DC1D24DDC10083F891 /* blitColor.frag */; };
+		2D5D46DF1D24DDEA0083F891 /* blitColor.vert in Resources */ = {isa = PBXBuildFile; fileRef = 2D5D46DE1D24DDEA0083F891 /* blitColor.vert */; };
 		2D7673C91BEC3A0A00783623 /* standard.vert in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C31BEC3A0A00783623 /* standard.vert */; };
 		2D7673CA1BEC3A0A00783623 /* directionalLight.frag in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673C41BEC3A0A00783623 /* directionalLight.frag */; };
 		2D7673CE1BECAF5C00783623 /* scene.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 2D7673CD1BECAF5C00783623 /* scene.cfg */; };
@@ -45,6 +47,8 @@
 		2D0715C41BF20B78002F0842 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = MBProgressHUD/MBProgressHUD.m; sourceTree = "<group>"; };
 		2D23748D1D23A11F00D71517 /* libApplication3D.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libApplication3D.a; path = "../../../../Library/Developer/Xcode/DerivedData/objViewer-cygvwknuphyoqlfhbslvazlcfpea/Build/Products/Debug-iphoneos/libApplication3D.a"; sourceTree = "<group>"; };
 		2D3F20641BF322C60089F1E9 /* ReadMe.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReadMe.md; path = /Users/charlyzhang/Git/OBJViewer/ios/Application3D/../../ReadMe.md; sourceTree = "<absolute>"; };
+		2D5D46DC1D24DDC10083F891 /* blitColor.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = blitColor.frag; path = /Users/charlyzhang/Git/objViewer/src/glsl/blitColor.frag; sourceTree = "<absolute>"; };
+		2D5D46DE1D24DDEA0083F891 /* blitColor.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blitColor.vert; sourceTree = "<group>"; };
 		2D7673C31BEC3A0A00783623 /* standard.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = standard.vert; sourceTree = "<group>"; };
 		2D7673C41BEC3A0A00783623 /* directionalLight.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = directionalLight.frag; sourceTree = "<group>"; };
 		2D7673CD1BECAF5C00783623 /* scene.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = scene.cfg; path = ../../src/scene.cfg; sourceTree = "<group>"; };
@@ -177,6 +181,8 @@
 				2DBACECE1C9FDD6500BB5950 /* blit.vert */,
 				2D7673C31BEC3A0A00783623 /* standard.vert */,
 				2D7673C41BEC3A0A00783623 /* directionalLight.frag */,
+				2D5D46DC1D24DDC10083F891 /* blitColor.frag */,
+				2D5D46DE1D24DDEA0083F891 /* blitColor.vert */,
 			);
 			name = glsl;
 			path = /Users/charlyzhang/Git/OBJViewer/ios/Application3D/Application3D/../../../src/glsl;
@@ -272,7 +278,9 @@
 				2DBACECF1C9FDD6500BB5950 /* blit.frag in Resources */,
 				2D7673CE1BECAF5C00783623 /* scene.cfg in Resources */,
 				2DD4391E1BDA35CD004F1B8D /* Images.xcassets in Resources */,
+				2D5D46DD1D24DDC10083F891 /* blitColor.frag in Resources */,
 				2D7673CA1BEC3A0A00783623 /* directionalLight.frag in Resources */,
+				2D5D46DF1D24DDEA0083F891 /* blitColor.vert in Resources */,
 				2DA32C101D17E41B00CE05FC /* data in Resources */,
 				2DBACED01C9FDD6500BB5950 /* blit.vert in Resources */,
 			);

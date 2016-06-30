@@ -8,8 +8,6 @@ using namespace std;
 CZObjModel::CZObjModel(): CZNode(kObjModel)
 {
 	pCurGeometry = NULL;
-    m_vao = -1;
-    m_vboPos = m_vboNorm = m_vboNorm = -1;
     mtlLibName = "Not Set";
 }
 CZObjModel::~CZObjModel()
@@ -32,13 +30,6 @@ CZObjModel::~CZObjModel()
     normals.swap(temp1);
     texcoords.clear();
     texcoords.swap(temp2);
-    
-    // graphics
-    if(m_vao != -1) GL_DEL_VERTEXARRAY(1, &m_vao);
-    if(m_vboPos != -1) glDeleteBuffers(1, &m_vboPos);
-    if(m_vboNorm != -1) glDeleteBuffers(1, &m_vboNorm);
-    if(m_vboTexCoord != -1) glDeleteBuffers(1, &m_vboTexCoord);
-    
 }
 
 bool CZObjModel::load(const string& path)
@@ -329,7 +320,6 @@ void CZObjModel::draw(CZShader* pShader)
         }
 		glUniform3f(pShader->getUniformLocation("material.kd"), kd[0], kd[1], kd[2]);
         glUniform3f(pShader->getUniformLocation("material.ka"), ka[0], ka[1], ka[2]);
-        glUniform3f(pShader->getUniformLocation("material.kd"), kd[0], kd[1], kd[2]);
         glUniform3f(pShader->getUniformLocation("material.ke"), ke[0], ke[1], ke[2]);
         glUniform3f(pShader->getUniformLocation("material.ks"), ks[0], ks[1], ks[2]);
         glUniform1f(pShader->getUniformLocation("material.Ns"), Ns);

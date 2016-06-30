@@ -1,6 +1,8 @@
 #include "Application3D.h"
 #include "CZDefine.h"
 #include "CZGeometry.h"
+#include "shape/CZShape.h"
+#include "shape/CZCube.hpp"
 #include "CZLog.h"
 #include <ctime>
 #include <vector>
@@ -220,6 +222,9 @@ bool Application3D::setRenderBufferSize(int w, int h)
 
 void Application3D::frame()
 {
+    clock_t nowTime = clock();
+    animationManager.update(nowTime);
+    
 #ifdef SHOW_RENDER_TIME
 	static clock_t start, finish;
 	start = clock();
@@ -296,6 +301,29 @@ void Application3D::frame()
 	double totalTime = (double)(finish - start) / CLOCKS_PER_SEC;
 	LOG_INFO("rendering time is %0.6f, FPS = %0.1f\n",totalTime, 1.0f/totalTime);
 #endif
+}
+
+bool Application3D::createShape(const char* shapeFileName, bool contentInParam /*= false*/)
+{
+    CZCube *cube = new CZCube;
+    CZPoint3D p(0,0,0);
+    cube->create(p,1,1,1);
+    nodes.push_back(cube);
+    return true;
+}
+
+bool Application3D::clearShapes()
+{
+    for(CZNodeArray::iterator itr = nodes.begin(); itr != nodes.end(); itr ++)
+    {
+        if((*itr)->getType() == CZNode::kShape)
+        {
+            delete (CZShape*)(*itr);
+            itr = nodes.erase(itr);
+        }
+    }
+    
+    return true;
 }
 
 void Application3D::reset()
@@ -414,6 +442,13 @@ void Application3D::rotate(float deltaX, float deltaY, int nodeIdx /*= -1*/)
 	}
 	else if(nodeIdx < nodes.size())
 	{
+        CZShape *shape = dynamic_cast<CZShape*>(nodes[nodeIdx]);
+        if(shape && shape->isAnimating)
+        {
+            LOG_WARN("the shape is animating and cannot be controlled!\n");
+            return;
+        }
+        
         tempMat.SetRotationY(deltaX);
 		nodes[nodeIdx]->rotateMat = tempMat * nodes[nodeIdx]->rotateMat;
 		tempMat.SetRotationX(-deltaY);
@@ -434,6 +469,13 @@ void Application3D::translate(float deltaX, float deltaY, int nodeIdx /*= -1*/)
 	}
 	else if(nodeIdx < nodes.size())
 	{
+        CZShape *shape = dynamic_cast<CZShape*>(nodes[nodeIdx]);
+        if(shape && shape->isAnimating)
+        {
+            LOG_WARN("the shape is animating and cannot be controlled!\n");
+            return;
+        }
+        
 		nodes[nodeIdx]->translateMat = tempMat * nodes[nodeIdx]->translateMat;
 	}
 	else
@@ -449,6 +491,13 @@ void Application3D::scale(float s, int nodeIdx /*= -1*/)
 	}
 	else if(nodeIdx < nodes.size())
 	{
+        CZShape *shape = dynamic_cast<CZShape*>(nodes[nodeIdx]);
+        if(shape && shape->isAnimating)
+        {
+            LOG_WARN("the shape is animating and cannot be controlled!\n");
+            return;
+        }
+        
 		nodes[nodeIdx]->scaleMat = tempMat * nodes[nodeIdx]->scaleMat;
 	}
 	else
@@ -564,6 +613,16 @@ bool Application3D::loadShaders()
 
 	pShader = new CZShader("blit","blit",attributes,uniforms);
 	shaders.insert(make_pair(kBlitImage,pShader));
+
+    //
+    attributes.clear();
+    attributes.push_back("inPosition");
+    uniforms.clear();
+    uniforms.push_back("mvpMat");
+    uniforms.push_back("inColor");
+    
+    pShader = new CZShader("blitColor","blitColor",attributes,uniforms);
+    shaders.insert(make_pair(kBlitColor,pShader));
 
 	CZCheckGLError();
 

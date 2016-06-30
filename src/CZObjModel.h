@@ -62,10 +62,5 @@ private:
 	std::vector<CZGeometry*> geometries;
 	CZMaterialLib materialLib;
 	std::string mtlLibName;							///< material lib name
-	
-    GLuint m_vao;
-    GLuint m_vboPos;
-    GLuint m_vboNorm;
-    GLuint m_vboTexCoord;
 };
 #endif

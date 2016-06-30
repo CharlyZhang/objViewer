@@ -9,12 +9,15 @@
 #ifndef CZShape_h
 #define CZShape_h
 
-#inlucde "../CZNode.h"
+#include "../CZNode.h"
 
 class CZShape : public CZNode
 {
 public:
-    CZShape(): CZNode(kNode){};
+    CZShape(): CZNode(kShape), isAnimating(false){};
+    
+    /// properties
+    bool isAnimating;
 };
 
 #endif /* CZShape_h */

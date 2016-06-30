@@ -273,6 +273,18 @@
     return app3d.clearObjModel();
 }
 
+- (BOOL) createShape
+{
+    BOOL result = NO;
+    if (context != nil)
+    {
+        [EAGLContext setCurrentContext:context];
+        
+        result = app3d.createShape(nullptr);
+    }
+    return result;
+}
+
 - (void) setCameraPositionWithX:(float)x Y:(float)y Z:(float) z
 {
     app3d.setCameraPosition(x, y, z);
