@@ -35,7 +35,7 @@ public:
 	///    which also cause `unpack` is useless in RENDER mode.
 	void clearRaw();
 
-	void draw(CZShader *pShader) override;
+	bool draw(CZShader *pShader, CZMat4 &viewProjMat) override;
 
 private:
 	void parseLine(std::ifstream& ifs, const std::string& ele_id) override;

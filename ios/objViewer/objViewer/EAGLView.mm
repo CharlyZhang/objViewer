@@ -280,7 +280,7 @@
     {
         [EAGLContext setCurrentContext:context];
         
-        result = app3d.createShape(nullptr);
+        result = app3d.createShape("cube");
     }
     return result;
 }

@@ -20,7 +20,7 @@ public:
     CZCube();
     ~CZCube();
     
-    void draw(CZShader *pShader);
+    bool draw(CZShader *pShader, CZMat4 &viewProjMat);
     
     void create(CZPoint3D &origin, float width, float length, float height);
     void fold(long time);

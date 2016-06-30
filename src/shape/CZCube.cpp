@@ -80,13 +80,14 @@ void CZCube::create(CZPoint3D &origin, float width, float length, float height)
     
 }
 
-void CZCube::draw(CZShader *pShader)
+bool CZCube::draw(CZShader *pShader, CZMat4 &viewProjMat)
 {
-    if(pShader == NULL)
-    {
-        LOG_ERROR("pShader is NULL!\n");
-        return;
-    }
+    if(CZNode::draw(pShader, viewProjMat) != true) return false;
+    
+    CZMat4 modelMat = getTransformMat();
+    glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, viewProjMat * modelMat);
+    glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
+    glUniformMatrix4fv(pShader->getUniformLocation("modelInverseTransposeMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
     
     GL_BIND_VERTEXARRAY(m_vao);
     
@@ -103,14 +104,12 @@ void CZCube::draw(CZShader *pShader)
         glUniform3f(pShader->getUniformLocation("material.ke"), ke[0], ke[1], ke[2]);
         glUniform3f(pShader->getUniformLocation("material.ks"), ks[0], ks[1], ks[2]);
         glUniform1f(pShader->getUniformLocation("material.Ns"), Ns);
-        
-        int hasTex = 0;
-        
-        glUniform1i(pShader->getUniformLocation("hasTex"), hasTex);
-        glUniform1i(pShader->getUniformLocation("tex"), 0);
+        glUniform1i(pShader->getUniformLocation("hasTex"), 0);
         glDrawElements(GL_TRIANGLE_STRIP, 4,  GL_UNSIGNED_BYTE, &indices[i*4]);
     }
     
     GL_BIND_VERTEXARRAY(0);
     CZCheckGLError();
+    
+    return true;
 }

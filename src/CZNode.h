@@ -12,6 +12,8 @@
 #include "CZMat4.h"
 #include "CZShader.h"
 #include "CZDefine.h"
+#include <map>
+#include <string>
 
 class CZNode
 {
@@ -23,20 +25,34 @@ public:
         kShape                      ///< shape
     } NodeType;
     
+    typedef std::map<std::string,CZNode*> NodeMap;
+    
     CZNode(NodeType t = kEmpty);
-    ~CZNode();
+    virtual ~CZNode();
     
     void resetMatrix();
     
     NodeType getType(){ return _type;}
     
-    virtual void draw(CZShader *pShader){};
+    // get transform matrix
+    CZMat4 getTransformMat();
+    
+    // operate hierarchy
+    bool addSubNode(std::string &name,CZNode *node);
+    bool removeSubNode(std::string &name);
+    CZNode * getNode(std::string &name);
+    const NodeMap & getAllSubNodes();
+    bool removeAllSubNodesOfType(NodeType type);
+    
+    virtual bool draw(CZShader *pShader, CZMat4 &viewProjMat);
     
     //// properties
     CZMat4 rotateMat, translateMat, scaleMat;
+    CZNode *parentNode;
 
 protected:
     NodeType _type;
+    NodeMap _childrenNodes;
     
     GLuint m_vao;
     GLuint m_vboPos;
