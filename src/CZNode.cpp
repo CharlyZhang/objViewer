@@ -64,7 +64,7 @@ bool CZNode::addSubNode(std::string &name,CZNode *node)
     }
     
     NodeMap::iterator itr = _childrenNodes.find(name);
-    if(itr == _childrenNodes.end())
+    if(itr != _childrenNodes.end())
     {
         LOG_WARN("Node with name(%s) has existed and will be replaced!\n",name.c_str());
     }
