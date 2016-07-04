@@ -16,6 +16,7 @@
 
 #define USE_DEPTH_BUFFER 1
 #define USE_PIC_BACKGROUND 0
+#define SHOW_ANIMAITON
 //#define SHOW_RENDER_TIME
 //declare private methods, so they can be used everywhere in this file
 @interface EAGLView (PrivateMethods)
@@ -211,7 +212,7 @@
      [self deleteFramebuffer];
      [self createFramebuffer];*/
     
-#ifdef SHOW_RENDER_TIME
+#if  defined(SHOW_RENDER_TIME) || defined(SHOW_ANIMAITON)
     animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval target:self selector:@selector(drawFrame) userInfo:nil repeats:YES];
 #endif
 }
@@ -220,7 +221,7 @@
 //we have to be able to stop the render loop
 - (void)stopRenderLoop
 {
-#ifdef SHOW_RENDER_TIME
+#if  defined(SHOW_RENDER_TIME) || defined(SHOW_ANIMAITON)
     [animationTimer invalidate];
 #endif
 }

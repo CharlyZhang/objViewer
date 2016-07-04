@@ -9,6 +9,7 @@
 #ifndef CZAnimation_hpp
 #define CZAnimation_hpp
 
+#include "../CZNode.h"
 #include <string>
 
 class CZAnimation
@@ -19,18 +20,21 @@ public:
         kShapeAnimaiton
     } AnimationType;
     
-    CZAnimation();
+    CZAnimation(long totalTime);
     
     virtual void update(long time) = 0;
-    virtual void start(std::string &name) = 0;
-    virtual void stop();
-    virtual void play();
-    virtual void pause();
+    virtual bool start(std::string &name, long time);
     
     bool isPlaying() {return _isPlaying;}
     
+    void setNode(CZNode *n) { ptrNode = n;}
+    
 protected:
     bool _isPlaying;
+    long _totalTime;
+    long _startTime;
+    std::string _playingName;
+    CZNode *ptrNode;
 };
 
 #endif /* CZAnimation_hpp */

@@ -15,8 +15,9 @@
 class CZShapeAnimation : public CZAnimation
 {
 public:
+    CZShapeAnimation(long totalTime);
+    
     void update(long time) override;
-    void start(std::string &name) override;
     
     CZShape *shape;
 };

@@ -24,12 +24,13 @@ public:
     bool draw(CZShader *pShader, CZMat4 &viewProjMat);
     
     void create(CZPoint3D &origin, float width, float length, float height);
-    void fold(long time);
-    void unFold(long time);
-    void finished();
+    void fold(float ratio);
+    void unFold(float ratio){};
+    
 private:
     static unsigned char indices[];
     std::vector<CZFace* > faces;
+    std::vector<CZPoint3D> positions,normals;
 };
 
 #endif /* CZCube_hpp */

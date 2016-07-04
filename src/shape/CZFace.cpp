@@ -51,3 +51,4 @@ bool CZFace::draw(CZShader *pShader, CZMat4 &viewProjMat)
 
     return true;
 }
+

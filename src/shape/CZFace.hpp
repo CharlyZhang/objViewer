@@ -9,19 +9,18 @@
 #ifndef CZFace_hpp
 #define CZFace_hpp
 
-#include "CZShape.h"
+#include "../CZNode.h"
 #include "../CZVector.h"
 #include <vector>
 
-class CZFace: public CZShape
+class CZFace: public CZNode
 {
 public:
     CZFace();
     ~CZFace();
     
-    
     bool draw(CZShader *pShader, CZMat4 &viewProjMat);
-
+    
     float kd[4];
     unsigned char *indexes;
 };

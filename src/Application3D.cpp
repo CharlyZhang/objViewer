@@ -3,6 +3,7 @@
 #include "CZGeometry.h"
 #include "shape/CZShape.h"
 #include "shape/CZCube.hpp"
+#include "animation/CZShapeAnimation.hpp"
 #include "CZLog.h"
 #include <ctime>
 #include <vector>
@@ -296,6 +297,14 @@ bool Application3D::createShape(const char* shapeFileName, bool contentInParam /
     cube1->create(p1, 10, 10, 10);
     string shape1Name("cube1");
     cube->addSubNode(shape1Name, cube1);
+    
+    // add `fold` animation
+    CZShapeAnimation *pAnimation = new CZShapeAnimation(5  * CLOCKS_PER_SEC);
+    pAnimation->setNode(cube1);
+    string animationName = "fold";
+    animationManager.registerAnimation(animationName, pAnimation);
+    clock_t nowTime = clock();
+    pAnimation->start(animationName, nowTime);
     return true;
 }
 
