@@ -11,6 +11,7 @@
 
 #include "CZShape.h"
 #include "../CZBasic.h"
+#include "CZFace.hpp"
 
 #include <vector>
 
@@ -28,7 +29,7 @@ public:
     void finished();
 private:
     static unsigned char indices[];
-    float kd[6][4];
+    std::vector<CZFace* > faces;
 };
 
 #endif /* CZCube_hpp */

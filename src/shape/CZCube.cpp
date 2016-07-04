@@ -24,6 +24,8 @@ CZCube::CZCube()
 
 CZCube::~CZCube()
 {
+    for(vector<CZFace *>::iterator itr = faces.begin(); itr != faces.end(); itr ++)
+        delete  *itr;
 }
 
 void CZCube::create(CZPoint3D &origin, float width, float length, float height)
@@ -47,11 +49,16 @@ void CZCube::create(CZPoint3D &origin, float width, float length, float height)
     
     for(auto i = 0; i < 6; i++)
     {
-        kd[i][0] = 1.0f * rand() / RAND_MAX;
-        kd[i][1] = 1.0f * rand() / RAND_MAX;
-        kd[i][2] = 1.0f * rand() / RAND_MAX;
-        kd[i][3] = 1.0f;
+        CZFace *pFace = new CZFace();
+        
+        pFace->indexes = new unsigned char[4];
+        memcpy(pFace->indexes, &indices[i*4], sizeof(unsigned char)*4);
+        
+        /// treat face as non-subnode, for draw correctly
+        faces.push_back(pFace);
+        pFace->parentNode = this;
     }
+    
     /// transfer to graphic card
     // vao
     GL_GEN_VERTEXARRAY(1, &m_vao);
@@ -82,33 +89,15 @@ void CZCube::create(CZPoint3D &origin, float width, float length, float height)
 
 bool CZCube::draw(CZShader *pShader, CZMat4 &viewProjMat)
 {
-    if(CZNode::draw(pShader, viewProjMat) != true) return false;
-    
-    CZMat4 modelMat = getTransformMat();
-    glUniformMatrix4fv(pShader->getUniformLocation("mvpMat"), 1, GL_FALSE, viewProjMat * modelMat);
-    glUniformMatrix4fv(pShader->getUniformLocation("modelMat"), 1, GL_FALSE, modelMat);
-    glUniformMatrix4fv(pShader->getUniformLocation("modelInverseTransposeMat"), 1, GL_FALSE, modelMat.GetInverseTranspose());
-    
+    if(CZNode::draw(pShader, viewProjMat) != true) return false;        ///< render subnodes
+
     GL_BIND_VERTEXARRAY(m_vao);
     
-    for (int i = 0; i < 6; i ++)
-    {
-        float ke[4], ka[4], ks[4], Ns = 10.0;
-        ka[0] = 0.2;    ka[1] = 0.2;    ka[2] = 0.2;
-        ke[0] = 0.0;    ke[1] = 0.0;    ke[2] = 0.0;
-        ks[0] = 0.0;    ks[1] = 0.0;    ks[2] = 0.0;
-        Ns = 10.0;
-        
-        glUniform3f(pShader->getUniformLocation("material.kd"), kd[i][0], kd[i][1], kd[i][2]);
-        glUniform3f(pShader->getUniformLocation("material.ka"), ka[0], ka[1], ka[2]);
-        glUniform3f(pShader->getUniformLocation("material.ke"), ke[0], ke[1], ke[2]);
-        glUniform3f(pShader->getUniformLocation("material.ks"), ks[0], ks[1], ks[2]);
-        glUniform1f(pShader->getUniformLocation("material.Ns"), Ns);
-        glUniform1i(pShader->getUniformLocation("hasTex"), 0);
-        glDrawElements(GL_TRIANGLE_STRIP, 4,  GL_UNSIGNED_BYTE, &indices[i*4]);
-    }
+    for(vector<CZFace* >::iterator itr = faces.begin(); itr != faces.end(); itr ++)
+        (*itr)->draw(pShader, viewProjMat);
     
     GL_BIND_VERTEXARRAY(0);
+    
     CZCheckGLError();
     
     return true;
