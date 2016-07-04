@@ -13,7 +13,7 @@ CZGeometry::CZGeometry(): aabbMin(CZVector3D<float>(FLT_MAX, FLT_MAX, FLT_MAX)),
 CZGeometry::~CZGeometry()
 {
 	faces.clear();
-    vector<CZFace> temp;
+    vector<CZTriangle> temp;
     faces.swap(temp);
 }
 
@@ -26,7 +26,7 @@ long CZGeometry::unpackRawData(const std::vector<CZVector3D<float> > &posRawVect
 {
     vector<CZVector3D<float> > tempPositions;
     vertNum = 0;
-    for (vector<CZFace>::const_iterator itr = faces.begin(); itr != faces.end(); ++itr)
+    for (vector<CZTriangle>::const_iterator itr = faces.begin(); itr != faces.end(); ++itr)
     {
         for (unsigned i = 0; i < itr->v.size(); ++i)
         {

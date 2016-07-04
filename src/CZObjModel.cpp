@@ -477,17 +477,17 @@ void CZObjModel::parseVertexTexCoord(std::ifstream &ifs)
 
 void CZObjModel::parseFace(std::ifstream &ifs)
 {
-	CZFace face;
+	CZTriangle triangle;
 	int data[3] = { -1, -1, -1 };
 	int count;
 
 	for (int i = 0; i < 3; i++){
 		count = parseNumberElement(ifs, data);
-		face.addVertTexNorm(data[0], data[1], data[2]);
+		triangle.addVertTexNorm(data[0], data[1], data[2]);
 	}
 	skipLine(ifs);
 
-	pCurGeometry->addFace(face);
+	pCurGeometry->addTriangle(triangle);
 
 	ifs.clear();
 }

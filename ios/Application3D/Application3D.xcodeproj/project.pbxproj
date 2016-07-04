@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D03ED5C1D2A5C7E009B96B5 /* CZFace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D03ED5A1D2A5C7E009B96B5 /* CZFace.cpp */; };
 		2D23747E1D239F6A00D71517 /* Application3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D2374671D239F6A00D71517 /* Application3D.cpp */; };
 		2D23747F1D239F6A00D71517 /* CZGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D23746B1D239F6A00D71517 /* CZGeometry.cpp */; };
 		2D2374801D239F6A00D71517 /* CZMat4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D23746E1D239F6A00D71517 /* CZMat4.cpp */; };
@@ -38,6 +39,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2D03ED5A1D2A5C7E009B96B5 /* CZFace.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CZFace.cpp; path = ../../../src/shape/CZFace.cpp; sourceTree = "<group>"; };
+		2D03ED5B1D2A5C7E009B96B5 /* CZFace.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CZFace.hpp; path = ../../../src/shape/CZFace.hpp; sourceTree = "<group>"; };
 		2D2374351D239E6B00D71517 /* libApplication3D.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libApplication3D.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D2374671D239F6A00D71517 /* Application3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Application3D.cpp; path = ../../../src/Application3D.cpp; sourceTree = "<group>"; };
 		2D2374681D239F6A00D71517 /* Application3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Application3D.h; path = ../../../src/Application3D.h; sourceTree = "<group>"; };
@@ -147,6 +150,8 @@
 				2D2374881D239F8300D71517 /* CZShape.h */,
 				2D23749E1D23C3D100D71517 /* CZCube.cpp */,
 				2D23749F1D23C3D100D71517 /* CZCube.hpp */,
+				2D03ED5A1D2A5C7E009B96B5 /* CZFace.cpp */,
+				2D03ED5B1D2A5C7E009B96B5 /* CZFace.hpp */,
 			);
 			name = shape;
 			sourceTree = "<group>";
@@ -228,6 +233,7 @@
 				2D2374831D239F6A00D71517 /* CZObjFileParser.cpp in Sources */,
 				2D23747E1D239F6A00D71517 /* Application3D.cpp in Sources */,
 				2D23747F1D239F6A00D71517 /* CZGeometry.cpp in Sources */,
+				2D03ED5C1D2A5C7E009B96B5 /* CZFace.cpp in Sources */,
 				2D23749D1D23C35900D71517 /* CZShapeAnimation.cpp in Sources */,
 				2D2374A01D23C3D100D71517 /* CZCube.cpp in Sources */,
 				2D2374911D23AAA100D71517 /* CZNode.cpp in Sources */,

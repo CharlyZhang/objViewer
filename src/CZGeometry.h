@@ -5,18 +5,18 @@
 #include <vector>
 #include <string>
 
-/// CZFace
-class CZFace
+/// CZTriangle
+class CZTriangle
 {
 public:
-	CZFace()
+	CZTriangle()
 	{
 		v.reserve(3);
 		vt.reserve(3);
 		vn.reserve(3);
 	}
 
-    ~CZFace() {	std::vector<int> temp; v.clear(); vt.clear(); vn.clear(); v.swap(temp); vt.swap(temp); vn.swap(temp); }
+    ~CZTriangle() {	std::vector<int> temp; v.clear(); vt.clear(); vn.clear(); v.swap(temp); vt.swap(temp); vn.swap(temp); }
 
 	void addVertTexNorm(int vi, int ti, int ni)
 	{
@@ -38,7 +38,7 @@ public:
 	CZGeometry();
 	~CZGeometry();
 
-	void addFace(const CZFace& face)
+	void addTriangle(const CZTriangle& face)
 	{
 		if (face.vn[0] != -1)	hasNormal = true;
 		if (face.vt[0] != -1)	hasTexCoord = true;
@@ -53,7 +53,7 @@ public:
                        std::vector<CZVector3D<float> > &outNormals, \
                        std::vector<CZVector2D<float> > &outTexcoords);
 
-	std::vector<CZFace> faces;			///< faces
+	std::vector<CZTriangle> faces;			///< faces
 	CZVector3D<float> aabbMin,aabbMax;	///< aabb bounding box
 	std::string materialName;			///< material name
 
