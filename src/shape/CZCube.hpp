@@ -24,8 +24,8 @@ public:
     bool draw(CZShader *pShader, CZMat4 &viewProjMat);
     
     void create(CZPoint3D &origin, float width, float length, float height);
-    void fold(float ratio);
-    void unFold(float ratio){};
+    void fold(float ratio){};
+    void unFold(float ratio);
     
 private:
     static unsigned char indices[];

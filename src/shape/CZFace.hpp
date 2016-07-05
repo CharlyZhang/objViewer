@@ -21,6 +21,10 @@ public:
     
     bool draw(CZShader *pShader, CZMat4 &viewProjMat);
     
+    // set rotate around axis ( axis = `to` - `from`)
+    void setRotateAroundAxis(float angle, CZVector3D<float > &from, CZVector3D<float > &to);
+    void rotateAroundAxis(float angle, CZVector3D<float > &from, CZVector3D<float > &to);
+    
     float kd[4];
     unsigned char *indexes;
 };

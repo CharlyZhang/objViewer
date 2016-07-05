@@ -52,3 +52,22 @@ bool CZFace::draw(CZShader *pShader, CZMat4 &viewProjMat)
     return true;
 }
 
+void CZFace::setRotateAroundAxis(float angle, CZVector3D<float > &from, CZVector3D<float > &to)
+{
+    rotateMat.LoadIdentity();
+    rotateAroundAxis(angle, from, to);
+}
+
+void CZFace::rotateAroundAxis(float angle, CZVector3D<float > &from, CZVector3D<float > &to)
+{
+    CZMat4 mat,tempMat;
+    CZVector3D<float > l = to - from;
+    VECTOR3D axis(l.x, l.y, l.z);
+    mat.SetTranslation(from.x, from.y, from.z);
+    tempMat.SetRotationAxis(angle, axis);
+    mat = mat * tempMat;
+    tempMat.SetTranslation(-from.x, -from.y, -from.z);
+    mat = mat * tempMat;
+    rotateMat = mat * rotateMat;
+}
+

@@ -12,12 +12,13 @@
 
 using namespace std;
 
-unsigned char CZCube::indices[] = {0,1,2,3,
-                                    4,0,6,2,
-                                    5,4,7,6,
-                                    1,5,3,7,
-                                    2,3,6,7,
-                                    1,0,5,4};
+unsigned char CZCube::indices[] = {7,6,3,2,     //< top
+                                    0,1,2,3,    //< front
+                                    1,5,3,7,    //< right
+                                    4,0,6,2,    //< left
+                                    5,4,7,6,    //< back
+                                    1,0,5,4     //< bottom
+};
 
 CZCube::CZCube()
 {
@@ -89,23 +90,59 @@ void CZCube::create(CZPoint3D &origin, float width, float length, float height)
     GL_BIND_VERTEXARRAY(0);
 }
 
-void CZCube::fold(float ratio)
+void CZCube::unFold(float ratio)
 {
-    LOG_DEBUG("rotating - %f\n",ratio);
+    //LOG_DEBUG("unfold - %f\n",ratio);
     float totalAngle = -90;
-    for(auto i = 0; i < 4; i ++)
+    
+    // step 1 - top face
+    if(ratio <= 0.2f)
     {
-        CZMat4 mat,tempMat;
-        CZVector3D<float > v0 = positions[faces[i]->indexes[0]];
-        CZVector3D<float > v1 = positions[faces[i]->indexes[1]];
-        CZVector3D<float > l = v1 - v0;
-        VECTOR3D axis(l.x, l.y, l.z);
-        mat.SetTranslation(v0.x, v0.y, v0.z);
-        tempMat.SetRotationAxis(totalAngle * ratio, axis);
-        mat = mat * tempMat;
-        tempMat.SetTranslation(-v0.x, -v0.y, -v0.z);
-        mat = mat * tempMat;
-        faces[i]-> rotateMat = mat;
+        CZVector3D<float > from = positions[faces[0]->indexes[0]];
+        CZVector3D<float > to = positions[faces[0]->indexes[1]];
+        float angle = (ratio - 0.0f) / 0.2f * totalAngle;
+        faces[0]->setRotateAroundAxis(angle, from, to);
+    }
+    
+    // step 2 - front
+    else if(ratio <= 0.4f)
+    {
+        CZVector3D<float > from = positions[faces[1]->indexes[0]];
+        CZVector3D<float > to = positions[faces[1]->indexes[1]];
+        float angle = (ratio - 0.2f) / 0.2f * totalAngle;
+        faces[1]->setRotateAroundAxis(angle, from, to);
+    }
+    
+    // step 3 - left
+    else if(ratio <= 0.6f)
+    {
+        CZVector3D<float > from = positions[faces[2]->indexes[0]];
+        CZVector3D<float > to = positions[faces[2]->indexes[1]];
+        float angle = (ratio - 0.4f) / 0.2f * totalAngle;
+        faces[2]->setRotateAroundAxis(angle, from, to);
+    }
+    
+    // step 4 - right
+    else if(ratio <= 0.8f)
+    {
+        CZVector3D<float > from = positions[faces[3]->indexes[0]];
+        CZVector3D<float > to = positions[faces[3]->indexes[1]];
+        float angle = (ratio - 0.6f) / 0.2f * totalAngle;
+        faces[3]->setRotateAroundAxis(angle, from, to);
+    }
+    
+    // step 5 - front & back
+    else if(ratio <= 1.0f)
+    {
+        CZVector3D<float > from = positions[faces[4]->indexes[0]];
+        CZVector3D<float > to = positions[faces[4]->indexes[1]];
+        float angle = (ratio - 0.8f) / 0.2f * totalAngle;
+        faces[4]->setRotateAroundAxis(angle, from, to);
+        
+        CZVector3D<float > from1 = positions[faces[0]->indexes[0]];
+        CZVector3D<float > to1 = positions[faces[0]->indexes[1]];
+        faces[0]->setRotateAroundAxis(-90.f, from1, to1);
+        faces[0]->rotateAroundAxis(angle, from, to);
     }
 }
 

@@ -288,20 +288,14 @@ bool Application3D::createShape(const char* shapeFileName, bool contentInParam /
 {
     CZCube *cube = new CZCube;
     CZPoint3D p(0,0,0);
-    cube->create(p,1,1,1);
+    cube->create(p,10,10,10);
     string strShapeName(shapeFileName);
     rootNode.addSubNode(strShapeName, cube);
     
-    CZPoint3D p1(15,0,0);
-    CZCube *cube1 = new CZCube;
-    cube1->create(p1, 10, 10, 10);
-    string shape1Name("cube1");
-    cube->addSubNode(shape1Name, cube1);
-    
     // add `fold` animation
-    CZShapeAnimation *pAnimation = new CZShapeAnimation(5  * CLOCKS_PER_SEC);
-    pAnimation->setNode(cube1);
-    string animationName = "fold";
+    CZShapeAnimation *pAnimation = new CZShapeAnimation(2  * CLOCKS_PER_SEC);
+    pAnimation->setNode(cube);
+    string animationName = "unfold";
     animationManager.registerAnimation(animationName, pAnimation);
     clock_t nowTime = clock();
     pAnimation->start(animationName, nowTime);
