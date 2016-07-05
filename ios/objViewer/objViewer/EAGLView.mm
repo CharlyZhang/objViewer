@@ -182,7 +182,9 @@
         //if our framebuffers have not been created yet, do that now!
         glBindFramebuffer(GL_FRAMEBUFFER, msaaFramebuffer);
         glBindRenderbuffer(GL_RENDERBUFFER, msaaRenderbuffer);
-        app3d.frame();
+        
+        NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970] * 1000.0f;
+        app3d.frame(nowTime);
         //we need a lesson to be able to render something
         
         //perform the actual drawing!
@@ -284,6 +286,12 @@
         result = app3d.createShape("cube");
     }
     return result;
+}
+
+- (BOOL) startUnFold
+{
+    NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970] * 1000.0f;
+    return app3d.animateShape("cube", "unfold", nowTime);
 }
 
 - (void) setCameraPositionWithX:(float)x Y:(float)y Z:(float) z

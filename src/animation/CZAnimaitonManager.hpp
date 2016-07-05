@@ -24,7 +24,9 @@ public:
     bool registerAnimation(std::string &name, CZAnimation* anim);
     bool unRegisterAnimation(std::string &name);
     
-    void update(long time);       //< ms
+    CZAnimation * getAnimation(std::string &name);
+    
+    void update(double time);       //< ms
     
 private:
     AnimationsMap _animationsMap;

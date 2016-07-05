@@ -29,13 +29,16 @@ public:
 	bool loadObjModel(const char* filename, bool quickLoad = true);
     bool clearObjModel();
 	bool setRenderBufferSize(int w, int h);
-	void frame();
+    // frame
+    //  called to draw the scene
+    //  \note `nowTime` is only necessary when `animation` is added
+	void frame(double nowTime = 0.0f);
 	void reset();
     
     // shape
     bool createShape(const char* shapeFileName, bool contentInParam = false);
     bool clearShapes();
-    void animateShape();
+    bool animateShape(const char* shapeName, const char* animName, double nowTime);
 
 #ifdef	__ANDROID__
 	bool createShader(ShaderType type,const char* vertFile, const char* fragFile, std::vector<std::string> &attributes,std::vector<std::string> &uniforms);

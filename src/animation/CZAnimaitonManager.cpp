@@ -48,7 +48,19 @@ bool CZAnimationManager::unRegisterAnimation(string &name)
     return true;
 }
 
-void CZAnimationManager::update(long time)
+CZAnimation * CZAnimationManager::getAnimation(std::string &name)
+{
+    AnimationsMap::iterator itr = _animationsMap.find(name);
+    if(itr == _animationsMap.end())
+    {
+        LOG_WARN("Cannot find animation with name(%s)!\n",name.c_str());
+        return nullptr;
+    }
+    
+    return itr->second;
+}
+
+void CZAnimationManager::update(double time)
 {
     for(AnimationsMap::iterator itr = _animationsMap.begin(); itr != _animationsMap.end(); itr ++)
     {

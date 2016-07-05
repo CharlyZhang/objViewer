@@ -21,12 +21,13 @@ public:
     CZCube();
     ~CZCube();
     
-    bool draw(CZShader *pShader, CZMat4 &viewProjMat);
+    bool draw(CZShader *pShader, CZMat4 &viewProjMat) override;
     
     void create(CZPoint3D &origin, float width, float length, float height);
-    void fold(float ratio){};
-    void unFold(float ratio);
+    void fold(float ratio) override {};
+    void unFold(float ratio) override;
     
+    void resetMatrix() override;
 private:
     static unsigned char indices[];
     std::vector<CZFace* > faces;

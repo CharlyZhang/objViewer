@@ -300,6 +300,10 @@
     
 }
 
+- (IBAction)unFoldShape:(UIButton *)sender {
+    [glView startUnFold];
+}
+
 # pragma mark - Picker View
 // returns the number of 'columns' to display.
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView

@@ -92,7 +92,8 @@ void CZCube::create(CZPoint3D &origin, float width, float length, float height)
 
 void CZCube::unFold(float ratio)
 {
-    //LOG_DEBUG("unfold - %f\n",ratio);
+    CZShape::unFold(ratio);
+    
     float totalAngle = -90;
     
     // step 1 - top face
@@ -144,6 +145,8 @@ void CZCube::unFold(float ratio)
         faces[0]->setRotateAroundAxis(-90.f, from1, to1);
         faces[0]->rotateAroundAxis(angle, from, to);
     }
+    else
+        isAnimating = false;
 }
 
 bool CZCube::draw(CZShader *pShader, CZMat4 &viewProjMat)
@@ -160,4 +163,13 @@ bool CZCube::draw(CZShader *pShader, CZMat4 &viewProjMat)
     CZCheckGLError();
     
     return true;
+}
+
+void CZCube::resetMatrix()
+{
+    CZNode::resetMatrix();
+    for(vector<CZFace*>::iterator itr = faces.begin(); itr != faces.end(); itr ++)
+    {
+        (*itr)->resetMatrix();
+    }
 }

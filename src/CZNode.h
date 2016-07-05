@@ -30,7 +30,7 @@ public:
     CZNode(NodeType t = kEmpty);
     virtual ~CZNode();
     
-    void resetMatrix();
+    virtual void resetMatrix();
     
     NodeType getType(){ return _type;}
     

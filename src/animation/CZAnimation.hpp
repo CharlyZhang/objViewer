@@ -20,19 +20,20 @@ public:
         kShapeAnimaiton
     } AnimationType;
     
-    CZAnimation(long totalTime);
+    CZAnimation(double totalTime);
     
-    virtual void update(long time) = 0;
-    virtual bool start(std::string &name, long time);
+    virtual void update(double time) = 0;
+    virtual bool start(std::string &name, double time);
     
     bool isPlaying() {return _isPlaying;}
     
     void setNode(CZNode *n) { ptrNode = n;}
+    CZNode* getNode() const { return ptrNode; }
     
 protected:
     bool _isPlaying;
-    long _totalTime;
-    long _startTime;
+    double _totalTime;               //< ms
+    double _startTime;               //< ms
     std::string _playingName;
     CZNode *ptrNode;
 };

@@ -53,6 +53,7 @@
 - (BOOL) clearObjModel;
 
 - (BOOL) createShape;
+- (BOOL) startUnFold;
 
 // for debug
 - (void) setCameraPositionWithX:(float)x Y:(float)y Z:(float) z;

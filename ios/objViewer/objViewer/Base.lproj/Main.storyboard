@@ -35,6 +35,13 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="q5i-wA-YpN"/>
                                 </connections>
                             </pickerView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m4E-Hr-1ly">
+                                <rect key="frame" x="26" y="73" width="30" height="30"/>
+                                <state key="normal" title="展开"/>
+                                <connections>
+                                    <action selector="unFoldShape:" destination="BYZ-38-t0r" eventType="touchUpInside" id="77c-Ur-8cG"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>

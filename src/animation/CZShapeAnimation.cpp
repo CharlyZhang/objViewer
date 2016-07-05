@@ -9,22 +9,37 @@
 #include "CZShapeAnimation.hpp"
 #include "../shape/CZShape.h"
 
-CZShapeAnimation::CZShapeAnimation(long totalTime): CZAnimation(totalTime)
+CZShapeAnimation::CZShapeAnimation(double totalTime): CZAnimation(totalTime)
 {
     
 }
 
-void CZShapeAnimation::update(long time)
+bool CZShapeAnimation::start(std::string &name, double time)
+{
+    if(CZAnimation::start(name, time) == false) return false;
+    
+    if(ptrNode == nullptr)
+    {
+        LOG_ERROR("ptrNode is nullptr!\n");
+        return false;
+    }
+    
+    ptrNode->resetMatrix();
+    
+    return true;
+}
+
+void CZShapeAnimation::update(double time)
 {
     if(!_isPlaying) return;
-    LOG_DEBUG("%ld\t%ld\n", _startTime, time);
     if(time >= _startTime + _totalTime)
     {
         time = _startTime + _totalTime;
         _isPlaying = false;
     }
     
-    float ratio = (time - _startTime) * 1.0f / _totalTime;
+    LOG_DEBUG("animation update time - %0.3fms\n", time);
+    float ratio = (time - _startTime) / _totalTime;
     
     if(_playingName == "unfold")
     {

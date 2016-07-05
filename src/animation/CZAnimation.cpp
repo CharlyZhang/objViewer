@@ -9,12 +9,12 @@
 #include "CZAnimation.hpp"
 
 
-CZAnimation::CZAnimation(long totalTime): _isPlaying(false), _totalTime(totalTime)
+CZAnimation::CZAnimation(double totalTime): _isPlaying(false), _totalTime(totalTime)
 {
     ptrNode = nullptr;
 }
 
-bool CZAnimation::start(std::string &name, long time)
+bool CZAnimation::start(std::string &name, double time)
 {
     if(ptrNode == nullptr)
     {
@@ -22,8 +22,12 @@ bool CZAnimation::start(std::string &name, long time)
         return false;
     }
     
+    if(_isPlaying) return false;
+    
     _isPlaying = true;
     _playingName = name;
     _startTime = time;
+    
+    LOG_DEBUG("animation start time - %0.3fms\n", _startTime);
     return true;
 }

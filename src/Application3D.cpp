@@ -210,15 +210,9 @@ bool Application3D::setRenderBufferSize(int w, int h)
 	return true;
 }
 
-void Application3D::frame()
+void Application3D::frame(double nowTime)
 {
-    clock_t nowTime = clock();
     animationManager.update(nowTime);
-    
-#ifdef SHOW_RENDER_TIME
-	static clock_t start, finish;
-	start = clock();
-#endif
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 
@@ -276,12 +270,6 @@ void Application3D::frame()
 	glutSolidSphere(2, 100, 100);
 	glPopMatrix();
 #endif
-
-#ifdef SHOW_RENDER_TIME
-	finish = clock();
-	double totalTime = (double)(finish - start) / CLOCKS_PER_SEC;
-	LOG_INFO("rendering time is %0.6f, FPS = %0.1f\n",totalTime, 1.0f/totalTime);
-#endif
 }
 
 bool Application3D::createShape(const char* shapeFileName, bool contentInParam /*= false*/)
@@ -292,19 +280,42 @@ bool Application3D::createShape(const char* shapeFileName, bool contentInParam /
     string strShapeName(shapeFileName);
     rootNode.addSubNode(strShapeName, cube);
     
-    // add `fold` animation
-    CZShapeAnimation *pAnimation = new CZShapeAnimation(2  * CLOCKS_PER_SEC);
-    pAnimation->setNode(cube);
-    string animationName = "unfold";
-    animationManager.registerAnimation(animationName, pAnimation);
-    clock_t nowTime = clock();
-    pAnimation->start(animationName, nowTime);
     return true;
 }
 
 bool Application3D::clearShapes()
 {
     return rootNode.removeAllSubNodesOfType(CZNode::kShape);
+}
+
+bool Application3D::animateShape(const char* shapeName, const char* animName, double nowTime)
+{
+    if(shapeName == nullptr || animName == nullptr)
+    {
+        LOG_ERROR("shape name or animation name is nullptr!\n");
+        return false;
+    }
+    string strShapeName(shapeName);
+    string strAnimName(animName);
+    CZNode *pNode = rootNode.getNode(strShapeName);
+    if(pNode == nullptr)
+    {
+        LOG_ERROR("node(%s) does not exist!\n",shapeName);
+        return false;
+    }
+    
+    // test if animation with this node has been added
+    CZAnimation *pAnim = animationManager.getAnimation(strAnimName);
+    if(pAnim == nullptr || pAnim->getNode() != pNode)
+    {
+        // add `unfold` animation
+        CZShapeAnimation *pShapeAnimation = new CZShapeAnimation(2000.0f);
+        pShapeAnimation->setNode(pNode);
+        animationManager.registerAnimation(strAnimName, pShapeAnimation);
+        pAnim = pShapeAnimation;
+    }
+    
+    return pAnim->start(strAnimName, nowTime);
 }
 
 void Application3D::reset()
